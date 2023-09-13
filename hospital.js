@@ -155,7 +155,6 @@ app.controller('DocLogInController',function($scope,$http,$window,$state){
             first_name: $scope.firstname,
             last_name : $scope.lastname,
             password : $scope.password,
-            // confirmpassword : $scope.confpassword
 			email : $scope.email,
 			username : $scope.username,
 			age : $scope.age,
@@ -191,4 +190,7 @@ app.controller('DocLogInController',function($scope,$http,$window,$state){
 	 } 
 });
 app.controller('DashboardController',function($scope,$http,$window,$state){
+	$scope.login = function(){
+
+	}
 });
