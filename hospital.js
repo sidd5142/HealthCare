@@ -26,9 +26,16 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			templateUrl: 'dashboard.html',
 			controller: 'DashboardController'
 		})
+		.state('Appointment', {
+            url: '/appointment',
+			templateUrl: 'appoint.html',
+			controller: 'AppointmentController'
+		})
 
 		$urlRouterProvider.otherwise('/home');
 }]);
+
+// const ip = "10.21.80.130:8000";
 
 app.controller('RegisterController',function($scope,$http,$window,$state){
 	$scope.Registrationfrom = function(){
@@ -69,7 +76,7 @@ app.controller('RegisterController',function($scope,$http,$window,$state){
 
 		if(pass == confpass){
 			
-			$http.post('https://10.21.86.182:8000/healthcare/registeruser/', regdata, {
+			$http.post('https://10.21.33.50:8000/healthcare/registeruser/', regdata, {
 			headers: {'Content-Type': undefined},
 		    withCredentials: true
 		})
@@ -106,13 +113,15 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 	}
 	if($scope.password)
 	{
-	$http.post('https://10.21.86.182:8000/healthcare/login/', data, {
+	$http.post('https://10.21.80.130:8000/healthcare/login/', data, {
 			headers: {'Content-Type': undefined},
 		    withCredentials: true
      })
 	 .then(function(response){
             
 		console.log(response.data)
+
+		$state.go('Dashboard');
 
 	  })
 	  .catch(function(error){
@@ -190,7 +199,28 @@ app.controller('DocLogInController',function($scope,$http,$window,$state){
 	 } 
 });
 app.controller('DashboardController',function($scope,$http,$window,$state){
-	$scope.login = function(){
+	
+});
+app.controller('AppointmentController',function($scope,$http,$window,$state){
+	$scope.booked = function(){
+		var appoiint = {
+			appointmentDate : $scope.Appointment,
+			department : $scope.depart,
+			medical_history : $scope.history,
+			report : $scope.files
+		}
+		$http.post('https://10.21.80.33:8000/healthcare/bookappointment/', appoiint, {
+			headers: {'Content-Type': undefined},
+		    withCredentials: true
+	})
+	.then(function(response){
+            
+		console.log(response.data)
+		$state.go('Login');
+	  })
+	  .catch(function(error){
+		$window.alert(error);
+	  })
 
 	}
 });

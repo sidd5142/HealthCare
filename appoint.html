@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Appointment</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/@uirouter/angularjs/release/angular-ui-router.js"></script>
+    <script src="hospital.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="AppointmentController">
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Date</label>
+        <input type="date" class="form-control" ng-model="Appointment" id="exampleFormControlInput1" placeholder="name@example.com">
+      </div>
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">department</label>
+        <input type="text" class="form-control" ng-model="depat" id="exampleFormControlInput1" placeholder="department">
+      </div>
+      <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">Hostory</label>
+        <input type="text" class="form-control" ng-model="history" id="exampleFormControlInput1" placeholder="history">
+      </div>
+      <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">File</label>
+        <input type="file" class="form-control" ng-model="files" id="exampleFormControlInput1" placeholder="Put your data">
+
+      </div>
+
+      <button type="submit" ng-click="booked()" class="btn btn-primary btn-lg" style="margin-left: 33%;" >Book Now</button>
+
+</body>
+</html>
