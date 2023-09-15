@@ -26,14 +26,47 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			templateUrl: 'dashboard.html',
 			controller: 'DashboardController'
 		})
-		.state('Appointment', {
-            url: '/appointment',
+		.state('Dashboard.Appointment', {
+			url: '/appointment',
 			templateUrl: 'appoint.html',
 			controller: 'AppointmentController'
 		})
-
+		.state('Dashboard.Personal', {
+			url: '/personal',
+			templateUrl: 'personinfo.html',
+			controller: 'PersonalController'
+		})
+		.state('Receptionist', {
+            url: '/reception',
+			templateUrl: 'registrar.html',
+			controller: 'ReceptionistController'
+		})
+		.state('Dashboard.Records', {
+            url: '/records',
+			templateUrl: 'records.html',
+			controller: 'RecordsController'
+		})
 		$urlRouterProvider.otherwise('/home');
+		
+
 }]);
+
+// var newapp = angular.module("myApp", ['ui.router']);
+//  newapp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) { 
+// 	$stateProvider 
+// 	.state('Appointment', {
+// 		url: '/appointment',
+// 		templateUrl: 'appoint.html',
+// 		controller: 'AppointmentController'
+// 	})
+// 	.state('Personal', {
+// 		url: '/personal',
+// 		templateUrl: 'personinfo.html',
+// 		controller: 'PersonalController'
+// 	})
+// 	$urlRouterProvider.otherwise('/personal');
+
+// }]);
 
 // const ip = "10.21.80.130:8000";
 
@@ -113,7 +146,7 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 	}
 	if($scope.password)
 	{
-	$http.post('https://10.21.80.130:8000/healthcare/login/', data, {
+	$http.post('https://10.21.83.175:8000/healthcare/login/', data, {
 			headers: {'Content-Type': undefined},
 		    withCredentials: true
      })
@@ -121,7 +154,7 @@ app.controller('LogInController',function($scope,$http,$window,$state){
             
 		console.log(response.data)
 
-		$state.go('Dashboard');
+		$state.go('Dashboard.Appointment');
 
 	  })
 	  .catch(function(error){
@@ -198,16 +231,25 @@ app.controller('DocLogInController',function($scope,$http,$window,$state){
 
 	 } 
 });
-app.controller('DashboardController',function($scope,$http,$window,$state){
+// app.controller('DashboardController',function($scope,$http,$window,$state){
 	
-});
+// 	$scope.dash = function(){
+// 		$scope.PersonalBox = false;
+// 	}
+
+// 	$scope.appoin = function(){
+// 		$scope.AppointmentBox = true;
+// 	}
+
+// });
 app.controller('AppointmentController',function($scope,$http,$window,$state){
-	$scope.booked = function(){
+	$scope.appoint = function(){
+		console.log("sidd")
 		var appoiint = {
-			appointmentDate : $scope.Appointment,
-			department : $scope.depart,
+			appointmentDate : $scope.date,
+			department : $scope.department,
 			medical_history : $scope.history,
-			report : $scope.files
+			report : $scope.reports
 		}
 		$http.post('https://10.21.80.33:8000/healthcare/bookappointment/', appoiint, {
 			headers: {'Content-Type': undefined},
@@ -216,11 +258,20 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 	.then(function(response){
             
 		console.log(response.data)
-		$state.go('Login');
+		// $state.go('Login');
 	  })
 	  .catch(function(error){
 		$window.alert(error);
 	  })
 
 	}
+});
+app.controller('PersonalController',function($scope,$http,$window,$state){
+});
+
+app.controller('DashboardController',function($scope,$http,$window,$state){
+});
+
+
+app.controller('ReceptionistController',function($scope,$http,$window,$state){
 });

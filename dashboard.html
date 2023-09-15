@@ -22,7 +22,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <a class="nav-link active" aria-current="page">Home</a>
               </li>
               
             </ul>
@@ -39,23 +39,23 @@
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
                     <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                        <span class="fs-5 d-none d-sm-inline">MENU</span>
+                        <span class="fs-5 d-none d-sm-inline">DASHBOARD</span>
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                        
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-dashboard"></i> <span class="ms-1 d-none d-sm-inline"><a ui-sref="Dashboard">Dashboard</a></span></a>
+                            <a  class="nav-link px-0 align-middle">
+                                 <span class="ms-1 d-none d-sm-inline" ng-click="dash" ui-sref="Dashboard.Personal">Personal Information</span></a>
                         </li>
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-table"></i> <span class="ms-1 d-none d-sm-inline"><a ui-sref="Appointment">Appointment</a></span></a>
+                            <a  class="nav-link px-0 align-middle">
+                                <span class="ms-1 d-none d-sm-inline" ng-click="appoin" ui-sref="Dashboard.Appointment">Appointment</span></a>
                         </li>
                         
                         
                         <li>
-                            <a href="#" class="nav-link px-0 align-middle">
-                                <i class="fs-4 bi-people"></i> <span class="ms-1 d-none d-sm-inline">Prescription</span> </a>
+                            <a  class="nav-link px-0 align-middle">
+                                <span class="ms-1 d-none d-sm-inline" ui-sref="Dashboard.Records">Prescription</span> </a>
                         </li>
                     </ul>
                     <hr>
@@ -73,17 +73,15 @@
                             </li>
                             <li><a class="dropdown-item" href="#">Sign out</a></li>
                         </ul>
-                    </div> -->  
+                    </div>   -->
                 </div>
             </div>
 
-            
-              <div ui-view>
-    
-              </div>
+            <div ui-view="">
             </div>
-        </div>
-    <!-- </div> -->
+         </div>
+    
+     </div>   
     
 </body>
 </html>
