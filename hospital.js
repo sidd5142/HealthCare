@@ -18,7 +18,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 		})
 		.state('DoctorRegister', {
             url: '/Doctorreg',
-			templateUrl: 'DoctorReg.html',
+			templateUrl: 'doctnew.html',
 			controller: 'DocLogInController'
 		})
 		.state('Dashboard', {
@@ -46,7 +46,17 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			templateUrl: 'records.html',
 			controller: 'RecordsController'
 		})
-		$urlRouterProvider.otherwise('/home');
+		.state('RecepDashboard', {
+            url: '/recepdashboard',
+			templateUrl: 'receptionistdash.html',
+			controller: 'RecepDashboardController'
+		})
+		.state('DoctorDashboard', {
+            url: '/doctordashboard',
+			templateUrl: 'doctordashboard.html',
+			controller: 'DoctorDashboardController'
+		})
+		$urlRouterProvider.otherwise('/Doctorreg');
 		
 
 }]);
@@ -275,3 +285,9 @@ app.controller('DashboardController',function($scope,$http,$window,$state){
 
 app.controller('ReceptionistController',function($scope,$http,$window,$state){
 });
+
+app.controller('RecepDashboardController',function($scope,$http,$window,$state){
+});	
+
+app.controller('DoctorDashboardController',function($scope,$http,$window,$state){
+});	
