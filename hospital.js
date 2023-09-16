@@ -56,29 +56,30 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			templateUrl: 'doctordashboard.html',
 			controller: 'DoctorDashboardController'
 		})
-		$urlRouterProvider.otherwise('/Doctorreg');
+		.state('DoctorDashboard.DoctPersonal', {
+            url: '/doctpersonal',
+			templateUrl: 'doctinfo.html',
+			controller: 'DoctPersonalController'
+		})
+		.state('DoctorDashboard.DoctAppoint', {
+            url: '/doctappoint',
+			templateUrl: 'doctappoint.html',
+			controller: 'DoctAppointController'
+		})
+		.state('DoctorDashboard.DoctRecord', {
+            url: '/doctrecord',
+			templateUrl: 'DoctRecord.html',
+			controller: 'DoctRecordController'
+		})
+		.state('DoctorDashboard.Prescriptions', {
+            url: '/doctprescriptions',
+			templateUrl: 'prescription.html',
+			controller: 'PrescriptionsController'
+		})
+		$urlRouterProvider.otherwise('/home');
 		
 
 }]);
-
-// var newapp = angular.module("myApp", ['ui.router']);
-//  newapp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) { 
-// 	$stateProvider 
-// 	.state('Appointment', {
-// 		url: '/appointment',
-// 		templateUrl: 'appoint.html',
-// 		controller: 'AppointmentController'
-// 	})
-// 	.state('Personal', {
-// 		url: '/personal',
-// 		templateUrl: 'personinfo.html',
-// 		controller: 'PersonalController'
-// 	})
-// 	$urlRouterProvider.otherwise('/personal');
-
-// }]);
-
-// const ip = "10.21.80.130:8000";
 
 app.controller('RegisterController',function($scope,$http,$window,$state){
 	$scope.Registrationfrom = function(){
@@ -113,27 +114,42 @@ app.controller('RegisterController',function($scope,$http,$window,$state){
 			age : $scope.age,
 			gender : $scope.gender,
 			contact : $scope.contact,
-			address : $scope.address
+			address : $scope.address,
+			blood_group : $scope.blood
 		};
 		console.log(regdata);
 
 		if(pass == confpass){
 			
-			$http.post('https://10.21.33.50:8000/healthcare/registeruser/', regdata, {
+			$http.post('https://10.21.83.175:8000/healthcare/registeruser/', regdata, {
 			headers: {'Content-Type': undefined},
 		    withCredentials: true
 		})
           .then(function(response){
             
             console.log(response.data)
+			Swal.fire(
+				'Congratulations!',
+				'You are logged in!',
+				'success'
+			  )
 			$state.go('Login');
 		  })
 		  .catch(function(error){
-			$window.alert(error);
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Inputs are wrong!'
+			  })
+			// $window.alert(error);
 		  })
 		}
 		else{
-			$window.alert('Incorrect Password');
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Incorrect password'
+			  })
 			LoadingService.stopLoading();
 		}
 
@@ -221,21 +237,35 @@ app.controller('DocLogInController',function($scope,$http,$window,$state){
 
 		if(pass == confpass){
 			
-			$http.post('https://10.21.86.182:8000/healthcare/registerdoctor/', regdata, {
+			$http.post('https://10.21.83.175:8000/healthcare/registerdoctor/', regdata, {
 			headers: {'Content-Type': undefined},
 		    withCredentials: true
 		})
           .then(function(response){
             
             console.log(response.data)
+			Swal.fire(
+				'Congratulations!',
+				'You are logged in!',
+				'success'
+			  )
 			$state.go('Login');
 		  })
 		  .catch(function(error){
-			$window.alert(error);
-		  })
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Incorrect username or password!!'
+			  })
+		})
 		}
 		else{
-			$window.alert('Incorrect Password');
+			// $window.alert('Incorrect Password');
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Incorrect password!!'
+			  })
 			LoadingService.stopLoading();
 		}
 
@@ -261,17 +291,25 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 			medical_history : $scope.history,
 			report : $scope.reports
 		}
-		$http.post('https://10.21.80.33:8000/healthcare/bookappointment/', appoiint, {
+		$http.post('https://10.21.83.175:8000/healthcare/bookappointment/', appoiint, {
 			headers: {'Content-Type': undefined},
 		    withCredentials: true
 	})
 	.then(function(response){
-            
+		Swal.fire(
+			'Congrats!',
+			'Appointment Sent!',
+			'success'
+		  )
 		console.log(response.data)
 		// $state.go('Login');
 	  })
 	  .catch(function(error){
-		$window.alert(error);
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'Something went wrong..'
+		  })
 	  })
 
 	}
@@ -280,8 +318,28 @@ app.controller('PersonalController',function($scope,$http,$window,$state){
 });
 
 app.controller('DashboardController',function($scope,$http,$window,$state){
-});
 
+	$scope.patients = [];
+	$scope.patient = [];
+
+	$http.get('https://10.21.83.175:8000/healthcare/getpatient/', {
+		withCredentials: true
+	})
+	.then(function(response){
+         console.log(response);
+		 $scope.patient = response.data
+		 console.log($scope.patient)
+		 console.log($scope.patient[0].first_name)
+
+	})
+	.catch(function(error){
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'Something went wrong..'
+		  })
+	})
+});
 
 app.controller('ReceptionistController',function($scope,$http,$window,$state){
 });
@@ -290,4 +348,16 @@ app.controller('RecepDashboardController',function($scope,$http,$window,$state){
 });	
 
 app.controller('DoctorDashboardController',function($scope,$http,$window,$state){
+});
+
+app.controller('DoctPersonalController',function($scope,$http,$window,$state){
 });	
+
+app.controller('DoctAppointController',function($scope,$http,$window,$state){
+});	
+
+app.controller('DoctRecordController',function($scope,$http,$window,$state){
+});		
+
+app.controller('PrescriptionsController',function($scope,$http,$window,$state){
+});		
