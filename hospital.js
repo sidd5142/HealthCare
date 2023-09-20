@@ -16,9 +16,9 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			templateUrl: 'login.html',
 			controller: 'LogInController'
 		})
-		.state('DoctorRegister', {
+		.state('DoctorRegisteration', {
             url: '/Doctorreg',
-			templateUrl: 'doctnew.html',
+			templateUrl: 'DoctorReg.html',
 			controller: 'DocLogInController'
 		})
 		.state('Dashboard', {
@@ -82,6 +82,14 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 }]);
 
 app.controller('RegisterController',function($scope,$http,$window,$state){
+
+
+	// $scope.departs = [];
+	// $scope.department = function(){
+		
+	// }
+
+
 	$scope.Registrationfrom = function(){
         console.log('FirstName :', $scope.firstname)
 		console.log('LstName :', $scope.lastname)
@@ -157,6 +165,7 @@ app.controller('RegisterController',function($scope,$http,$window,$state){
 });
 
 app.controller('HomePageController',function($scope,$http,$window,$state){
+	
 });
 
 app.controller('LogInController',function($scope,$http,$window,$state){
@@ -172,7 +181,7 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 	}
 	if($scope.password)
 	{
-	$http.post('https://10.21.83.175:8000/healthcare/login/', data, {
+	$http.post('https://10.21.80.123:8000/healthcare/login/', data, {
 			headers: {'Content-Type': undefined},
 		    withCredentials: true
      })
@@ -193,7 +202,20 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 	}
 }
 });
+
 app.controller('DocLogInController',function($scope,$http,$window,$state){
+	console.log("Hit")
+		$http.get('https://10.21.80.123:8000/healthcare/departdrop/', {
+			withCredentials : true
+		})
+		.then(function(response){
+			console.log(response)
+			$scope.departs = response.data;
+			console.log($scope.departs)
+		})
+		.catch(function(error){
+			console.log(error)
+		})
 	$scope.DocRegistrationfrom = function(){
         console.log('FirstName :', $scope.firstname)
 		console.log('LstName :', $scope.lastname)
@@ -271,49 +293,68 @@ app.controller('DocLogInController',function($scope,$http,$window,$state){
 
 	 } 
 });
-// app.controller('DashboardController',function($scope,$http,$window,$state){
-	
-// 	$scope.dash = function(){
-// 		$scope.PersonalBox = false;
-// 	}
 
-// 	$scope.appoin = function(){
-// 		$scope.AppointmentBox = true;
-// 	}
-
-// });
 app.controller('AppointmentController',function($scope,$http,$window,$state){
-	$scope.appoint = function(){
-		console.log("sidd")
-		var appoiint = {
-			appointmentDate : $scope.date,
-			department : $scope.department,
-			medical_history : $scope.history,
-			report : $scope.reports
-		}
-		$http.post('https://10.21.83.175:8000/healthcare/bookappointment/', appoiint, {
-			headers: {'Content-Type': undefined},
-		    withCredentials: true
+
+	$scope.depart = [];
+
+	$http.get('https://10.21.80.123:8000/healthcare/departdrop/', {
+		withCredentials : true
 	})
 	.then(function(response){
-		Swal.fire(
-			'Congrats!',
-			'Appointment Sent!',
-			'success'
-		  )
-		console.log(response.data)
-		// $state.go('Login');
-	  })
-	  .catch(function(error){
-		Swal.fire({
-			icon: 'error',
-			title: 'Oops...',
-			text: 'Something went wrong..'
-		  })
-	  })
+		console.log(response)
+		$scope.departs = response.data;
+		console.log($scope.departs)
+		$scope.categories = [];
 
+
+		var ids = $scope.selectdeapart;
+
+		$scope.selectdeapart = function(depart){
+        console.log(depart.id)
+		var Params = {department_id : depart.id}
+		$http.get('https://10.21.80.123:8000/healthcare/doctordrop', {params : Params}, {
+			withCredentials:true
+		})
+		.then(function(response){
+			console.log(response)
+			$scope.categories = response.data;
+			console.log($scope.categories);
+		})
 	}
-});
+
+		})
+		.catch(function(error){
+			console.log(error)
+	})
+
+	$scope.appoint = function(){
+        console.log($scope.selectdepartment)
+		console.log($scope.selectcategory)
+		var appointdata = {
+			appointmentDate : $scope.date,
+			department_id : $scope.selectdepartment,
+			doctor_id : $scope.selectcategory,
+			time : $scope.time
+		}
+		console.log(appointdata)
+		$http.post('https://10.21.80.123:8000/healthcare/bookappointment/', appointdata, {
+			withCredentials : true
+		})
+		.then(function(response){
+          console.log(response)
+		})
+		.catch(function(error){
+			console.log(error)
+		})
+	}
+	
+	})
+
+	// $scope.idd = $scope.department
+	// console.log($scope.idd)
+
+	
 app.controller('PersonalController',function($scope,$http,$window,$state){
 });
 
@@ -321,8 +362,26 @@ app.controller('DashboardController',function($scope,$http,$window,$state){
 
 	$scope.patients = [];
 	$scope.patient = [];
+	$scope.dashboards = [];
 
-	$http.get('https://10.21.83.175:8000/healthcare/getpatient/', {
+
+	$http.get('https://10.21.80.123:8000/healthcare/getpanel/', {
+		withCredentials : true
+	})
+	.then(function(response){
+		console.log(response)
+		$scope.dashboards = response.data
+		console.log($scope.dashboards)
+	})
+	.catch(function(error){
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'Something went wrong..'
+		  })
+	})
+
+	$http.get('https://10.21.80.123:8000/healthcare/getpatient/', {
 		withCredentials: true
 	})
 	.then(function(response){
@@ -338,6 +397,26 @@ app.controller('DashboardController',function($scope,$http,$window,$state){
 			title: 'Oops...',
 			text: 'Something went wrong..'
 		  })
+	})
+
+	// $scope.dash = function(){
+	// 	$http
+	// }
+});
+
+app.controller('RecordsController',function($scope,$http,$window,$state){
+    $scope.record = [];
+
+	$http.get('https://10.21.80.123:8000/healthcare/getprappoint' , {
+		withCredentials	: true
+	})
+	.then(function(response){
+		console.log(response);
+		$scope.record = response.data
+		console.log($scope.record)
+	})
+	.catch(function(error){
+		console.log(error)
 	})
 });
 

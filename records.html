@@ -27,12 +27,14 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>pdf 1</td>
+              <tr ng-repeat="patient in record">
+                <th scope="row">{{$index + 1}}</th>
+                <td>{{patient.checkedby}}</td>
+                <td>{{patient.day of visit}}</td>
+                <td>{{patient.status}}</td>
+                <td><button type="button" class="btn btn-primary btn-sm">Accept</button>
+                  <button type="button" class="btn btn-secondary btn-sm">Reject</button></td>
+                <td>{{patient.pres}}</td>
               </tr>
               <tr>
                 <th scope="row">2</th>

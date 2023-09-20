@@ -11,49 +11,57 @@
                 <h5> Date</h5>
           <div class="col">
             <div class="input-group flex-nowrap">
-              <input type="date" class="p-3 form-control border" ng-model="date" placeholder="Date" aria-label="date" aria-describedby="addon-wrapping">
+              <input type="text" class="p-3 form-control border" ng-model="date" placeholder="Date" aria-label="date" aria-describedby="addon-wrapping">
             </div>
             </div>
             </div>
             <div style="margin-left: 8%; margin-top: 3%;">
                 <h5>Department :-</h5>
                 <div class="input-group flex-nowrap">
-                  <select class="p-3 form-select " ng-model="department" style="width: 100%;" aria-label="Default select example">
+                  <select class="p-3 form-select " ng-model="selectdepartment" style="width: 100%;" aria-label="Default select example">
                     <option selected>Select Department</option>
-                    <option value="Cardiologists">Cardiologists</option>
-                    <option value="Neurologists">Neurologists</option>
-                    <option value="Psychiatrists">Psychiatrists</option>
-                    <option value="Sleep Medicine Specialists">Sleep Medicine Specialists</option>
-                    <option value="Ophthalmologists">Ophthalmologists</option>
-                    <option value="Pathologists">Pathologists</option>
+                    <option value="{{depart.id}}" ng-repeat="depart in departs" ng-click="selectdeapart(depart)">{{depart.departments}}</option>
+
+                    <!-- <select class="form-select " ng-model="department" style="width: 100%;" aria-label="Default select example">
+                      <option selected>Select Department</option>
+                      <option value="{{depart.id}}" ng-repeat="depart in departs">{{depart.departments}}</option>
+                      
+                    </select>    -->
                   </select>                
                  </div>
             </div>
     
-            <div style="margin-left: 8%; margin-top: 3%;">
-                <h5>Reports :-</h5>
-                <div class="input-group flex-nowrap">
-                  <input type="file" class="p-3 form-control border" ng-model="reports" placeholder="Reports" aria-label="report" aria-describedby="addon-wrapping">
-                </div>
-            </div>
     
-            <div style="margin-top: 5%; margin-left: 5%;">
-                <h5>Details :-</h5>
+            <div style="margin-top: 3%; margin-left: 8%;">
+                <h5>Doctors :-</h5>
                 <div class="input-group flex-nowrap">
-                  <select class="p-3 form-select " ng-model="history" style="width: 100%;" aria-label="Default select example">
-                    <option selected>Prolems</option>
-                    <option value="Atheromatous ">Atheromatous disease</option>
-                    <option value="Cancer">Cancer</option>
-                    <option value="Diabetes">Diabetes</option>
-                    <option value="Cough">Cough</option>
-                    <option value="Fever">Fever</option>
+                  <select class="p-3 form-select " ng-model="selectcategory" style="width: 100%;" aria-label="Default select example">
+                    <option selected>Select A Doctor</option>
+                    <option value="{{category.user_id}}" ng-repeat="category in categories">{{category.user__first_name}}</option>
+
+                    
                   </select>                
                  </div>
             </div>
+
+            <div style="margin-top: 3%; margin-left: 5%;">
+              <h5>Time :-</h5>
+              <div class="input-group flex-nowrap">
+                <select class="p-3 form-select " ng-model="time" style="width: 100%;" aria-label="Default select example">
+                  <option selected>Choose a time</option>
+                  <option value="9 to 12" >9am to 12 noon</option>
+                  <option value="5 to 8" >5pm to 8 pm</option>
+
+
+                  
+                </select>                
+               </div>
+          </div>
+  
     
     
          </div>
-         <button type="button" class="btn btn-success mb-3" ng-click="appoint" style="margin-left: 45%; width: 15%; height: 50px;">Book Appointment</button>
+         <button type="button" class="btn btn-success mb-3" ng-click="appoint()" style="margin-left: 45%; width: 15%; height: 50px;">Book Appointment</button>
           
          </div>
     <!-- </div> -->

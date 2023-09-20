@@ -268,13 +268,12 @@ select.form-control {
                             </div>
                             <input id="Qualification" type="text" name="Qualification" ng-model="qualification" placeholder="Enter Your Qualification" class="form-control bg-white border-left-0 border-md">
                         </div>
-                        <div class="input-group col-lg-6 mb-4">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text bg-white px-4 border-md border-right-0">
-                                    <i class="fa fa-user text-muted"></i>
-                                </span>
-                            </div>
-                            <input id="Department" type="text" name="department" ng-model="department" placeholder="Enter Your Department" class="form-control bg-white border-left-0 border-md">
+                        <div class="input-group col-lg-6 mb-4" >
+                            <select class="form-select " ng-model="department" style="width: 100%;" aria-label="Default select example">
+                              <option selected>Select Department</option>
+                              <option value="{{depart.id}}" ng-repeat="depart in departs">{{depart.departments}}</option>
+                              
+                            </select>                  
                         </div>
                         <div class="input-group col-lg-6 mb-4">
                             <div class="input-group-prepend">
