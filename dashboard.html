@@ -43,9 +43,21 @@
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                       
-                        <li ng-repeat="dashboard in dashboards">
-                            <a  class="nav-link px-0 align-middle" ng-click="dash" >{{dashboard.panel}}</a>
-                        </li>
+                        <!-- <li ng-repeat="dashboard in dashboards">
+                            <a  class="nav-link px-0 align-middle" ng-click="dash(dashboard.panel)" >{{dashboard.panel}}</a>   
+                        </li> -->
+
+                        <li >
+                          <a  class="nav-link px-0 align-middle" ui-sref="Dashboard.Personal" >Personal Information</a>   
+                      </li>
+
+                      <li >
+                        <a  class="nav-link px-0 align-middle" ui-sref="Dashboard.Appointment" >Appointment</a>   
+                    </li>
+
+                    <li>
+                      <a  class="nav-link px-0 align-middle" ui-sref="Dashboard.Records" >Records</a>   
+                  </li>
                       
                     </ul>
                     <hr>
@@ -78,3 +90,106 @@
     
 </body>
 </html>
+
+
+
+<!-- app.controller('SidebarController', function($scope, $http) {
+  $scope.panels = []; // Populate this array with your dynamic panel data
+
+  $scope.handlePanelClick = function(panelName) {
+    // Perform different API calls based on the panelName
+    switch (panelName) {
+      case 'Panel 1':
+        $http.get('api/endpoint1').then(function(response) {
+          // Handle the API response for Panel 1
+          console.log(response.data);
+        });
+        break;
+
+      case 'Panel 2':
+        $http.get('api/endpoint2').then(function(response) {
+          // Handle the API response for Panel 2
+          console.log(response.data);
+        });
+        break;
+
+      // Add more cases for other panels as needed
+
+      default:
+        // Handle the default case or provide an error message
+        break;
+    }
+  };
+});
+
+
+<div ng-controller="SidebarController">
+  <ul>
+    <li ng-repeat="panel in panels" ng-click="handlePanelClick(panel.name)">{{ panel.name }}</li>
+  </ul>
+</div>
+
+ -->
+
+
+
+
+ <!-- var app = angular.module('myApp', ['ngRoute']);
+
+app.config(function($routeProvider) {
+  $routeProvider
+    .when('/:category/panel1', {
+      templateUrl: 'panel1.html',
+      controller: 'Panel1Controller'
+    })
+    .when('/:category/panel2', {
+      templateUrl: 'panel2.html',
+      controller: 'Panel2Controller'
+    })
+    .otherwise({
+      redirectTo: '/doctors/panel1' // Default route
+    });
+});
+
+
+app.controller('Panel1Controller', function($scope, $http, $routeParams) {
+  var category = $routeParams.category;
+  // Load data for panel 1 based on the category from your backend API
+  $http.get('/api/' + category + '/panel1data').then(function(response) {
+    $scope.panelData = response.data;
+  });
+});
+
+app.controller('Panel2Controller', function($scope, $http, $routeParams) {
+  var category = $routeParams.category;
+  // Load data for panel 2 based on the category from your backend API
+  $http.get('/api/' + category + '/panel2data').then(function(response) {
+    $scope.panelData = response.data;
+  });
+});
+
+
+<div ng-controller="SidebarController">
+  <ul>
+    <li ng-repeat="category in categories">
+      <a href="#" ng-click="setSelectedCategory(category)">{{ category }}</a>
+    </li>
+  </ul>
+</div>
+
+
+app.controller('SidebarController', function($scope, $location) {
+  $scope.categories = ['doctors', 'patients', 'receptionists'];
+  $scope.selectedCategory = 'doctors'; // Set a default category
+
+  $scope.setSelectedCategory = function(category) {
+    $scope.selectedCategory = category;
+  };
+
+  // Helper function to navigate to the selected panel within the selected category
+  $scope.navigateToPanel = function(panel) {
+    $location.path('/' + $scope.selectedCategory + '/' + panel);
+  };
+});
+
+ -->

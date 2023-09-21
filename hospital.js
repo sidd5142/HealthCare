@@ -186,10 +186,13 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 		    withCredentials: true
      })
 	 .then(function(response){
-            
+		
 		console.log(response.data)
 
-		$state.go('Dashboard.Appointment');
+		var msgdata = response.data
+		var msg = msgdata.
+
+		$state.go('Dashboard.Personal');
 
 	  })
 	  .catch(function(error){
@@ -365,21 +368,21 @@ app.controller('DashboardController',function($scope,$http,$window,$state){
 	$scope.dashboards = [];
 
 
-	$http.get('https://10.21.80.123:8000/healthcare/getpanel/', {
-		withCredentials : true
-	})
-	.then(function(response){
-		console.log(response)
-		$scope.dashboards = response.data
-		console.log($scope.dashboards)
-	})
-	.catch(function(error){
-		Swal.fire({
-			icon: 'error',
-			title: 'Oops...',
-			text: 'Something went wrong..'
-		  })
-	})
+	// $http.get('https://10.21.80.123:8000/healthcare/getpanel/', {
+	// 	withCredentials : true
+	// })
+	// .then(function(response){
+	// 	console.log(response)
+	// 	$scope.dashboards = response.data
+	// 	console.log($scope.dashboards)
+	// })
+	// .catch(function(error){
+	// 	Swal.fire({
+	// 		icon: 'error',
+	// 		title: 'Oops...',
+	// 		text: 'Something went wrong..'
+	// 	  })
+	// })
 
 	$http.get('https://10.21.80.123:8000/healthcare/getpatient/', {
 		withCredentials: true
@@ -399,25 +402,25 @@ app.controller('DashboardController',function($scope,$http,$window,$state){
 		  })
 	})
 
-	// $scope.dash = function(){
-	// 	$http
-	// }
+	$scope.dash = function(panelname){
+		$http
+	}
 });
 
 app.controller('RecordsController',function($scope,$http,$window,$state){
-    $scope.record = [];
+		$scope.record = [];
 
-	$http.get('https://10.21.80.123:8000/healthcare/getprappoint' , {
-		withCredentials	: true
-	})
-	.then(function(response){
-		console.log(response);
-		$scope.record = response.data
-		console.log($scope.record)
-	})
-	.catch(function(error){
-		console.log(error)
-	})
+		$http.get('https://10.21.80.123:8000/healthcare/getprappoint/' , {
+			withCredentials	: true
+		})
+		.then(function(response){
+			console.log(response);
+			$scope.record = response.data
+			console.log($scope.record)
+		})
+		.catch(function(error){
+			console.log(error)
+		})
 });
 
 app.controller('ReceptionistController',function($scope,$http,$window,$state){
