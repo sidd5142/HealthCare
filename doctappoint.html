@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h3 style="font-size: 40px;">Patient  Records</h3>
+                <h3 style="font-size: 40px;">Patient  Appointment</h3>
             </div>
             <div class="col">
             <form class="d-flex" style="position: relative; left: 20%;margin-top: 2%;">
@@ -28,23 +28,23 @@
                <th scope="col">Gender</th>
                <th scope="col">Date Assign</th>
                <th scope="col">Time Assign</th>
-               <th scope="col">Status</th>
+               <th scope="col">Accept/Reject</th>
                <th scope="col">Edit</th>
              </tr>
            </thead>
            <tbody>
-             <tr>
+             <tr ng-repeat="appoint in doctappoint">
                <th scope="row">1564646465</th>
-               <td>Mark</td>
-               <td>Otto</td>
-               <td>@mdo</td>
-               <td>10/02/23</td>
-               <td>5:00 pm</td>
-               <td><button type="button" class="btn btn-primary btn-sm">Accept</button>
-                <button type="button" class="btn btn-secondary btn-sm">Reject</button></td>
-               <td>  <button class="btn btn-primary" type="button">Edit</button></td>
+               <td>{{appoint.user__first_name + " " + appoint.user__last_name}}</td>
+               <td>{{appoint.user__age}}</td>
+               <td>{{appoint.user__gender}}</td>
+               <td>{{appoint.appointmentDate}}</td>
+               <td>{{appoint.time}}</td>
+               <td><button type="button" ng-click="accept(appoint)" class="btn btn-primary btn-sm">Accept</button>
+                <button type="button" ng-click="reject(appoint)" class="btn btn-secondary btn-sm">Reject</button></td>
+               <td>  <button class="btn btn-primary" ng-click="edit(appoint)" type="button">Edit</button></td>
              </tr>
-             <tr>
+             <!-- <tr>
                <th scope="row">264484864</th>
                <td>Jacob</td>
                <td>Thornton</td>
@@ -65,7 +65,7 @@
                <td><button type="button" class="btn btn-primary btn-sm">Accept</button>
                 <button type="button" class="btn btn-secondary btn-sm">Reject</button></td>
                <td>  <button class="btn btn-primary" type="button">Edit</button></td>
-             </tr>
+             </tr> -->
            </tbody>
          </table>
     </div>

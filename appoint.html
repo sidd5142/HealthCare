@@ -21,13 +21,7 @@
                   <select class="p-3 form-select " ng-model="selectdepartment" style="width: 100%;" aria-label="Default select example">
                     <option selected>Select Department</option>
                     <option value="{{depart.id}}" ng-repeat="depart in departs" ng-click="selectdeapart(depart)">{{depart.departments}}</option>
-
-                    <!-- <select class="form-select " ng-model="department" style="width: 100%;" aria-label="Default select example">
-                      <option selected>Select Department</option>
-                      <option value="{{depart.id}}" ng-repeat="depart in departs">{{depart.departments}}</option>
-                      
-                    </select>    -->
-                  </select>                
+                      </select>                
                  </div>
             </div>
     
@@ -37,7 +31,7 @@
                 <div class="input-group flex-nowrap">
                   <select class="p-3 form-select " ng-model="selectcategory" style="width: 100%;" aria-label="Default select example">
                     <option selected>Select A Doctor</option>
-                    <option value="{{category.user_id}}" ng-repeat="category in categories">{{category.user__first_name}}</option>
+                    <option value="{{category.user__first_name + ' ' + category.user__last_name}}" ng-repeat="category in categories">Dr. {{category.user__first_name + ' ' + category.user__last_name}}</option>
 
                     
                   </select>                

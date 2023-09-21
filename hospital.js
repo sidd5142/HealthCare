@@ -76,10 +76,12 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			templateUrl: 'prescription.html',
 			controller: 'PrescriptionsController'
 		})
-		$urlRouterProvider.otherwise('/home');
+		$urlRouterProvider.otherwise('/login');
 		
 
 }]);
+
+var api = 'https://10.21.80.93:8000/healthcare/'
 
 app.controller('RegisterController',function($scope,$http,$window,$state){
 
@@ -129,7 +131,7 @@ app.controller('RegisterController',function($scope,$http,$window,$state){
 
 		if(pass == confpass){
 			
-			$http.post('https://10.21.83.175:8000/healthcare/registeruser/', regdata, {
+			$http.post(api+'registeruser/', regdata, {
 			headers: {'Content-Type': undefined},
 		    withCredentials: true
 		})
@@ -181,7 +183,7 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 	}
 	if($scope.password)
 	{
-	$http.post('https://10.21.80.123:8000/healthcare/login/', data, {
+	$http.post(api+'login/', data, {
 			headers: {'Content-Type': undefined},
 		    withCredentials: true
      })
@@ -189,10 +191,10 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 		
 		console.log(response.data)
 
-		var msgdata = response.data
-		var msg = msgdata.
+		// var msgdata = response.data
+		// var msg = msgdata.
 
-		$state.go('Dashboard.Personal');
+		$state.go('DoctorDashboard.DoctPersonal');
 
 	  })
 	  .catch(function(error){
@@ -208,7 +210,7 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 
 app.controller('DocLogInController',function($scope,$http,$window,$state){
 	console.log("Hit")
-		$http.get('https://10.21.80.123:8000/healthcare/departdrop/', {
+		$http.get(api+'departdrop/', {
 			withCredentials : true
 		})
 		.then(function(response){
@@ -262,7 +264,7 @@ app.controller('DocLogInController',function($scope,$http,$window,$state){
 
 		if(pass == confpass){
 			
-			$http.post('https://10.21.83.175:8000/healthcare/registerdoctor/', regdata, {
+			$http.post(api+'registerdoctor/', regdata, {
 			headers: {'Content-Type': undefined},
 		    withCredentials: true
 		})
@@ -301,7 +303,7 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 
 	$scope.depart = [];
 
-	$http.get('https://10.21.80.123:8000/healthcare/departdrop/', {
+	$http.get(api+'departdrop/', {
 		withCredentials : true
 	})
 	.then(function(response){
@@ -316,7 +318,7 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 		$scope.selectdeapart = function(depart){
         console.log(depart.id)
 		var Params = {department_id : depart.id}
-		$http.get('https://10.21.80.123:8000/healthcare/doctordrop', {params : Params}, {
+		$http.get(api+'doctordrop', {params : Params}, {
 			withCredentials:true
 		})
 		.then(function(response){
@@ -324,7 +326,7 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 			$scope.categories = response.data;
 			console.log($scope.categories);
 		})
-	}
+	}	
 
 		})
 		.catch(function(error){
@@ -337,18 +339,28 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 		var appointdata = {
 			appointmentDate : $scope.date,
 			department_id : $scope.selectdepartment,
-			doctor_id : $scope.selectcategory,
+			doctor_name : $scope.selectcategory,
 			time : $scope.time
 		}
 		console.log(appointdata)
-		$http.post('https://10.21.80.123:8000/healthcare/bookappointment/', appointdata, {
+		$http.post(api+'bookappointment/', appointdata, {
 			withCredentials : true
 		})
 		.then(function(response){
           console.log(response)
+		  Swal.fire({
+			icon: 'success',
+			title: 'Congratulations',
+			text: 'Your form is submited!!'
+		  })
 		})
 		.catch(function(error){
 			console.log(error)
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Incorrect password!!'
+			  })
 		})
 	}
 	
@@ -384,7 +396,7 @@ app.controller('DashboardController',function($scope,$http,$window,$state){
 	// 	  })
 	// })
 
-	$http.get('https://10.21.80.123:8000/healthcare/getpatient/', {
+	$http.get(api+'getpatient/', {
 		withCredentials: true
 	})
 	.then(function(response){
@@ -410,7 +422,7 @@ app.controller('DashboardController',function($scope,$http,$window,$state){
 app.controller('RecordsController',function($scope,$http,$window,$state){
 		$scope.record = [];
 
-		$http.get('https://10.21.80.123:8000/healthcare/getprappoint/' , {
+		$http.get(api+'getprappoint/' , {
 			withCredentials	: true
 		})
 		.then(function(response){
@@ -433,12 +445,113 @@ app.controller('DoctorDashboardController',function($scope,$http,$window,$state)
 });
 
 app.controller('DoctPersonalController',function($scope,$http,$window,$state){
+
+	$scope.doctinfo = [];
+	$http.get(api + 'doctorinfo/', {
+		withCredentials	: true
+	})
+	.then(function(response){
+		console.log(response);
+		$scope.doctinfo = response.data
+		console.log($scope.doctinfo) 
+	})
+	.catch(function(error){
+		console.log(error)
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'Something went wrong..'
+		  })
+	})
 });	
 
 app.controller('DoctAppointController',function($scope,$http,$window,$state){
+	$scope.doctappoint = [];
+	$http.get(api + 'getunapproved/', {
+		withCredentials	: true
+	})
+	.then(function(response){
+		console.log(response);
+		$scope.doctappoint = response.data
+		console.log($scope.doctappoint) 
+	})
+	.catch(function(error){
+		console.log(error)
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'Something went wrong..'
+		  })
+	})
+
+	$scope.accept = function(appoint){
+
+		var success = {appointment_id : appoint.pk}
+
+		$http.post(api + 'confirmappointment/', success, {
+			withCredentials	: true
+		})
+		.then(function(response){
+			console.log(response)
+			Swal.fire({
+				icon: 'success',
+				title: 'Done...',
+				text: 'Appointment Approved'
+			  })
+		})
+		.catch(function(error){
+			console.log(error)
+		})
+	}
+
+	$scope.reject = function(appoint){
+
+		var dlt = {
+			appointment_id : appoint.pk
+		}
+		console.log()
+
+		$http.delete(api + 'confirmappointment/', dlt, {
+			withCredentials	: true
+		})
+		.then(function(response){
+			console.log(response)
+			Swal.fire({
+				icon: 'success',
+				title: 'Done...',
+				text: 'Appointment Approved'
+			  })
+		})
+		.catch(function(error){
+			console.log(error)
+			Swal.fire({
+				icon: 'error',
+				title: 'cancel...',
+				text: 'Missing any key'
+			  })
+		})
+	}
 });	
 
 app.controller('DoctRecordController',function($scope,$http,$window,$state){
+	$scope.doctrecord = [];
+
+	$http.get(api + 'getapproved/', {
+		withCredentials	: true
+	})
+	.then(function(response){
+		console.log(response)
+		$scope.doctrecord = response.data
+		console.log($scope.doctrecord)
+	})
+	.catch(function(error){
+		console.log(error)
+		Swal.fire({
+			icon: 'error',
+			title: 'cancel...',
+			text: 'Missing any key'
+		  })
+		})
 });		
 
 app.controller('PrescriptionsController',function($scope,$http,$window,$state){
