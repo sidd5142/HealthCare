@@ -41,7 +41,33 @@
                <td>{{appoint.appointmentDate}}</td>
                <td>{{appoint.time}}</td>
                <td><button type="button" ng-click="accept(appoint)" class="btn btn-primary btn-sm">Accept</button>
-                <button type="button" ng-click="reject(appoint)" class="btn btn-secondary btn-sm">Reject</button></td>
+                <button type="button" ng-click="reject(appoint)" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal">Reject</button>
+                <div class="modal" id="myModal">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                
+                      <!-- Modal Header -->
+                      <div class="modal-header">
+                        <h4 class="modal-title">Reason for cancellation</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                
+                      <!-- Modal body -->
+                      <div class="modal-body">
+                        <input type="text" ng-model="reason" class="form-control" required>
+                          </div>
+                
+                      <!-- Modal footer -->
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger" ng-click="submit(appoint)" data-bs-dismiss="modal">Submit</button>
+                      </div>
+                
+                    </div>
+                  </div>
+                </div>
+                
+                
+              </td>
                <td>  <button class="btn btn-primary" ng-click="edit(appoint)" type="button">Edit</button></td>
              </tr>
              <!-- <tr>

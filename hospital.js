@@ -498,18 +498,20 @@ app.controller('DoctAppointController',function($scope,$http,$window,$state){
 				title: 'Done...',
 				text: 'Appointment Approved'
 			  })
+			  $state.reload('DoctorDashboard.DoctAppoint')
 		})
 		.catch(function(error){
 			console.log(error)
 		})
 	}
 
-	$scope.reject = function(appoint){
+	$scope.submit = function(appoint){
 
 		var dlt = {
-			appointment_id : appoint.pk
+			appointment_id : appoint.pk,
+			reason : $scope.reason
 		}
-		console.log()
+		console.log(dlt)
 
 		$http.delete(api + 'confirmappointment/', dlt, {
 			withCredentials	: true
@@ -524,11 +526,11 @@ app.controller('DoctAppointController',function($scope,$http,$window,$state){
 		})
 		.catch(function(error){
 			console.log(error)
-			Swal.fire({
-				icon: 'error',
-				title: 'cancel...',
-				text: 'Missing any key'
-			  })
+			// Swal.fire({
+			// 	icon: 'error',
+			// 	title: 'cancel...',
+			// 	text: 'Missing any key'
+			//   })
 		})
 	}
 });	
