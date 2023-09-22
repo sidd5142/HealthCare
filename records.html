@@ -58,4 +58,26 @@
           </table>
      </div>
  </div>
-           
+          
+ 
+ <!-- $scope.exportToExcel = function () {
+    // Create a new Workbook and add a Worksheet
+    var wb = XLSX.utils.book_new();
+    var ws = XLSX.utils.aoa_to_sheet([["Index", "Checked By", "Department", "Day of visit", "Status"]]);
+
+    // Convert the table data to an array of arrays
+    var tableData = [];
+    angular.forEach($scope.record, function (patient) {
+      var rowData = [$scope.record.indexOf(patient) + 1, "Dr. " + patient.doctor_name, patient.department__departments, patient.appointmentDate, patient.checkup_status];
+      tableData.push(rowData);
+    });
+
+    // Add the table data to the worksheet
+    XLSX.utils.sheet_add_aoa(ws, tableData, { origin: "A2" });
+
+    // Add the worksheet to the workbook
+    XLSX.utils.book_append_sheet(wb, ws, "Records");
+
+    // Save the workbook as an Excel file
+    XLSX.writeFile(wb, "records.xlsx");
+  }; -->

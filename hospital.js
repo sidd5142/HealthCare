@@ -76,12 +76,13 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			templateUrl: 'prescription.html',
 			controller: 'PrescriptionsController'
 		})
-		$urlRouterProvider.otherwise('/login');
+
+		$urlRouterProvider.otherwise('/home');
 		
 
 }]);
 
-var api = 'https://10.21.80.93:8000/healthcare/'
+var api = 'https://10.21.83.216:8000/healthcare/'
 
 app.controller('RegisterController',function($scope,$http,$window,$state){
 
@@ -379,23 +380,6 @@ app.controller('DashboardController',function($scope,$http,$window,$state){
 	$scope.patient = [];
 	$scope.dashboards = [];
 
-
-	// $http.get('https://10.21.80.123:8000/healthcare/getpanel/', {
-	// 	withCredentials : true
-	// })
-	// .then(function(response){
-	// 	console.log(response)
-	// 	$scope.dashboards = response.data
-	// 	console.log($scope.dashboards)
-	// })
-	// .catch(function(error){
-	// 	Swal.fire({
-	// 		icon: 'error',
-	// 		title: 'Oops...',
-	// 		text: 'Something went wrong..'
-	// 	  })
-	// })
-
 	$http.get(api+'getpatient/', {
 		withCredentials: true
 	})
@@ -465,6 +449,10 @@ app.controller('DoctPersonalController',function($scope,$http,$window,$state){
 	})
 });	
 
+
+var dltid = {};
+var edtid = {};
+
 app.controller('DoctAppointController',function($scope,$http,$window,$state){
 	$scope.doctappoint = [];
 	$http.get(api + 'getunapproved/', {
@@ -504,36 +492,88 @@ app.controller('DoctAppointController',function($scope,$http,$window,$state){
 			console.log(error)
 		})
 	}
-
-	$scope.submit = function(appoint){
-
-		var dlt = {
-			appointment_id : appoint.pk,
-			reason : $scope.reason
-		}
-		console.log(dlt)
-
-		$http.delete(api + 'confirmappointment/', dlt, {
-			withCredentials	: true
-		})
-		.then(function(response){
-			console.log(response)
-			Swal.fire({
-				icon: 'success',
-				title: 'Done...',
-				text: 'Appointment Approved'
-			  })
-		})
-		.catch(function(error){
-			console.log(error)
-			// Swal.fire({
-			// 	icon: 'error',
-			// 	title: 'cancel...',
-			// 	text: 'Missing any key'
-			//   })
-		})
+	$scope.reject = function(appoint){
+		dltid = appoint.pk
 	}
-});	
+	$scope.edit = function(appoint){
+		edtid = appoint.pk
+	}
+});
+	app.service('SharedDataService', function () {
+		this.reasonInput = ""; // Initialize the shared variable
+	});
+
+	
+
+	app.controller('ModalController', function ($scope, $http, $window, $state, SharedDataService) {
+		$scope.reasonInput = ""; 
+		$scope.reasonInput = SharedDataService.reasonInput;
+
+		$scope.submit = function (appoint) {
+		  var data = {
+			appointment_id: dltid,
+			reason: $scope.reasonInput, 
+		  };
+	  console.log(data)
+		  $http.delete(api + 'confirmappointment/', data, {
+			withCredentials : true
+		  })
+			.then(function (response) {
+			  console.log(response);
+			  Swal.fire({
+				icon: 'success',
+				title: 'Deleted...',
+				text: 'Appointment Deleted'
+			  });
+			  $scope.reasonInput = "";
+			})
+			.catch(function (error) {
+			  console.log(error);
+			});
+
+			SharedDataService.reasonInput = "";
+		};
+  });
+
+  app.service('SharedData2Service', function () {
+	this.date = "";
+	this.time = "";
+	this.reason = ""; // Initialize the shared variable
+});
+
+  app.controller('Modal2Controller', function ($scope, $http, $window, $state, SharedData2Service) {
+	$scope.reason = ""; 
+	$scope.reason = SharedData2Service.reason;
+	// $scope.date = SharedData2Service.reason
+	// $scope.time = SharedData2Service.reason
+
+	$scope.submit = function (appoint) {
+	  var data = {
+		appointment_id: edtid,
+		new_appointmentDate: $scope.date, 
+		new_time : $scope.time,
+		reason : $scope.reason
+	  };
+  console.log(data)
+	  $http.put(api + 'confirmappointment/', data, {
+		withCredentials : true
+	  })
+		.then(function (response) {
+		  console.log(response);
+		  Swal.fire({
+			icon: 'success',
+			title: 'Edited...',
+			text: response.data.message
+		  });
+		})
+		.catch(function (error) {
+		  console.log(error);
+		});
+
+		SharedData2Service.time = "";
+		SharedData2Service.date = "";
+	};
+});
 
 app.controller('DoctRecordController',function($scope,$http,$window,$state){
 	$scope.doctrecord = [];
