@@ -51,6 +51,16 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			templateUrl: 'receptionistdash.html',
 			controller: 'RecepDashboardController'
 		})
+		.state('RecepDashboard.Doctor', {
+            url: '/recepdashboarddoctor',
+			templateUrl: 'receptiondoctor.html',
+			controller: 'RecepDoctorController'
+		})
+		.state('RecepDashboard.Appointment', {
+            url: '/recepdashboardappoint',
+			templateUrl: 'receptionapp.html',
+			controller: 'RecepAppointController'
+		})
 		.state('DoctorDashboard', {
             url: '/doctordashboard',
 			templateUrl: 'doctordashboard.html',
@@ -77,7 +87,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			controller: 'PrescriptionsController'
 		})
 
-		$urlRouterProvider.otherwise('/home');
+		$urlRouterProvider.otherwise('/login');
 		
 
 }]);
@@ -380,6 +390,25 @@ app.controller('DashboardController',function($scope,$http,$window,$state){
 	$scope.patient = [];
 	$scope.dashboards = [];
 
+	$http.get(api + 'getpanel/', {
+		withCredentials:true
+	})
+	.then(function(response){
+		console.log(response);
+		$scope.dashboards = response.data
+		console.log($scope.dashboards)
+		// console.log($scope.patient[0].first_name)
+
+   })
+   .catch(function(error){
+	   Swal.fire({
+		   icon: 'error',
+		   title: 'Oops...',
+		   text: 'Something went wrong..'
+		 })
+   })
+
+
 	$http.get(api+'getpatient/', {
 		withCredentials: true
 	})
@@ -398,9 +427,9 @@ app.controller('DashboardController',function($scope,$http,$window,$state){
 		  })
 	})
 
-	$scope.dash = function(panelname){
-		$http
-	}
+	// $scope.dash = function(panelname){
+	// 	$http
+	// }
 });
 
 app.controller('RecordsController',function($scope,$http,$window,$state){
@@ -417,10 +446,36 @@ app.controller('RecordsController',function($scope,$http,$window,$state){
 		.catch(function(error){
 			console.log(error)
 		})
+
+		$scope.exportToExcel = function () {
+			// Get the table element
+			const table = document.getElementById('exportTable');
+
+			// Create a new HTML document
+			const doc = document.createElement('table');
+			doc.innerHTML = table.outerHTML;
+
+			// Convert the HTML document to a blob
+			const blob = new Blob(['\ufeff', doc.outerHTML], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+			// Create a URL for the blob
+			const url = window.URL.createObjectURL(blob);
+
+			// Create a download link and trigger the click event
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = 'Records.xlsx';
+			document.body.appendChild(a);
+			a.click();
+
+			// Clean up
+			window.URL.revokeObjectURL(url);
+			document.body.removeChild(a);
+		};
 });
 
-app.controller('ReceptionistController',function($scope,$http,$window,$state){
-});
+// app.controller('ReceptionistController',function($scope,$http,$window,$state){
+// });
 
 app.controller('RecepDashboardController',function($scope,$http,$window,$state){
 });	
@@ -499,11 +554,10 @@ app.controller('DoctAppointController',function($scope,$http,$window,$state){
 		edtid = appoint.pk
 	}
 });
+
 	app.service('SharedDataService', function () {
 		this.reasonInput = ""; // Initialize the shared variable
 	});
-
-	
 
 	app.controller('ModalController', function ($scope, $http, $window, $state, SharedDataService) {
 		$scope.reasonInput = ""; 
@@ -575,6 +629,8 @@ app.controller('DoctAppointController',function($scope,$http,$window,$state){
 	};
 });
 
+var prescribeid = {};
+
 app.controller('DoctRecordController',function($scope,$http,$window,$state){
 	$scope.doctrecord = [];
 
@@ -585,6 +641,10 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
 		console.log(response)
 		$scope.doctrecord = response.data
 		console.log($scope.doctrecord)
+
+		$scope.prescribed = function(record){
+			prescribeid = record.id
+		}
 	})
 	.catch(function(error){
 		console.log(error)
@@ -595,6 +655,47 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
 		  })
 		})
 });		
+app.controller('Modal3Controller', function ($scope, $http, $window, $state) {
+	$scope.reason = ""; 
+	// $scope.reason = SharedData2Service.reason;
+	// $scope.date = SharedData2Service.reason
+	// $scope.time = SharedData2Service.reason
+
+	$scope.prescribed = function (record) {
+	  var data = {
+		prescribeid_id: prescribeid,
+		// new_appointmentDate: $scope.date, 
+		// new_time : $scope.time,
+		// reason : $scope.reason
+	  };
+     console.log(data)
+	  $http.post(api + 'getapproved/', data, {
+		withCredentials : true
+	  })
+		.then(function (response) {
+		  console.log(response);
+		  Swal.fire({
+			icon: 'success',
+			title: 'Edited...',
+			text: response.data.message
+		  });
+		})
+		.catch(function (error) {
+		  console.log(error);
+		});
+
+		// SharedData2Service.time = "";
+		// SharedData2Service.date = "";
+	};
+});
 
 app.controller('PrescriptionsController',function($scope,$http,$window,$state){
-});		
+});	
+
+app.controller('RecepDoctorController',function($scope,$http,$window,$state){
+
+});	
+
+app.controller('RecepAppointController',function($scope,$http,$window,$state){
+
+});	

@@ -4,11 +4,11 @@
     
     <title>Receptionist Dashboard</title>
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-  <script src="node_modules/jquery/dist/jquery.min.js"></script>
-  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="node_modules/angular/angular.js"></script>
-  <script src="node_modules/@uirouter/angularjs/release/angular-ui-router.js"></script>
-  <script src="hospital.js"></script>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/@uirouter/angularjs/release/angular-ui-router.js"></script>
+    <script src="hospital.js"></script>
 </head>
 <body ng-app="myApp" ng-controller="RecepDashboardController">
 
@@ -34,7 +34,8 @@
         </div>
       </nav>
 
-    <div class="container-fluid">
+
+      <div class="container-fluid">
         <div class="row flex-nowrap">
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
@@ -45,18 +46,23 @@
                        
                         <li>
                             <a  class="nav-link px-0 align-middle">
-                                 <span class="ms-1 d-none d-sm-inline" ng-click="dash" ui-sref="Dashboard.Personal">Personal Information</span></a>
+                                 <span class="ms-1 d-none d-sm-inline" ng-click="dash" ui-sref="RecepDashboard.Doctor">Doctors</span></a>
                         </li>
                         <li>
                             <a  class="nav-link px-0 align-middle">
-                                <span class="ms-1 d-none d-sm-inline" ng-click="appoin" ui-sref="Dashboard.Appointment">Appointment</span></a>
+                                <span class="ms-1 d-none d-sm-inline" ng-click="appoin" ui-sref="RecepDashboard.Appointment">Appointment</span></a>
                         </li>
                         
                         
                         <li>
                             <a  class="nav-link px-0 align-middle">
-                                <span class="ms-1 d-none d-sm-inline" ui-sref="Dashboard.Records">Prescription</span> </a>
+                                <span class="ms-1 d-none d-sm-inline" ui-sref="DoctorDashboard.DoctRecord">Records</span> </a>
                         </li>
+
+                        <li>
+                          <a  class="nav-link px-0 align-middle">
+                              <span class="ms-1 d-none d-sm-inline" ui-sref="DoctorDashboard.Prescriptions">Prescriptions</span> </a>
+                      </li>
                     </ul>
                     <hr>
                     <!-- <div class="dropdown pb-4">
@@ -77,21 +83,13 @@
                 </div>
             </div>
             <div class="col mt-lg-5">
-              <!-- <div class="row row-cols-2 row-cols-lg-5 g-2 g-1">
-      
-                 <h3 style="font-size: 40px;">Patient  Records</h3>
-                 <button type="button" class="btn btn-outline-primary" style="margin-left: 29%;">New Appointment</button>
-                 <button type="button" class=" btn btn-secondary" style="margin-left: 2%; font-size: 25px;">Appointment</button>
-              </div> -->
-
-
-            <div class="container-fluid" ui-view="">
+                       <div class="container-fluid" ui-view="">
             </div>
           </div>
  
          </div>
     
-     </div>   
-    
+     </div>
+
 </body>
 </html>

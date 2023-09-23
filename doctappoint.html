@@ -40,8 +40,8 @@
                <td>{{appoint.user__gender}}</td>
                <td>{{appoint.appointmentDate}}</td>
                <td>{{appoint.time}}</td>
-               <td><button type="button" ng-click="accept(appoint,index)" class="btn btn-primary btn-sm">Accept</button>
-                <button type="button" ng-click="reject(appoint, index)" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#myModal" >Reject</button>
+               <td><button type="button" ng-click="accept(appoint,index)" class="btn btn-outline-primary btn-sm">Accept</button>
+                <button type="button" ng-click="reject(appoint, index)" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#myModal" >Reject</button>
                 <!-- The Modal -->
               <div ng-app="myApp" ng-controller="ModalController">  
               <div class="modal fade" id="myModal">
@@ -69,7 +69,7 @@
               </div>
               </div>   
               </td>
-               <td><button class="btn btn-primary" ng-click="edit(appoint)" type="button" data-bs-toggle="modal" data-bs-target="#myModal1">Reschedule</button>
+               <td><button class="btn btn-outline-success" ng-click="edit(appoint)" type="button" data-bs-toggle="modal" data-bs-target="#myModal1">Reschedule</button>
                 <div ng-app="myApp" ng-controller="Modal2Controller">  
                   <div class="modal fade" id="myModal1">
                     <div class="modal-dialog">
@@ -103,10 +103,16 @@
                   </div>
                   </div>   
               </td>
-             </tr>
+              </tr>
             
            </tbody>
          </table>
     </div>
 </div>
+
+<style>
+#name {
+  font-size: 20px;
+}
+</style>
           
