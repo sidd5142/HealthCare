@@ -657,16 +657,9 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
 });		
 app.controller('Modal3Controller', function ($scope, $http, $window, $state) {
 	$scope.reason = ""; 
-	// $scope.reason = SharedData2Service.reason;
-	// $scope.date = SharedData2Service.reason
-	// $scope.time = SharedData2Service.reason
-
 	$scope.prescribed = function (record) {
 	  var data = {
 		prescribeid_id: prescribeid,
-		// new_appointmentDate: $scope.date, 
-		// new_time : $scope.time,
-		// reason : $scope.reason
 	  };
      console.log(data)
 	  $http.post(api + 'getapproved/', data, {
@@ -683,9 +676,6 @@ app.controller('Modal3Controller', function ($scope, $http, $window, $state) {
 		.catch(function (error) {
 		  console.log(error);
 		});
-
-		// SharedData2Service.time = "";
-		// SharedData2Service.date = "";
 	};
 });
 
