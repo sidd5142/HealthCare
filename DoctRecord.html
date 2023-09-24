@@ -55,31 +55,12 @@
                         <div class="modal-body">
                           <h5 style="text-align: center;"><u>Medical History</u></h5>
                            
-                            <div class="row row-cols-2 row-cols-lg-5" >
-                              <div style="margin-left: 5%; margin-top: 3%;">
-                                  <h6> First Name :-</h6>
-                            <div class="col">
-                              <div id="name">Sidd</div>
-                            </div>
-                              </div>
-                              <div style="margin-left: 12%; margin-top: 3%;">
-                                  <h6>Gender :-</h6>
-                            <div class="col">
-                              <div id="name">Male</div>
-                            </div>
-                              </div>
-                      
-                              <div style="margin-left: 12%; margin-top: 3%;">
-                                  <h6>Age :-</h6>
-                            <div class="col">
-                              <div id="name">16</div>
-                            </div>
-                              </div>
-                      
+                            <div class="row row-cols-2 row-cols-lg-5" ng-repeat="prescribed in press" >
+                                                    
                               <div style="margin-top: 3%; margin-left: 5%;">
                                   <h6>Height :-</h6>
                             <div class="col">
-                              <div id="name">f</div>
+                              <div id="name">{{prescribed.height}} cm</div>
                             </div>
                               </div>
                       
@@ -87,21 +68,21 @@
                               <div style="margin-left: 12%; margin-top: 3%;">
                                   <h6>Weight :-</h6>
                             <div class="col">
-                              <div id="name">kg</div>
+                              <div id="name">{{prescribed.weight}} kg</div>
                             </div>
                           </div>
                       
                           <div style="margin-left: 12%; margin-top: 3%;">
                               <h6>Blood Group :-</h6>
                             <div class="col">
-                              <div id="name">A+</div>
+                              <div id="name">{{prescribed.blood_group}}</div>
                             </div>
                           </div>
 
                           <div style="margin-top: 3%; margin-left: 5%;">
                             <h6>Alcoholic :-</h6>
                       <div class="col">
-                        <div id="name">Yes</div>
+                        <div id="name">{{prescribed.alcoholic}}</div>
                       </div>
                         </div>
                 
@@ -109,14 +90,14 @@
                         <div style="margin-left: 12%; margin-top: 3%;">
                             <h6>Smoker :-</h6>
                       <div class="col">
-                        <div id="name">No</div>
+                        <div id="name">{{prescribed.smoker}}</div>
                       </div>
                     </div>
                 
                     <div style="margin-left: 12%; margin-top: 3%;">
                         <h6>Symptoms :-</h6>
                       <div class="col">
-                        <div id="name">A+</div>
+                        <div id="name">{{prescribed.symptoms}}</div>
                       </div>
                     </div>
                      </div>
@@ -125,42 +106,18 @@
 
                      <h5 style="text-align: center;"><u>Prescription</u></h5>                     
                   </div>
-                  <!-- Modal footer -->
-                        <div class="modal-footer">
+                        <!-- <div class="modal-footer">
                           <button type="submit" class="btn btn-danger" ng-click="submit(record)" data-bs-dismiss="modal">Submit</button>
                         </div>
-                  
+                   -->
                       </div>
                     </div>
                   </div>
                   </div>  
-                  <button type="submit" class="btn btn-danger" ng-click="downpdf()">Download</button>
  
               </td>
                    <!-- <td>{{record.date}}</td> -->
                  </tr>
-                 <!-- <tr>
-                    <th scope="row">2</th>
-                   <th scope="row">264484864</th>
-                   <td>Jacob</td>
-                   <td>Thornton</td>
-                   <td>20</td>
-                   <td>Female</td>
-                   <td>02/05/23</td>
-                   <td>4:00 pm</td>
-                   <td>25</td>
-                 </tr>
-                 <tr>
-                    <th scope="row">3</th>
-                   <th scope="row">36468464</th>
-                   <td>Larry</td>
-                   <td>the Bird</td>
-                   <td>28</td>
-                   <td>Male</td>
-                   <td>25/02/23</td>
-                   <td>6:00 pm</td>
-                   <td>12</td>
-                 </tr> -->
                </tbody>
              </table>
         </div>

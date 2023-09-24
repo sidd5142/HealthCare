@@ -198,7 +198,7 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 		// var msgdata = response.data
 		// var msg = msgdata.
 
-		$state.go('DoctorDashboard.DoctPersonal');
+		$state.go('RecepDashboard');
 
 	  })
 	  .catch(function(error){
@@ -465,9 +465,6 @@ app.controller('RecordsController',function($scope,$http,$window,$state){
 // app.controller('ReceptionistController',function($scope,$http,$window,$state){
 // });
 
-app.controller('RecepDashboardController',function($scope,$http,$window,$state){
-});	
-
 app.controller('DoctorDashboardController',function($scope,$http,$window,$state){
 });
 
@@ -621,6 +618,7 @@ var prescribeid = {};
 
 app.controller('DoctRecordController',function($scope,$http,$window,$state){
 	$scope.doctrecord = [];
+	$scope.press = [];
 
 	$http.get(api + 'getapproved/', {
 		withCredentials	: true
@@ -635,7 +633,7 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
 			var ids = {id : record.user}
             console.log(ids)
 
-				$http.get(api + 'getmedicalhistory/',{params : ids},{
+				$http.get(api + 'getmedicalhistory/',{params : ids,
 				withCredentials:true
 			})
 			.then(function(response){
@@ -700,13 +698,218 @@ app.controller('Modal3Controller', function ($scope, $http, $window, $state) {
 	};
 });
 
-app.controller('PrescriptionsController',function($scope,$http,$window,$state){
+app.controller('RecepDashboardController',function($scope,$http,$window,$state){
+	// $scope.recepts = [];
+
+	// $http.get(api + 'recptionist/',{
+	// 	withCredentials:true
+	// })
+	// .then(function (response) {
+	// 	console.log(response);
+	// 	$scope.recepts = response.data
+	// 	console.log($scope.recepts)
+	//   })
+	//   .catch(function (error) {
+	// 	console.log(error);
+	// 	Swal.fire({
+	// 		icon: 'error',
+	// 		title: 'Wrong...',
+	// 		text: 'Something went wrong'
+	// 	  });
+	//   });
 });	
 
+var doctorid = {};
 app.controller('RecepDoctorController',function($scope,$http,$window,$state){
+	$scope.doctor = [];
+
+	$http.get(api + 'availdoctors',{
+		withCredentials:true
+	})
+	.then(function(response){
+		console.log(response)
+		$scope.doctor = response.data;
+		console.log($scope.doctor)
+	})
+	.catch(function(error){
+		console.log(error)
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'Something went wrong..'
+		  })
+	})
+
+	$scope.view = function(doctors){
+		doctorid = doctors.user
+	}
 
 });	
+
+app.controller('ModalController',function($scope,$http,$window,$state){
+	$scope.modal = [];
+
+	var id = {doctor_id : doctorid}
+	$http.get(api + 'doctorfulldetail/', {params : id , 
+	withCredentials:true
+     })
+	 .then(function(response){
+		console.log(response)
+		$scope.modal = response.data;
+		console.log($scope.modal)
+	})
+	.catch(function(error){
+		console.log(error)
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'Something went wrong..'
+		  })
+	})
+});
 
 app.controller('RecepAppointController',function($scope,$http,$window,$state){
 
-});	
+	$scope.appoints= [];
+	$scope.searchText = " ";
+
+		$http.get(api + 'getpatientappointment/',{
+			withCredentials:true
+		})
+		.then(function(response){
+			console.log(response)
+			$scope.appoints = response.data;
+			console.log($scope.appoints)
+		})
+		.catch(function(error){
+			console.log(error)
+			Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Something went wrong..'
+			  })
+		})
+
+	$scope.approved = function(appoint){
+		var confirmed = {
+			patient_id : appoint.Patient,
+			rApproval : 1
+		}
+		 console.log(confirmed)
+		$http.post(api + 'receptionist/', confirmed, {
+			withCredentials	: true
+		})
+		.then(function(response){
+			console.log(response)
+			Swal.fire({
+				icon: 'success',
+				title: 'Done...',
+				text: 'Appointment Approved'
+			  })
+			  $state.reload('ReceptionDashboard.Appoint')
+		})
+		.catch(function(error){
+			console.log(error)
+			Swal.fire({
+				icon: 'error',
+				title: 'Something Wrong...',
+				text: "Error"
+			  })
+		})
+	}
+
+	$scope.export = function () {
+		const table = document.getElementById('recepappoint','Name');
+
+		const doc = document.createElement('table');
+		doc.innerHTML = table.outerHTML;
+
+		const blob = new Blob(['\ufeff', doc.outerHTML], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+		const url = window.URL.createObjectURL(blob);
+
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = 'Records.xlsx';
+		document.body.appendChild(a);
+		a.click();
+
+		window.URL.revokeObjectURL(url);
+		document.body.removeChild(a);
+	};
+});
+
+
+app.service('SharedDataService', function () {
+	this.reasonInput = ""; 
+});
+
+app.controller('ModalController', function ($scope, $http, $window, $state, SharedDataService) {
+	$scope.reasonInput = ""; 
+	$scope.reasonInput = SharedDataService.reasonInput;
+
+	$scope.submit = function (appoint) {
+	  var data = {
+		appointment_id: dltid,
+		reason: $scope.reasonInput, 
+	  };
+  console.log(data)
+	  $http.delete(api + 'confirmappointment/', data, {
+		withCredentials : true
+	  })
+		.then(function (response) {
+		  console.log(response);
+		  Swal.fire({
+			icon: 'success',
+			title: 'Deleted...',
+			text: 'Appointment Deleted'
+		  });
+		  $scope.reasonInput = "";
+		})
+		.catch(function (error) {
+		  console.log(error);
+		});
+
+		SharedDataService.reasonInput = "";
+	};
+});
+
+app.service('SharedData2Service', function () {
+this.date = "";
+this.time = "";
+this.reason = ""; // Initialize the shared variable
+});
+
+app.controller('Modal2Controller', function ($scope, $http, $window, $state, SharedData2Service) {
+$scope.reason = ""; 
+$scope.reason = SharedData2Service.reason;
+// $scope.date = SharedData2Service.reason
+// $scope.time = SharedData2Service.reason
+
+$scope.submit = function (appoint) {
+  var data = {
+	appointment_id: edtid,
+	new_appointmentDate: $scope.date, 
+	new_time : $scope.time,
+	reason : $scope.reason
+  };
+console.log(data)
+  $http.put(api + 'confirmappointment/', data, {
+	withCredentials : true
+  })
+	.then(function (response) {
+	  console.log(response);
+	  Swal.fire({
+		icon: 'success',
+		title: 'Edited...',
+		text: response.data.message
+	  });
+	})
+	.catch(function (error) {
+	  console.log(error);
+	});
+
+	SharedData2Service.time = "";
+	SharedData2Service.date = "";
+};
+});
