@@ -41,8 +41,7 @@
                    <td>{{record.appointmentDate}}</td>
                    <td>{{record.checkup_date}}</td>
 
-
-              <td><button class="btn btn-outline-info" ng-click="prescribed(record)" type="button" data-bs-toggle="modal" data-bs-target="#myModal2">Prescription</button>
+              <td><button class="btn btn-outline-info" ng-click="prescribed(record)" type="submit" data-bs-toggle="modal" data-bs-target="#myModal2">Prescription</button>
                 <div ng-app="myApp" ng-controller="Modal3Controller">  
                   <div class="modal fade" id="myModal2">
                     <div class="modal-dialog modal-lg">
@@ -128,13 +127,15 @@
                   </div>
                   <!-- Modal footer -->
                         <div class="modal-footer">
-                          <button type="submit" class="btn btn-danger" ng-click="submit(appoint, index)" data-bs-dismiss="modal">Submit</button>
+                          <button type="submit" class="btn btn-danger" ng-click="submit(record)" data-bs-dismiss="modal">Submit</button>
                         </div>
                   
                       </div>
                     </div>
                   </div>
-                  </div>   
+                  </div>  
+                  <button type="submit" class="btn btn-danger" ng-click="downpdf()">Download</button>
+ 
               </td>
                    <!-- <td>{{record.date}}</td> -->
                  </tr>

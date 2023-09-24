@@ -96,13 +96,6 @@ var api = 'https://10.21.83.216:8000/healthcare/'
 
 app.controller('RegisterController',function($scope,$http,$window,$state){
 
-
-	// $scope.departs = [];
-	// $scope.department = function(){
-		
-	// }
-
-
 	$scope.Registrationfrom = function(){
         console.log('FirstName :', $scope.firstname)
 		console.log('LstName :', $scope.lastname)
@@ -195,7 +188,7 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 	if($scope.password)
 	{
 	$http.post(api+'login/', data, {
-			headers: {'Content-Type': undefined},
+			// headers: {'Content-Type': undefined},
 		    withCredentials: true
      })
 	 .then(function(response){
@@ -329,7 +322,7 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 		$scope.selectdeapart = function(depart){
         console.log(depart.id)
 		var Params = {department_id : depart.id}
-		$http.get(api+'doctordrop', {params : Params}, {
+		$http.get(api+'doctordrop/', {params : Params}, {
 			withCredentials:true
 		})
 		.then(function(response){
@@ -362,7 +355,7 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 		  Swal.fire({
 			icon: 'success',
 			title: 'Congratulations',
-			text: 'Your form is submited!!'
+			text: response.data.message
 		  })
 		})
 		.catch(function(error){
@@ -427,9 +420,7 @@ app.controller('DashboardController',function($scope,$http,$window,$state){
 		  })
 	})
 
-	// $scope.dash = function(panelname){
-	// 	$http
-	// }
+	
 });
 
 app.controller('RecordsController',function($scope,$http,$window,$state){
@@ -448,10 +439,8 @@ app.controller('RecordsController',function($scope,$http,$window,$state){
 		})
 
 		$scope.exportToExcel = function () {
-			// Get the table element
 			const table = document.getElementById('exportTable');
 
-			// Create a new HTML document
 			const doc = document.createElement('table');
 			doc.innerHTML = table.outerHTML;
 
@@ -468,7 +457,6 @@ app.controller('RecordsController',function($scope,$http,$window,$state){
 			document.body.appendChild(a);
 			a.click();
 
-			// Clean up
 			window.URL.revokeObjectURL(url);
 			document.body.removeChild(a);
 		};
@@ -642,9 +630,30 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
 		$scope.doctrecord = response.data
 		console.log($scope.doctrecord)
 
-		$scope.prescribed = function(record){
-			prescribeid = record.id
+		$scope.prescribed  = function(record){
+
+			var ids = {id : record.user}
+            console.log(ids)
+
+				$http.get(api + 'getmedicalhistory/',{params : ids},{
+				withCredentials:true
+			})
+			.then(function(response){
+				console.log(response)
+				$scope.press = response.data
+				console.log($scope.press)
+			})
+			.catch(function(error){
+				console.log(error)
+				Swal.fire({
+					icon: 'error',
+					title: 'cancel...',
+					text: response.data.message
+				  })
+				})
 		}
+
+		
 	})
 	.catch(function(error){
 		console.log(error)
@@ -654,6 +663,18 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
 			text: 'Missing any key'
 		  })
 		})
+
+		// $scope.downpdf = function(){
+		// 		const pdf = new jsPDF();
+		// 		const resumeContent = document.getElementById('myModal2'); // Replace 'resume-content' with the ID of your resume content div.
+		// 		pdf.html(resumeContent, {
+		// 		  callback: function(pdf) {
+		// 			pdf.save('resume.pdf');
+		// 		  }
+		// 		});
+		// 	  };
+
+		
 });		
 app.controller('Modal3Controller', function ($scope, $http, $window, $state) {
 	$scope.reason = ""; 
