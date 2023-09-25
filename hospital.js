@@ -61,6 +61,16 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			templateUrl: 'receptionapp.html',
 			controller: 'RecepAppointController'
 		})
+		.state('RecepDashboard.Record', {
+            url: '/recepdashboardrecord',
+			templateUrl: 'receptionistrecord.html',
+			controller: 'RecepRecordController'
+		})
+		.state('RecepDashboard.Patient', {
+            url: '/recepdashboardpatient',
+			templateUrl: 'doctorpatient.html',
+			controller: 'RecepPatientController'
+		})
 		.state('DoctorDashboard', {
             url: '/doctordashboard',
 			templateUrl: 'doctordashboard.html',
@@ -92,7 +102,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 
 }]);
 
-var api = 'https://10.21.83.216:8000/healthcare/'
+var api = 'https://10.21.87.150:8000/healthcare/'
 
 app.controller('RegisterController',function($scope,$http,$window,$state){
 
@@ -535,9 +545,9 @@ app.controller('DoctAppointController',function($scope,$http,$window,$state){
 	$scope.reject = function(appoint){
 		dltid = appoint.pk
 	}
-	$scope.edit = function(appoint){
-		edtid = appoint.pk
-	}
+	// $scope.edit = function(appoint){
+	// 	edtid = appoint.pk
+	// }
 });
 
 	app.service('SharedDataService', function () {
@@ -554,7 +564,7 @@ app.controller('DoctAppointController',function($scope,$http,$window,$state){
 			reason: $scope.reasonInput, 
 		  };
 	  console.log(data)
-		  $http.delete(api + 'confirmappointment/', data, {
+		  $http.delete(api + 'confirmappointment/', {params : data ,
 			withCredentials : true
 		  })
 			.then(function (response) {
@@ -741,33 +751,33 @@ app.controller('RecepDoctorController',function($scope,$http,$window,$state){
 	})
 
 	$scope.view = function(doctors){
-		doctorid = doctors.user
+		// doctorid = doctors.user
+			$scope.modal = [];
+		
+			var id = {doctor_id : doctors.user}
+			console.log(id)
+			$http.get(api + 'doctorfulldetail/', {params : id , 
+			withCredentials:true
+			 })
+			 .then(function(response){
+				console.log(response)
+				$scope.modal = response.data;
+				console.log($scope.modal)
+			})
+			.catch(function(error){
+				console.log(error)
+				Swal.fire({
+					icon: 'error',
+					title: 'Oops...',
+					text: 'Something went wrong..'
+				  })
+			})
+		
 	}
 
 });	
 
-app.controller('ModalController',function($scope,$http,$window,$state){
-	$scope.modal = [];
-
-	var id = {doctor_id : doctorid}
-	$http.get(api + 'doctorfulldetail/', {params : id , 
-	withCredentials:true
-     })
-	 .then(function(response){
-		console.log(response)
-		$scope.modal = response.data;
-		console.log($scope.modal)
-	})
-	.catch(function(error){
-		console.log(error)
-		Swal.fire({
-			icon: 'error',
-			title: 'Oops...',
-			text: 'Something went wrong..'
-		  })
-	})
-});
-
+var dltid = {};
 app.controller('RecepAppointController',function($scope,$http,$window,$state){
 
 	$scope.appoints= [];
@@ -790,13 +800,13 @@ app.controller('RecepAppointController',function($scope,$http,$window,$state){
 			  })
 		})
 
-	$scope.approved = function(appoint){
+	$scope.accept = function(appoint){
 		var confirmed = {
-			patient_id : appoint.Patient,
+			appointment_id : appoint.pk,
 			rApproval : 1
 		}
 		 console.log(confirmed)
-		$http.post(api + 'receptionist/', confirmed, {
+		$http.post(api + 'approveappointment/', confirmed, {
 			withCredentials	: true
 		})
 		.then(function(response){
@@ -806,7 +816,7 @@ app.controller('RecepAppointController',function($scope,$http,$window,$state){
 				title: 'Done...',
 				text: 'Appointment Approved'
 			  })
-			  $state.reload('ReceptionDashboard.Appoint')
+			  $state.reload('RecepDashboard.Appointment')
 		})
 		.catch(function(error){
 			console.log(error)
@@ -818,8 +828,12 @@ app.controller('RecepAppointController',function($scope,$http,$window,$state){
 		})
 	}
 
+	$scope.reject = function(appoint){
+		dltid = appoint.pk
+	}
+
 	$scope.export = function () {
-		const table = document.getElementById('recepappoint','Name');
+		const table = document.getElementById('recepappoint');
 
 		const doc = document.createElement('table');
 		doc.innerHTML = table.outerHTML;
@@ -850,21 +864,23 @@ app.controller('ModalController', function ($scope, $http, $window, $state, Shar
 
 	$scope.submit = function (appoint) {
 	  var data = {
-		appointment_id: dltid,
-		reason: $scope.reasonInput, 
+		appointment_id : dltid,
+		reason : $scope.reasonInput, 
 	  };
   console.log(data)
-	  $http.delete(api + 'confirmappointment/', data, {
+	  $http.delete(api + 'approveappointment/',  { data, 
 		withCredentials : true
 	  })
 		.then(function (response) {
 		  console.log(response);
 		  Swal.fire({
 			icon: 'success',
-			title: 'Deleted...',
-			text: 'Appointment Deleted'
+			title: 'Rejected...',
+			text: response.data.message
 		  });
 		  $scope.reasonInput = "";
+		  $state.reload('RecepDashboard.Appointment')
+
 		})
 		.catch(function (error) {
 		  console.log(error);
@@ -912,4 +928,46 @@ console.log(data)
 	SharedData2Service.time = "";
 	SharedData2Service.date = "";
 };
+});
+
+app.controller('RecepRecordController', function ($scope, $http, $window, $state) {
+   $scope.records = [];
+
+   $http.get(api + 'checkedpatient/', {
+	withCredentials : true
+   })
+   .then(function (response) {
+	console.log(response);
+	$scope.records = response.data
+	console.log($scope.records)
+    })
+    .catch(function (error) {
+	console.log(error);
+	Swal.fire({
+		icon: 'error',
+		title: 'Error...',
+		text: 'Something went wrong'
+		});
+    });
+})
+
+app.controller('RecepPatientController', function ($scope, $http, $window, $state) {
+	$scope.patient = [];
+
+	$http.get(api + 'ptunderdoct/', {
+		withCredentials : true
+	})
+	.then(function (response) {
+		console.log(response);
+		$scope.records = response.data
+		console.log($scope.records)
+		})
+		.catch(function (error) {
+		console.log(error);
+		Swal.fire({
+			icon: 'error',
+			title: 'Error...',
+			text: 'Something went wrong'
+			});
+		});
 });
