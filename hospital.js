@@ -953,14 +953,37 @@ app.controller('RecepRecordController', function ($scope, $http, $window, $state
 
 app.controller('RecepPatientController', function ($scope, $http, $window, $state) {
 	$scope.patient = [];
+	$scope.records = [];
 
-	$http.get(api + 'ptunderdoct/', {
+	$http.get(api + 'availdoctors/', {
 		withCredentials : true
 	})
 	.then(function (response) {
 		console.log(response);
 		$scope.records = response.data
 		console.log($scope.records)
+
+		$scope.show = function(doctors){
+         console.log("hiiii")
+			var id = { doctor_id : doctors.user}
+			console.log(id)
+			   $http.get(api + 'ptunderdoct/', {params : id ,
+			   withCredentials: true
+				})
+				.then(function (response) {
+					console.log(response);
+					$scope.patient = response.data
+					console.log($scope.patient)
+				})
+				.catch(function(error){
+					console.log(error)
+					Swal.fire({
+						icon: 'error',
+						title: 'Error...',
+						text: 'Something went wrong'
+						});
+				})
+			  }
 		})
 		.catch(function (error) {
 		console.log(error);
@@ -970,4 +993,8 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 			text: 'Something went wrong'
 			});
 		});
+});
+
+app.controller('Modal3Controller', function ($scope, $http, $window, $state) {
+	
 });

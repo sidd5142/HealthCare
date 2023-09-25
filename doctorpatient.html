@@ -1,4 +1,4 @@
-<div ng-app="myApp" ng-controller="RecepDoctorController">
+<div ng-app="myApp" ng-controller="RecepPatientController">
     <div class="col">
         <div class="container">
             <div class="row">
@@ -19,104 +19,59 @@
               <div class="row">
                 <div class="col">
                  <div class="row row-cols-1 row-cols-md-4 g-2 ml-4 mr-4">
-                  <div class="col" ng-repeat="doctors in doctor | filter:searchText">
+                  <div class="col" ng-repeat="doctors in records | filter:searchText">
 
-                <!-- <div  class="justify-content-center row col-12, card h-100" style="border-color: brown;"> -->
                   <div class="card h-100" style="border-color: brown;">
                   <div class="card-body" >
-                  <!-- <p> Details: {{ product.About}}</p>
-                  <p> Manufacture Date: {{ product.Manufacturedate}}</p> -->
                                <h4>Name : Dr. {{doctors.user__first_name + " " + doctors.user__last_name}}</h4>  
                                <br>
                                <h6>Department : {{doctors.department__departments}}</h6> 
                                <br>
                                <h6>Qualification : {{doctors.qualification}}</h6> 
-                               <button type="button" style="float: right;" ng-click="view(doctors)" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#myModal">View</button> 
-                                <div class="modal fade" id="myModal">
-                                  <div class="modal-dialog">
+                               <button type="button" style="float: right;" ng-click="show(doctors)" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#myModals">Details</button>
+                               <!-- <div ng-app="myApp" ng-controller="ModalController">    -->
+                                <div class="modal fade" id="myModals">
+                                  <div class="modal-dialog modal-lg">
                                     <div class="modal-content" >
                                 
                                       <div class="modal-header">
-                                        <h4 class="modal-title">Doctor Details</h4>
+                                        <h4 class="modal-title">Patient</h4>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                       </div>
                                 
                                       <div class="modal-body">
 
-                                        <div class="row row-cols-2 row-cols-lg-5" ng-repeat="modals in modal">
-                                                    
-                                          <div style="margin-top: 3%; margin-left: 5%;">
-                                              <h6>Name :-</h6>
-                                        <div class="col">
-                                          <div id="name">Dr. {{modals.user__first_name + " " + modals.user__last_name}}</div>
-                                        </div>
-                                          </div>
-                                  
-                                  
-                                          <div style="margin-left: 12%; margin-top: 3%;">
-                                              <h6>Department :-</h6>
-                                        <div class="col">
-                                          <div id="name">{{modals.department__departments}}</div>
-                                        </div>
-                                      </div>
-                                  
-                                      <div style="margin-left: 12%; margin-top: 3%;">
-                                          <h6>Age :-</h6>
-                                        <div class="col">
-                                          <div id="name">{{modals.user__age}}</div>
-                                        </div>
-                                      </div>
-            
-                                      <div style="margin-top: 3%; margin-left: 5%;">
-                                        <h6>Qualification :-</h6>
-                                  <div class="col">
-                                    <div id="name">{{modals.qualification}}</div>
-                                  </div>
-                                    </div>
-                            
-                            
-                                    <div style="margin-left: 12%; margin-top: 3%;">
-                                        <h6>Contact :-</h6>
-                                  <div class="col">
-                                    <div id="name">{{modals.user__contact}}</div>
-                                  </div>
-                                </div>
-                            
-                                <div style="margin-left: 12%; margin-top: 3%;">
-                                    <h6>Gender :-</h6>
-                                  <div class="col">
-                                    <div id="name">{{modals.user__gender}}</div>
-                                  </div>
-                                </div>
-
-                                <div style="margin-top: 3%; margin-left: 5%;">
-                                  <h6>Join Date :-</h6>
-                            <div class="col">
-                              <div id="name">{{modals.user__date_joined}}</div>
-                            </div>
-                              </div>
-                      
-                      
-                              <div style="margin-left: 12%; margin-top: 3%;">
-                                  <h6>Address :-</h6>
-                            <div class="col">
-                              <div id="name">{{modals.user__address}}</div>
-                            </div>
-                          </div>
-
-                          <div style="margin-left: 12%; margin-top: 3%;">
-                            <h6>Fees :-</h6>
-                      <div class="col">
-                        <div id="name">{{modals.doctorFee}}</div>
-                      </div>
-                    </div>
-                                 </div>
-
-                                      </div>
-                                
-                                    </div>
-                                  </div>
-                                </div>
+                                        <div class="row row-cols-2 row-cols-lg-5">
+                                                
+                                   <table class="table caption-top ">
+                                    <caption>Records :-</caption>
+                                    <thead class="bg-dark table-dark">
+                                      <tr>
+                                         <th scope="col">Index</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Age</th>
+                                        <th scope="col">Gender</th>
+                                        <th scope="col">Appointment Date</th>
+                                        <th scope="col">Checkup Date</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr ng-repeat="record in patient">
+                                         <th scope="row">{{$index + 1}}</th>
+                                        <td>{{record.user__first_name + " " + record.user__last_name}}</td>
+                                        <td>{{record.user__age}}</td>
+                                        <td>{{record.user__gender}}</td>
+                                        <td>{{record.appointmentDate}}</td>
+                                        <td>{{record.checkup_date}}</td>
+                                      </tr>
+                                    </tbody>
+                                 </table>
+                                 
+                        </div>
+                         
+                         </div>
+                       </div>
+                     </div>
                   </div>
                   </div>
                   </div>
