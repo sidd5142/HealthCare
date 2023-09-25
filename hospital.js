@@ -964,8 +964,7 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 		console.log($scope.records)
 
 		$scope.show = function(doctors){
-         console.log("hiiii")
-			var id = { doctor_id : doctors.user}
+			var id = { doctor_id : doctors.pk}
 			console.log(id)
 			   $http.get(api + 'ptunderdoct/', {params : id ,
 			   withCredentials: true
@@ -993,8 +992,4 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 			text: 'Something went wrong'
 			});
 		});
-});
-
-app.controller('Modal3Controller', function ($scope, $http, $window, $state) {
-	
 });
