@@ -23,7 +23,7 @@
 
                   <div class="card h-100" style="border-color: brown;">
                   <div class="card-body" >
-                               <h4>Name : Dr. {{doctors.user__first_name + " " + doctors.user__last_name}}</h4>  
+                               <h4>Name : Dr. {{doctors.first_name + " " + doctors.last_name}}</h4>  
                                <br>
                                <h6>Department : {{doctors.department__departments}}</h6> 
                                <br>
@@ -57,9 +57,9 @@
                                     <tbody>
                                       <tr ng-repeat="record in patient">
                                          <th scope="row">{{$index + 1}}</th>
-                                        <td>{{record.user__first_name + " " + record.user__last_name}}</td>
-                                        <td>{{record.user__age}}</td>
-                                        <td>{{record.user__gender}}</td>
+                                        <td>{{record.patient__first_name + " " + record.patient__last_name}}</td>
+                                        <td>{{record.patient__age}}</td>
+                                        <td>{{record.patient__gender}}</td>
                                         <td>{{record.appointmentDate}}</td>
                                         <td>{{record.checkup_date}}</td>
                                       </tr>

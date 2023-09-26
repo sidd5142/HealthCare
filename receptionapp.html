@@ -37,10 +37,10 @@
                <tbody>
                  <tr ng-repeat="appoint in appoints | filter:searchText">
                    <th scope="row">{{$index+1}}</th>
-                   <td>{{appoint.user__first_name + " " + appoint.user__last_name}}</td>
-                   <td>{{appoint.user__age}}</td>
-                   <td>{{appoint.user__gender}}</td>
-                   <td>Dr. {{appoint.doctor_name}}</td>
+                   <td>{{appoint.patient__first_name + " " + appoint.patient__last_name}}</td>
+                   <td>{{appoint.patient__age}}</td>
+                   <td>{{appoint.patient__gender}}</td>
+                   <td>Dr. {{appoint.doctor__first_name + " " + appoint.doctor__last_name}}</td>
                    <td>{{appoint.department__departments}}</td>
                    <td>{{appoint.appointmentDate}}</td>
                    <td>{{appoint.time}}</td>

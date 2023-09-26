@@ -68,7 +68,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 		})
 		.state('RecepDashboard.Patient', {
             url: '/recepdashboardpatient',
-			templateUrl: 'doctorpatient.html',
+			templateUrl: 'recepdoctorpatient.html',
 			controller: 'RecepPatientController'
 		})
 		.state('DoctorDashboard', {
