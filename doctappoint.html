@@ -35,9 +35,9 @@
            <tbody>
              <tr ng-repeat="(index, appoint) in doctappoint">
                <th scope="row">1564646465</th>
-               <td>{{appoint.user__first_name + " " + appoint.user__last_name}}</td>
-               <td>{{appoint.user__age}}</td>
-               <td>{{appoint.user__gender}}</td>
+               <td>{{appoint.patient__first_name + " " + appoint.patient__last_name}}</td>
+               <td>{{appoint.patient__age}}</td>
+               <td>{{appoint.patient__gender}}</td>
                <td>{{appoint.appointmentDate}}</td>
                <td>{{appoint.time}}</td>
                <td><button type="button" ng-click="accept(appoint,index)" class="btn btn-outline-primary btn-sm">Accept</button>
