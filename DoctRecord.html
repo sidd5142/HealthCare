@@ -107,7 +107,7 @@
                      <h5 style="text-align: center;"><u>Prescription</u></h5>  
                      
                      <form ng-app="contactsApp">  
-                        <button type="button" class="btn btn-outline-success mb-3" ng-click="addfield()">Medicines</button>
+                        <button type="button" class="btn btn-outline-success mb-3" ng-click="addfield(contact)">Medicines</button>
                         <div class="row row-cols-2 row-cols-lg-3" >
                           <p ng-repeat="contact in contacts">
                               <input type="text" ng-model="contact.medicine" class="form-control mb-2" name="contact[]" placeholder="Medicine" />

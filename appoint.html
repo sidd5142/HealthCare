@@ -30,8 +30,8 @@
                 <h5>Doctors :-</h5>
                 <div class="input-group flex-nowrap">
                   <select class="p-3 form-select " ng-model="selectcategory" style="width: 100%;" aria-label="Default select example">
-                    <option selected>Select A Doctor</option>
-                    <option value="{{category.user__first_name + ' ' + category.user__last_name}}" ng-repeat="category in categories">Dr. {{category.user__first_name + ' ' + category.user__last_name}}</option>
+                    <option value="" selected disabled hidden>Select Doctor</option>                               
+                    <option value="{{category.pk}}" ng-repeat="category in categories">Dr. {{category.first_name + ' ' + category.last_name}}</option>
                   </select>                
                  </div>
             </div>
@@ -40,7 +40,7 @@
               <h5>Time :-</h5>
               <div class="input-group flex-nowrap">
                 <select class="p-3 form-select " ng-model="time" style="width: 100%;" aria-label="Default select example">
-                  <option selected>Choose a time</option>
+                  <option value="" selected disabled hidden>Choose a Slot</option>                               
                   <option value="9 to 12" >9am to 12 noon</option>
                   <option value="5 to 8" >5pm to 8 pm</option>
                 </select>                

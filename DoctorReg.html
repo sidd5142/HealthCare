@@ -270,7 +270,7 @@ select.form-control {
                         </div>
                         <div class="input-group col-lg-6 mb-4" >
                             <select class="form-select " ng-model="department" style="width: 100%;" aria-label="Default select example">
-                              <option selected>Select Department</option>
+                                <option value="" selected disabled hidden>Department</option>                               
                               <option value="{{depart.id}}" ng-repeat="depart in departs">{{depart.departments}}</option>
                               
                             </select>                  

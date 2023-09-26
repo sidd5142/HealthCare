@@ -97,7 +97,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			controller: 'PrescriptionsController'
 		})
 
-		$urlRouterProvider.otherwise('/login');
+		$urlRouterProvider.otherwise('/home');
 		
 
 }]);
@@ -139,7 +139,7 @@ app.controller('RegisterController',function($scope,$http,$window,$state){
 			gender : $scope.gender,
 			contact : $scope.contact,
 			address : $scope.address,
-			blood_group : $scope.blood
+			// blood_group : $scope.blood
 		};
 		console.log(regdata);
 
@@ -205,10 +205,22 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 		
 		console.log(response.data)
 
-		// var msgdata = response.data
-		// var msg = msgdata.
+		var msg = response.data.role
+		console.log(msg)
+		// $state.go('Dashboard');
 
-		$state.go('DoctorDashboard');
+		// var msg = msgdata.role
+
+		if(msg === 'receptionist'){
+			$state.go('RecepDashboard')
+		}
+		else if(msg === 'Doctor') 
+        {
+		    $state.go('DoctorDashboard');
+		}
+		else {
+			$state.go('Dashboard')
+		}
 
 	  })
 	  .catch(function(error){
@@ -271,7 +283,7 @@ app.controller('DocLogInController',function($scope,$http,$window,$state){
 			contact : $scope.contact,
 			address : $scope.address,
 			qualification : $scope.qualification,
-			department : $scope.department,
+			department_id : $scope.department,
 			doctorFee : $scope.fees
 		};
 		console.log(regdata);
@@ -353,7 +365,7 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 		var appointdata = {
 			appointmentDate : $scope.date,
 			department_id : $scope.selectdepartment,
-			doctor_name : $scope.selectcategory,
+			doctor_id : $scope.selectcategory,
 			// doctor_id : $scope.selectdoctor,
 			time : $scope.time
 		}
@@ -374,15 +386,12 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: 'Incorrect password!!'
+				text: 'Someting Missing!!'
 			  })
 		})
 	}
 	
 	})
-
-	// $scope.idd = $scope.department
-	// console.log($scope.idd)
 
 	
 app.controller('PersonalController',function($scope,$http,$window,$state){
@@ -658,11 +667,11 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
                 $scope.timing = "";
 				$scope.prescribed = {}
 
-                $scope.addfield = function(){
+                $scope.addfield = function(contac){
                     $scope.contacts.push({ 
-						medicine: $scope.medicine,
-						dosage: $scope.dosage,
-						timing: $scope.timing
+						medicine: $scope.contact.medicine,
+						dosage: $scope.contact.dosage,
+						timing: $scope.contact.timing
 					});
 					$scope.medicine = "";
                     $scope.dosage = "";
@@ -729,48 +738,30 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
 		// 		});
 		// 	  };
 
+
+	// 	var app = angular.module("app", []);
+
+	//  app.controller("mainController", ["$scope",
+	// 	$scope.export = function(){
+	// 		html2canvas(document.getElementById('exportthis'), {
+	// 			onrendered: function (canvas) {
+	// 				var data = canvas.toDataURL();
+	// 				var docDefinition = {
+	// 					content: [{
+	// 						image: data,
+	// 						width: 500,
+	// 					}]
+	// 				};
+	// 				pdfMake.createPdf(docDefinition).download("test.pdf");
+	// 			}
+	// 		});
+	// 	}
+	//  ]);
+  
+
 		
 });		
-app.controller('Modal3Controller', function ($scope, $http, $window, $state) {
-	// $scope.contacts = [];
-    // $scope.medicine = "";
-
-    // $scope.addfield = function(){
-    //     $scope.contacts.push({ medicine: $scope.medicine });
-    //     $scope.medicine = ""; // Clear the input field after adding
-    // };
-
-    // $scope.removeContactField = function(index){ 
-    //     $scope.contacts.splice(index, 1);
-    // };
-
-    // $scope.submit = function(prescribed) {
-    //     // Do something with the submitted data
-    // };
-
-	// $scope.submit = function (prescribed) {
-	//   var data = {
-	// 	id : $scope.record,
-	// 	medicines : $scope.medicine,
-	// 	dosages : $scope.dosage,
-	// 	time : $scope.timing
-	//   };
-    //  console.log(data)
-	//   $http.post(api + 'getapproved/', data, {
-	// 	withCredentials : true
-	//   })
-	// 	.then(function (response) {
-	// 	  console.log(response);
-	// 	  Swal.fire({
-	// 		icon: 'success',
-	// 		title: 'Submitted...',
-	// 		text: response.data.message
-	// 	  });
-	// 	})
-	// 	.catch(function (error) {
-	// 	  console.log(error);
-	// 	});
-	
+app.controller('Modal3Controller', function ($scope, $http, $window, $state) {    
 });
 
 app.controller('RecepDashboardController',function($scope,$http,$window,$state){
@@ -819,7 +810,7 @@ app.controller('RecepDoctorController',function($scope,$http,$window,$state){
 		// doctorid = doctors.user
 			$scope.modal = [];
 		
-			var id = {doctor_id : doctors.user}
+			var id = {doctor_id : doctors.pk}
 			console.log(id)
 			$http.get(api + 'doctorfulldetail/', {params : id , 
 			withCredentials:true
