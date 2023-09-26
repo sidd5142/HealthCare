@@ -104,7 +104,33 @@
 
                      <hr>
 
-                     <h5 style="text-align: center;"><u>Prescription</u></h5>                     
+                     <h5 style="text-align: center;"><u>Prescription</u></h5>  
+                     
+                     <form ng-app="contactsApp">  
+                        <button type="button" class="btn btn-outline-success mb-3" ng-click="addfield()">Medicines</button>
+                        <div class="row row-cols-2 row-cols-lg-3" >
+                          <p ng-repeat="contact in contacts">
+                              <input type="text" ng-model="contact.medicine" class="form-control mb-2" name="contact[]" placeholder="Medicine" />
+                              <select class="form-select mb-2" ng-model="contact.dosage" style="width: 100%;" aria-label="Default select example">
+                                <option value="0" selected disabled hidden>Dosage</option>      
+                                <option value="1">1 time a day</option>
+                                <option value="2">2 time a day</option>
+                                <option value="3">3 time a day</option>
+                                <option value="4">4 time a day</option>
+                              </select>                              
+                              <select class="form-select " ng-model="contact.timing" style="width: 100%;" aria-label="Default select example">
+                                <option value="0" selected disabled hidden>Timing</option>                               
+                                <option value="1">Before a meal</option>
+                                <option value="2">After a meal</option>
+                              </select> 
+                              <button type="button" class="btn btn-close removeField" ng-click="removeContactField($index)"></button>
+                          </p>
+                        </div>
+                          <br>
+                          <button type="submit" class="btn btn-outline-danger" style="float: right;" ng-click="submit(prescribed)">Submit</button>
+                      </div>
+                  </form>
+
                   </div>
                         <!-- <div class="modal-footer">
                           <button type="submit" class="btn btn-danger" ng-click="submit(record)" data-bs-dismiss="modal">Submit</button>

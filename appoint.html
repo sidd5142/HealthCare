@@ -32,8 +32,6 @@
                   <select class="p-3 form-select " ng-model="selectcategory" style="width: 100%;" aria-label="Default select example">
                     <option selected>Select A Doctor</option>
                     <option value="{{category.user__first_name + ' ' + category.user__last_name}}" ng-repeat="category in categories">Dr. {{category.user__first_name + ' ' + category.user__last_name}}</option>
-
-                    
                   </select>                
                  </div>
             </div>

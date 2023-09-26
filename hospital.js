@@ -208,7 +208,7 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 		// var msgdata = response.data
 		// var msg = msgdata.
 
-		$state.go('RecepDashboard');
+		$state.go('DoctorDashboard');
 
 	  })
 	  .catch(function(error){
@@ -354,6 +354,7 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 			appointmentDate : $scope.date,
 			department_id : $scope.selectdepartment,
 			doctor_name : $scope.selectcategory,
+			// doctor_id : $scope.selectdoctor,
 			time : $scope.time
 		}
 		console.log(appointdata)
@@ -650,6 +651,52 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
 				console.log(response)
 				$scope.press = response.data
 				console.log($scope.press)
+
+				$scope.contacts = [];
+                $scope.medicine = "";
+				$scope.dosage = "";
+                $scope.timing = "";
+				$scope.prescribed = {}
+
+                $scope.addfield = function(){
+                    $scope.contacts.push({ 
+						medicine: $scope.medicine,
+						dosage: $scope.dosage,
+						timing: $scope.timing
+					});
+					$scope.medicine = "";
+                    $scope.dosage = "";
+                    $scope.timing = "";
+                 };
+
+                $scope.removeContactField = function(index){ 
+                    $scope.contacts.splice(index, 1);
+                };
+
+	            $scope.submit = function () {
+	              var data = {
+	            	prescribed: $scope.prescribed,
+                    contacts: $scope.contacts
+	              };
+                 console.log(data)
+				 $http.post(api + 'prescribed/', data, {
+					withCredentials: true
+				 })
+				 .then(function(response){
+					console.log(response)
+					$scope.press = response.data
+					console.log($scope.press)
+				 })
+				 .catch(function(error){
+					console.log(error)
+					Swal.fire({
+						icon: 'error',
+						title: 'cancel...',
+						text: response.data.message
+					  })
+					})
+	            }
+
 			})
 			.catch(function(error){
 				console.log(error)
@@ -685,27 +732,45 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
 		
 });		
 app.controller('Modal3Controller', function ($scope, $http, $window, $state) {
-	$scope.reason = ""; 
-	$scope.prescribed = function (record) {
-	  var data = {
-		prescribeid_id: prescribeid,
-	  };
-     console.log(data)
-	  $http.post(api + 'getapproved/', data, {
-		withCredentials : true
-	  })
-		.then(function (response) {
-		  console.log(response);
-		  Swal.fire({
-			icon: 'success',
-			title: 'Edited...',
-			text: response.data.message
-		  });
-		})
-		.catch(function (error) {
-		  console.log(error);
-		});
-	};
+	// $scope.contacts = [];
+    // $scope.medicine = "";
+
+    // $scope.addfield = function(){
+    //     $scope.contacts.push({ medicine: $scope.medicine });
+    //     $scope.medicine = ""; // Clear the input field after adding
+    // };
+
+    // $scope.removeContactField = function(index){ 
+    //     $scope.contacts.splice(index, 1);
+    // };
+
+    // $scope.submit = function(prescribed) {
+    //     // Do something with the submitted data
+    // };
+
+	// $scope.submit = function (prescribed) {
+	//   var data = {
+	// 	id : $scope.record,
+	// 	medicines : $scope.medicine,
+	// 	dosages : $scope.dosage,
+	// 	time : $scope.timing
+	//   };
+    //  console.log(data)
+	//   $http.post(api + 'getapproved/', data, {
+	// 	withCredentials : true
+	//   })
+	// 	.then(function (response) {
+	// 	  console.log(response);
+	// 	  Swal.fire({
+	// 		icon: 'success',
+	// 		title: 'Submitted...',
+	// 		text: response.data.message
+	// 	  });
+	// 	})
+	// 	.catch(function (error) {
+	// 	  console.log(error);
+	// 	});
+	
 });
 
 app.controller('RecepDashboardController',function($scope,$http,$window,$state){
