@@ -102,7 +102,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 
 }]);
 
-var api = 'https://10.21.87.150:8000/healthcare/'
+var api = 'https://10.21.80.245:8000/healthcare/'
 
 app.controller('RegisterController',function($scope,$http,$window,$state){
 
@@ -555,9 +555,10 @@ app.controller('DoctAppointController',function($scope,$http,$window,$state){
 	$scope.reject = function(appoint){
 		dltid = appoint.pk
 	}
-	// $scope.edit = function(appoint){
-	// 	edtid = appoint.pk
-	// }
+
+	$scope.edit = function(appoint){
+		edtid = appoint.pk
+	}
 });
 
 	app.service('SharedDataService', function () {
@@ -624,6 +625,7 @@ app.controller('DoctAppointController',function($scope,$http,$window,$state){
 			title: 'Edited...',
 			text: response.data.message
 		  });
+		  $state.reload('Dashboard.Appointment')
 		})
 		.catch(function (error) {
 		  console.log(error);
@@ -650,7 +652,7 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
 
 		$scope.prescribed  = function(record){
 
-			var ids = {id : record.user}
+			var ids = {id : record.patient}
             console.log(ids)
 
 				$http.get(api + 'getmedicalhistory/',{params : ids,
@@ -667,11 +669,11 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
                 $scope.timing = "";
 				$scope.prescribed = {}
 
-                $scope.addfield = function(contac){
+                $scope.addfield = function(){
                     $scope.contacts.push({ 
-						medicine: $scope.contact.medicine,
-						dosage: $scope.contact.dosage,
-						timing: $scope.contact.timing
+						medicine: $scope.medicine,
+						dosage: $scope.dosage,
+						timing: $scope.timing
 					});
 					$scope.medicine = "";
                     $scope.dosage = "";
@@ -952,39 +954,39 @@ this.time = "";
 this.reason = ""; // Initialize the shared variable
 });
 
-app.controller('Modal2Controller', function ($scope, $http, $window, $state, SharedData2Service) {
-$scope.reason = ""; 
-$scope.reason = SharedData2Service.reason;
-// $scope.date = SharedData2Service.reason
-// $scope.time = SharedData2Service.reason
+// app.controller('Modal2Controller', function ($scope, $http, $window, $state, SharedData2Service) {
+// $scope.reason = ""; 
+// $scope.reason = SharedData2Service.reason;
+// // $scope.date = SharedData2Service.reason
+// // $scope.time = SharedData2Service.reason
 
-$scope.submit = function (appoint) {
-  var data = {
-	appointment_id: edtid,
-	new_appointmentDate: $scope.date, 
-	new_time : $scope.time,
-	reason : $scope.reason
-  };
-console.log(data)
-  $http.put(api + 'confirmappointment/', data, {
-	withCredentials : true
-  })
-	.then(function (response) {
-	  console.log(response);
-	  Swal.fire({
-		icon: 'success',
-		title: 'Edited...',
-		text: response.data.message
-	  });
-	})
-	.catch(function (error) {
-	  console.log(error);
-	});
+// $scope.submit = function (appoint) {
+//   var data = {
+// 	appointment_id: edtid,
+// 	new_appointmentDate: $scope.date, 
+// 	new_time : $scope.time,
+// 	reason : $scope.reason
+//   };
+// console.log(data)
+//   $http.put(api + 'confirmappointment/', data, {
+// 	withCredentials : true
+//   })
+// 	.then(function (response) {
+// 	  console.log(response);
+// 	  Swal.fire({
+// 		icon: 'success',
+// 		title: 'Edited...',
+// 		text: response.data.message
+// 	  });
+// 	})
+// 	.catch(function (error) {
+// 	  console.log(error);
+// 	});
 
-	SharedData2Service.time = "";
-	SharedData2Service.date = "";
-};
-});
+// 	SharedData2Service.time = "";
+// 	SharedData2Service.date = "";
+// };
+// });
 
 app.controller('RecepRecordController', function ($scope, $http, $window, $state) {
    $scope.records = [];

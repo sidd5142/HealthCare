@@ -1,70 +1,96 @@
- 
-<div ng-app="App" ng-controller="PersonalController">     
-<!-- <div class="col py-3"> -->
 
-    <h3 style="margin-left: 35%; margin-top: 3%;">Patient Information</h3>
-    
-    
-    <div class="card bg-white text-dark">
-    <!-- <div class="container"> -->
-        <div class="row row-cols-2 row-cols-lg-5" ng-repeat="patients in patient">
-            <div style="margin-left: 5%; margin-top: 3%;">
-                <h5> First Name :-</h5>
-          <div class="col">
-            <div class="p-3 border bg-light">{{patients.first_name}} </div>
-          </div>
+<style>
+  * {
+          padding: 0;
+          margin: 0;
+      }
+
+      .container {
+          height: 70%;
+          width: 100vw;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+      }
+
+      .container-1 {
+          background-color: #48444470;
+          /* background: transparent; */
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          /* opacity: 0.2; */
+          border: 1px solid gray;
+          box-shadow: 0px 0px 3px #ffffff95;
+          width: 320px;
+          height: 450px;
+          border-top-left-radius: 20px;
+          border-bottom-left-radius: 20px;
+      }
+
+      img {
+          height: 200px;
+          width: 200px;
+          border-radius: 50%;
+          opacity: 1;
+      }
+
+      .container-2 {
+          background-color: wheat;
+          width: 370px;
+          height: 450px;
+          font-size: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-top-right-radius: 20px;
+          border-bottom-right-radius: 20px;
+          border: 1px solid gray;
+          box-shadow: 0px 0px 3px #ffffff95;
+      }
+
+      input {
+          height: 20px;
+          width: 230px;
+      }
+
+      button {
+          height: 25px;
+          width: 75px;
+      }
+</style>
+</head>
+<body>
+
+  <body ng-app="myApp" ng-controller="PersonalController">
+  
+     
+              <div class="col">
+  
+                  <h1 style="text-align: center;margin: 3%;"><u>Personal Information</u></h1>
+
+              <div class="container" >
+                  <div class="container-1">
+                      <!-- <img src="./images/Businesswoman_at_computer.png" alt=""> -->
+                      <img src="https://png.pngtree.com/png-vector/20190629/ourmid/pngtree-agent-icon-for-your-project-png-image_1522113.jpg" alt="">
+                  </div>
+                  <div class="container-2" >
+                      <form action="" ng-repeat="patients in patient" style="margin-left: 6%;">
+                          <label for="name">Name :{{patients.first_name}} {{patients.last_name}}</label><br><br> 
+              
+                          <label for="phone">Age : {{patients.age}}</label><br><br>
+                          <label for="phone">Gender : {{patients.gender}}</label><br><br>
+                          <label for="phone">Phone : {{patients.contact}}</label><br><br>
+
+                          <label for="age">Address : {{patients.address}}</label> <br> 
+                      </form>
+                  </div>
+              </div>
             </div>
-            <div style="margin-left: 12%; margin-top: 3%;">
-                <h5>Last Name :-</h5>
-          <div class="col">
-            <div class="p-3 border bg-light">{{patients.last_name}}</div>
-          </div>
-            </div>
-    
-            <div style="margin-left: 12%; margin-top: 3%;">
-                <h5>Age :-</h5>
-          <div class="col">
-            <div class="p-3 border bg-light">{{patients.age}}</div>
-          </div>
-            </div>
-    
-            <div style="margin-top: 5%; margin-left: 5%;">
-                <h5>Gender :-</h5>
-          <div class="col">
-            <div class="p-3 border bg-light">{{patients.gender}}</div>
-          </div>
-            </div>
-    
-    
-            <div style="margin-left: 12%; margin-top: 5%;">
-                <h5>Phone Number :-</h5>
-          <div class="col">
-            <div class="p-3 border bg-light">{{patients.contact}}</div>
-          </div>
-        </div>
-    
-        <div style="margin-left: 12%; margin-top: 5%;">
-            <h5>City :-</h5>
-          <div class="col">
-            <div class="p-3 border bg-light">{{patients.address}}</div>
-          </div>
-        </div>
-    
-        <div style="margin-left: 5%; margin-top: 5%; margin-bottom: 2%;">
-            <h5>Reference Doctor :-</h5>
-          <div class="col">
-            <div class="p-3 border bg-light">###</div>
-          </div>
-        </div>
-    
-        <!-- <div style="margin-left: 12%; margin-top: 5%; margin-bottom: 2%;">
-            <h5>Blood Group :-</h5>
-          <div class="col">
-            <div class="p-3 border bg-light">{{patients.blood_group}}</div>
-          </div>
-        </div> -->
-      </div>
-    </div>
-    </div>
-</div>
-</div>
+   
+           </div>
+      
+      </div>   
+</body>
+</html>

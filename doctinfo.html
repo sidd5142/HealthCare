@@ -1,76 +1,99 @@
- 
-<div ng-app="App" ng-controller="DoctPersonalController">     
+
+  <style>
+    * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            height: 70%;
+            width: 100vw;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container-1 {
+            background-color: #48444470;
+            /* background: transparent; */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* opacity: 0.2; */
+            border: 1px solid gray;
+            box-shadow: 0px 0px 3px #ffffff95;
+            width: 320px;
+            height: 450px;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+        }
+
+        img {
+            height: 200px;
+            width: 200px;
+            border-radius: 50%;
+            opacity: 1;
+        }
+
+        .container-2 {
+            background-color: wheat;
+            width: 370px;
+            height: 450px;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            border: 1px solid gray;
+            box-shadow: 0px 0px 3px #ffffff95;
+        }
+
+        input {
+            height: 20px;
+            width: 230px;
+        }
+
+        button {
+            height: 25px;
+            width: 75px;
+        }
+  </style>
+</head>
+<body>
+
+    <body ng-app="myApp" ng-controller="DoctPersonalController">
     
-        <h3 style="margin-left: 35%; margin-top: 3%;">Doctor Information</h3>
-        
-        
-        <div class="card bg-white text-dark">
-        <!-- <div class="container"> -->
-            <div class="row row-cols-2 row-cols-lg-5" ng-repeat="info in doctinfo">
-                <div style="margin-left: 5%; margin-top: 3%;">
-                    <h5> First Name :-</h5>
-              <div class="col">
-                <div class="p-3 border bg-light">{{info.first_name}}</div>
-              </div>
-                </div>
-                <div style="margin-left: 12%; margin-top: 3%;">
-                    <h5>Last Name :-</h5>
-              <div class="col">
-                <div class="p-3 border bg-light">{{info.last_name}}</div>
-              </div>
-                </div>
-        
-                <div style="margin-left: 12%; margin-top: 3%;">
-                    <h5>Age :-</h5>
-              <div class="col">
-                <div class="p-3 border bg-light">{{info.age}}</div>
-              </div>
-                </div>
-        
-                <div style="margin-top: 5%; margin-left: 5%;">
-                    <h5>Gender :-</h5>
-              <div class="col">
-                <div class="p-3 border bg-light">{{info.gender}}</div>
-              </div>
-                </div>
-        
-        
-                <div style="margin-left: 12%; margin-top: 5%;">
-                    <h5>Phone Number :-</h5>
-              <div class="col">
-                <div class="p-3 border bg-light">{{info.contact}}</div>
-              </div>
-            </div>
-        
-            <div style="margin-left: 12%; margin-top: 5%;">
-                <h5>Address :-</h5>
-              <div class="col">
-                <div class="p-3 border bg-light">{{info.address}}</div>
-              </div>
-            </div>
-        
-            <div style="margin-left: 5%; margin-top: 5%; margin-bottom: 2%;">
-                <h5>Qualification :-</h5>
-              <div class="col">
-                <div class="p-3 border bg-light">{{info.qualification}}</div>
-              </div>
-            </div>
+       
+                <div class="col">
+    
+                    <h1 style="text-align: center;margin: 3%;"><u>Personal Information</u></h1>
 
-            <div style="margin-left: 12%; margin-top: 5%; margin-bottom: 2%;">
-                <h5>Department :-</h5>
-              <div class="col">
-                <div class="p-3 border bg-light">{{info.department__departments}}</div>
+                <div class="container" >
+                    <div class="container-1">
+                        <!-- <img src="./images/Businesswoman_at_computer.png" alt=""> -->
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRO7KsoOCL6RGPCvcEk-zDRlMRiKxlZoU0Ng&usqp=CAU" alt="">
+                    </div>
+                    <div class="container-2" >
+                        <form action="" ng-repeat="info in doctinfo" style="margin-left: 6%;">
+                            <label for="name">Name : {{info.first_name}} {{info.last_name}}</label><br> 
+                
+                            <label for="phone">Age : {{info.age}}</label><br>
+                            <label for="phone">Gender : {{info.gender}}</label><br>
+                            <label for="phone">Phone : {{info.contact}}</label><br>
+
+                            <label for="age">Address : {{info.address}}</label> <br> 
+                            <label for="age">Qualification : {{info.qualification}}</label> <br> 
+                            <label for="age">Department : {{info.department__departments}}</label> <br>
+                            <label for="age">DoctorFee : {{info.doctorFee}}</label> <br>            
+                        </form>
+                    </div>
+                </div>
               </div>
-            </div>  
+     
+             </div>
         
-            <div style="margin-left: 12%; margin-top: 5%; margin-bottom: 2%;">
-                <h5>Fees :-</h5>
-              <div class="col">
-                <div class="p-3 border bg-light">{{info.doctorFee}}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-      
+        </div>   
+</body>
+</html>
