@@ -111,6 +111,7 @@
                         <div class="row row-cols-2 row-cols-lg-3" >
                           <p ng-repeat="contact in contacts">
                               <input type="text" ng-model="contact.medicine" class="form-control mb-2" name="contact[]" placeholder="Medicine" />
+                              <input type="number" ng-model="contact.quantity" class="form-control mb-2" name="contact[]" placeholder="Quantity" />
                               <select class="form-select mb-2" ng-model="contact.dosage" style="width: 100%;" aria-label="Default select example">
                                 <option value="" selected disabled hidden>Dosage</option>      
                                 <option value="1 time a day">1 time a day</option>
@@ -127,9 +128,16 @@
                           </p>
                         </div>
                           <br>
-                          <button type="submit" class="btn btn-outline-danger" style="float: right;" ng-click="submit(prescribed)">Submit</button>
+                          <button type="submit" class="btn btn-outline-danger" style="float: right;" ng-click="submit(record)">Submit</button>
                       </div>
                   </form>
+                  <form style="margin: 3%;">
+                    <select class="form-select " ng-model="test" style="width: 100%;" aria-label="Default select example">
+                                <option value="" selected disabled hidden>Test to be done</option>                               
+                                <option value="Before a meal">Before a meal</option>
+                                <option value="After a meal">After a meal</option>
+                    </select>
+                    </form>
 
                   </div>
                         <!-- <div class="modal-footer">

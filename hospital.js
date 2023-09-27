@@ -195,7 +195,7 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 			username : $scope.username,
 			password : $scope.password
 	}
-	if($scope.password)
+	if($scope.password && $scope.username)
 	{
 	$http.post(api+'login/', data, {
 			// headers: {'Content-Type': undefined},
@@ -207,9 +207,6 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 
 		var msg = response.data.role
 		console.log(msg)
-		// $state.go('Dashboard');
-
-		// var msg = msgdata.role
 
 		if(msg === 'receptionist'){
 			$state.go('RecepDashboard')
@@ -225,11 +222,19 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 	  })
 	  .catch(function(error){
 		$window.alert(error);
+		Swal.fire({
+				icon: 'error',
+				title: 'Oops...',
+				text: 'Something went wrong..'
+			  })
 	  })
 	}
 	else{
-		$window.alert('Fields Are Empty');
-			// LoadingService.stopLoading();
+		Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: 'Fields are Empty.'
+		  })
 	}
 }
 });
@@ -665,17 +670,22 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
 
 				$scope.contacts = [];
                 $scope.medicine = "";
+				$scope.quantity = "";
 				$scope.dosage = "";
                 $scope.timing = "";
 				$scope.prescribed = {}
 
                 $scope.addfield = function(){
                     $scope.contacts.push({ 
+						doctor_id : record.doctor_id,
+						patient_id : record.patient_id,
 						medicine: $scope.medicine,
+						quantity: $scope.quantity,
 						dosage: $scope.dosage,
 						timing: $scope.timing
 					});
 					$scope.medicine = "";
+					$scope.quantity = "";
                     $scope.dosage = "";
                     $scope.timing = "";
                  };
@@ -685,12 +695,10 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
                 };
 
 	            $scope.submit = function () {
-	              var data = {
-	            	prescribed: $scope.prescribed,
-                    contacts: $scope.contacts
-	              };
-                 console.log(data)
-				 $http.post(api + 'prescribed/', data, {
+	            //   var data = {
+	            //   };
+                //  console.log(data)
+				 $http.post(api + 'prescribe/',$scope.contacts, {
 					withCredentials: true
 				 })
 				 .then(function(response){
@@ -703,7 +711,7 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
 					Swal.fire({
 						icon: 'error',
 						title: 'cancel...',
-						text: response.data.message
+						text: 'Something went wrong'
 					  })
 					})
 	            }
@@ -1051,3 +1059,20 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 			});
 		});
 });
+
+    app.controller('PrescriptionsController', function ($scope) {
+		$scope.download = function(){
+			html2canvas(document.getElementById('pdfdownload'), {
+				onrendered: function (canvas) {
+					var data = canvas.toDataURL();
+					var docDefinition = {
+						content: [{
+							image: data,
+							width: 500,
+						}]
+					};
+					pdfMake.createPdf(docDefinition).download("prescription.pdf");
+				}
+			});
+		 }
+	})
