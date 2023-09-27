@@ -15,7 +15,7 @@
         }
 
         .container-1 {
-            background-color: #48444470;
+            /* background-color: #48444470; */
             /* background: transparent; */
             display: flex;
             align-items: center;
@@ -23,10 +23,11 @@
             /* opacity: 0.2; */
             border: 1px solid gray;
             box-shadow: 0px 0px 3px #ffffff95;
+            border-color: greenyellow;
             width: 320px;
-            height: 450px;
-            border-top-left-radius: 20px;
-            border-bottom-left-radius: 20px;
+            height: 500px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
         }
 
         img {
@@ -37,15 +38,16 @@
         }
 
         .container-2 {
-            background-color: wheat;
+            /* background-color: wheat; */
             width: 370px;
-            height: 450px;
+            height: 500px;
             font-size: 20px;
             display: flex;
             justify-content: center;
+            border-color: greenyellow;
             align-items: center;
-            border-top-right-radius: 20px;
-            border-bottom-right-radius: 20px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
             border: 1px solid gray;
             box-shadow: 0px 0px 3px #ffffff95;
         }
@@ -77,15 +79,15 @@
                     </div>
                     <div class="container-2" >
                         <form action="" ng-repeat="info in doctinfo" style="margin-left: 6%;">
-                            <label for="name">Name : {{info.first_name}} {{info.last_name}}</label><br> 
+                            <label for="name">Name : {{info.first_name}} {{info.last_name}}</label><br> <br>
                 
-                            <label for="phone">Age : {{info.age}}</label><br>
-                            <label for="phone">Gender : {{info.gender}}</label><br>
-                            <label for="phone">Phone : {{info.contact}}</label><br>
+                            <label for="phone">Age : {{info.age}}</label><br><br>
+                            <label for="phone">Gender : {{info.gender}}</label><br><br>
+                            <label for="phone">Phone : {{info.contact}}</label><br><br>
 
-                            <label for="age">Address : {{info.address}}</label> <br> 
-                            <label for="age">Qualification : {{info.qualification}}</label> <br> 
-                            <label for="age">Department : {{info.department__departments}}</label> <br>
+                            <label for="age">Address : {{info.address}}</label> <br> <br>
+                            <label for="age">Qualification : {{info.qualification}}</label> <br> <br>
+                            <label for="age">Department : {{info.department__departments}}</label> <br><br>
                             <label for="age">DoctorFee : {{info.doctorFee}}</label> <br>            
                         </form>
                     </div>

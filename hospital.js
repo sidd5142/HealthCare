@@ -46,6 +46,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			templateUrl: 'records.html',
 			controller: 'RecordsController'
 		})
+		.state('Dashboard.Prescription', {
+            url: '/doctprescriptions',
+			templateUrl: 'prescription.html',
+			controller: 'PrescriptionsController'
+		})
 		.state('RecepDashboard', {
             url: '/recepdashboard',
 			templateUrl: 'receptionistdash.html',
@@ -91,12 +96,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			templateUrl: 'DoctRecord.html',
 			controller: 'DoctRecordController'
 		})
-		.state('DoctorDashboard.Prescriptions', {
-            url: '/doctprescriptions',
-			templateUrl: 'prescription.html',
-			controller: 'PrescriptionsController'
-		})
-
+		
 		$urlRouterProvider.otherwise('/home');
 		
 
@@ -959,42 +959,8 @@ app.controller('ModalController', function ($scope, $http, $window, $state, Shar
 app.service('SharedData2Service', function () {
 this.date = "";
 this.time = "";
-this.reason = ""; // Initialize the shared variable
+this.reason = ""; 
 });
-
-// app.controller('Modal2Controller', function ($scope, $http, $window, $state, SharedData2Service) {
-// $scope.reason = ""; 
-// $scope.reason = SharedData2Service.reason;
-// // $scope.date = SharedData2Service.reason
-// // $scope.time = SharedData2Service.reason
-
-// $scope.submit = function (appoint) {
-//   var data = {
-// 	appointment_id: edtid,
-// 	new_appointmentDate: $scope.date, 
-// 	new_time : $scope.time,
-// 	reason : $scope.reason
-//   };
-// console.log(data)
-//   $http.put(api + 'confirmappointment/', data, {
-// 	withCredentials : true
-//   })
-// 	.then(function (response) {
-// 	  console.log(response);
-// 	  Swal.fire({
-// 		icon: 'success',
-// 		title: 'Edited...',
-// 		text: response.data.message
-// 	  });
-// 	})
-// 	.catch(function (error) {
-// 	  console.log(error);
-// 	});
-
-// 	SharedData2Service.time = "";
-// 	SharedData2Service.date = "";
-// };
-// });
 
 app.controller('RecepRecordController', function ($scope, $http, $window, $state) {
    $scope.records = [];
@@ -1061,18 +1027,29 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 });
 
     app.controller('PrescriptionsController', function ($scope) {
-		$scope.download = function(){
-			html2canvas(document.getElementById('pdfdownload'), {
+		$scope.download = function () {
+			// Create an image object	
+			var image = new Image();
+	
+			// Set the source of the image
+			image.src = 'https://i.pinimg.com/736x/5c/1c/bb/5c1cbb117db80b6f52740f44bc54c5c3.jpg';
+	
+			// When the image is loaded, generate the PDF
+			image.onload = function () {
+			  html2canvas(document.getElementById('pdfdownload'), {
 				onrendered: function (canvas) {
-					var data = canvas.toDataURL();
-					var docDefinition = {
-						content: [{
-							image: data,
-							width: 500,
-						}]
-					};
-					pdfMake.createPdf(docDefinition).download("prescription.pdf");
-				}
-			});
-		 }
-	})
+				  var data = canvas.toDataURL();
+				  var docDefinition = {
+					content: [
+					  {
+						image: data,
+						width: 500,
+					  },
+					],
+				  };
+				  pdfMake.createPdf(docDefinition).download("prescription.pdf");
+				},
+			  });
+			};
+		  };
+		});
