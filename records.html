@@ -22,7 +22,8 @@
                 <th scope="col">Doctor Preffered</th>
                 <th scope="col">Department</th>
                 <th scope="col">Day of visit</th>
-                <th scope="col">Status</th>
+                <th scope="col">Symptoms</th>
+                <th scope="col">Checked Status</th>
                 <!-- <th scope="col">Payment</th> -->
                 <!-- <th scope="col">Prescription</th> -->
               </tr>
@@ -33,6 +34,7 @@
                 <td>{{patient.doctor__first_name + " " + patient.doctor__last_name}}</td>
                 <td>{{patient.department__departments}}</td>
                 <td>{{patient.appointmentDate}}</td>
+                <td>{{patient.symptoms}}</td>
                 <td>{{patient.checkup_status}}</td>
                 <!-- <td>{{patient.payment_status}}</td> -->
                 <!-- <td><button type="button" class="btn btn-primary btn-sm">Download</button>

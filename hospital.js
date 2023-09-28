@@ -51,6 +51,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			templateUrl: 'prescription.html',
 			controller: 'PrescriptionsController'
 		})
+		.state('Dashboard.History', {
+            url: '/medicalhistory',
+			templateUrl: 'medicalhistory.html',
+			controller: 'MedicalController'
+		})
 		.state('RecepDashboard', {
             url: '/recepdashboard',
 			templateUrl: 'receptionistdash.html',
@@ -357,8 +362,19 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 			$scope.categories = response.data;
 			console.log($scope.categories);
 		})
-	}	
+	}
+	    $scope.slots = [];
 
+	    $scope.selectcat = function(category){
+			$http.get(api + 'slots/', {params : {doctor_id : category.pk} , 
+			withCredentials:true})
+		
+		.then(function(response){
+			$scope.slots = response.data;
+			console.log(response.data)
+		}
+		)
+	}
 		})
 		.catch(function(error){
 			console.log(error)
@@ -371,7 +387,8 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 			appointmentDate : $scope.date,
 			department_id : $scope.selectdepartment,
 			doctor_id : $scope.selectcategory,
-			// doctor_id : $scope.selectdoctor,
+			symptoms : $scope.symptoms,
+			payment_status : $scope.payment,
 			time : $scope.time
 		}
 		console.log(appointdata)
@@ -434,8 +451,6 @@ app.controller('DashboardController',function($scope,$http,$window,$state){
          console.log(response);
 		 $scope.patient = response.data
 		 console.log($scope.patient)
-		 console.log($scope.patient[0].first_name)
-
 	})
 	.catch(function(error){
 		Swal.fire({
@@ -675,7 +690,7 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
                 $scope.timing = "";
 				$scope.prescribed = {}
 
-                $scope.addfield = function(){
+                $scope.add = function(){
                     $scope.contacts.push({ 
 						doctor_id : record.doctor_id,
 						patient_id : record.patient_id,
@@ -1026,30 +1041,85 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 		});
 });
 
-    app.controller('PrescriptionsController', function ($scope) {
+    app.controller('PrescriptionsController', function ($scope, $http, $window, $state) {
+        $scope.doctors = [];
+
+		$http.get(api + 'getprescription/', {
+			withCredentials:true
+		})
+		.then(function (response) {
+			console.log(response.data);
+			$scope.doctors = response.data
+		})
+		.catch(function (error) {
+			console.log(error);
+			Swal.fire({
+				icon: 'error',
+				title: 'Error...',
+				text: 'Something went wrong'
+				});
+		})
+	// 	$scope.prescription=[];
+
+	// 	$http.get(api + 'getprescription/', {
+	// 		withCredentials: true
+	// 	})
+	// 	.then(function (response) {
+	// 		console.log(response);
+	// 		$scope.prescription = response.data
+	// 		console.log($scope.prescription)
+	// 		})
+	// 		.catch(function (error) {
+	// 		console.log(error);
+	// 		Swal.fire({
+	// 			icon: 'error',
+	// 			title: 'Error...',
+	// 			text: 'Something went wrong'
+	// 			});
+	// 		});
+
 		$scope.download = function () {
-			// Create an image object	
-			var image = new Image();
-	
-			// Set the source of the image
-			image.src = 'https://i.pinimg.com/736x/5c/1c/bb/5c1cbb117db80b6f52740f44bc54c5c3.jpg';
-	
-			// When the image is loaded, generate the PDF
-			image.onload = function () {
-			  html2canvas(document.getElementById('pdfdownload'), {
-				onrendered: function (canvas) {
-				  var data = canvas.toDataURL();
-				  var docDefinition = {
-					content: [
-					  {
-						image: data,
-						width: 500,
-					  },
-					],
-				  };
-				  pdfMake.createPdf(docDefinition).download("prescription.pdf");
-				},
-			  });
-			};
+		
+			const printContent = document.getElementById("pdfdownload");
+            const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
+            WindowPrt.document.write(printContent.innerHTML);
+            WindowPrt.document.close();
+            WindowPrt.focus();
+            WindowPrt.print();
+            WindowPrt.close();
 		  };
 		});
+
+		app.controller('MedicalController', function ($scope, $http, $window, $state) {
+
+			$scope.submit = function(){
+				var report = {
+					height : $scope.height,
+					weight : $scope.weight,
+					blood_group : $scope.blood_group,
+					smoker : $scope.smoker,
+					alcoholic : $scope.alcoholic
+				}
+				console.log(report)
+
+			$http.post(api + 'medicalhistory/', report,{
+				withCredentials:true
+			})
+			.then(function (response) {
+				console.log(response);
+				Swal.fire({
+					icon: 'success',
+					title: 'Done...',
+					text: response.data.message
+					});
+		    })
+			.catch(function (error) {
+				console.log(error);
+				Swal.fire({
+					icon: 'error',
+					title: 'Error...',
+					text: 'Something went wrong'
+					});
+			})
+	     }
+    })

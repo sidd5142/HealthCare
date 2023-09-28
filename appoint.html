@@ -11,7 +11,7 @@
                 <h5> Date</h5>
           <div class="col">
             <div class="input-group flex-nowrap">
-              <input type="text" class="p-3 form-control border" ng-model="date" placeholder="Date" aria-label="date" aria-describedby="addon-wrapping">
+              <input type="date" class="p-3 form-control border" ng-model="date"  aria-label="date" aria-describedby="addon-wrapping">
             </div>
             </div>
             </div>
@@ -19,7 +19,7 @@
                 <h5>Department :-</h5>
                 <div class="input-group flex-nowrap">
                   <select class="p-3 form-select " ng-model="selectdepartment" style="width: 100%;" aria-label="Default select example">
-                    <option selected>Select Department</option>
+                    <option value="" selected disabled hidden>Department</option>                               
                     <option value="{{depart.id}}" ng-repeat="depart in departs" ng-click="selectdeapart(depart)">{{depart.departments}}</option>
                       </select>                
                  </div>
@@ -31,7 +31,7 @@
                 <div class="input-group flex-nowrap">
                   <select class="p-3 form-select " ng-model="selectcategory" style="width: 100%;" aria-label="Default select example">
                     <option value="" selected disabled hidden>Select Doctor</option>                               
-                    <option value="{{category.pk}}" ng-repeat="category in categories">Dr. {{category.first_name + ' ' + category.last_name}}</option>
+                    <option value="{{category.pk}}" ng-repeat="category in categories" ng-click="selectcat(category)">Dr. {{category.first_name + ' ' + category.last_name}}</option>
                   </select>                
                  </div>
             </div>
@@ -41,17 +41,39 @@
               <div class="input-group flex-nowrap">
                 <select class="p-3 form-select " ng-model="time" style="width: 100%;" aria-label="Default select example">
                   <option value="" selected disabled hidden>Choose a Slot</option>                               
-                  <option value="9 to 12" >9am to 12 noon</option>
-                  <option value="5 to 8" >5pm to 8 pm</option>
+                  <option value="{{slot.slots}}" ng-repeat="slot in slots">{{slot.slots}}</option>
                 </select>                
                </div>
           </div>
-  
-    
-    
-         </div>
-         <button type="button" class="btn btn-success mb-3" ng-click="appoint()" style="margin-left: 45%; width: 15%; height: 50px;">Book Appointment</button>
-          
-         </div>
+
+          <div style="margin-top: 3%; margin-left: 8%;">
+            <h5>Payment :-</h5>
+            <div class="input-group flex-nowrap">
+              <select class="p-3 form-select " ng-model="payment" style="width: 100%;" aria-label="Default select example" required>
+                <option value="" selected disabled hidden>Payment</option>                               
+                <option value="confirm" >Confirm</option>
+              </select>                
+             </div>
+        </div>
+
+        <div style=" margin-top: 3%; margin-left: 8%;">
+          <h5>Symptoms :- </h5>
+      <div class="col">
+      <div class="input-group flex-nowrap">
+        <input type="text" class="p-3 form-control border" ng-model="symptoms" placeholder="Symptoms" aria-label="date" aria-describedby="addon-wrapping">
+      </div>
+      </div>
+     </div>
+
+     <div style="margin-left: 45%; margin-top: 2%; margin-bottom: 2%;">
+      <button class="btn btn-outline-danger" ng-click="appoint()" style="height: 50px;">Appointment</button>
+     </div>
+
     <!-- </div> -->
  </div>
+
+
+ 
+ 
+ </div>
+ 
