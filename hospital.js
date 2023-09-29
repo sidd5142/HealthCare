@@ -56,6 +56,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			templateUrl: 'medicalhistory.html',
 			controller: 'MedicalController'
 		})
+		.state('Dashboard.Receipt', {
+			url: '/receipt',
+			templateUrl: 'payment.html',
+			controller: 'PaymentController'
+		})
 		.state('RecepDashboard', {
             url: '/recepdashboard',
 			templateUrl: 'receptionistdash.html',
@@ -107,7 +112,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 
 }]);
 
-var api = 'https://10.21.80.245:8000/healthcare/'
+var api = 'https://10.21.81.226:8000/healthcare/'
 
 app.controller('RegisterController',function($scope,$http,$window,$state){
 
@@ -690,7 +695,7 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
                 $scope.timing = "";
 				$scope.prescribed = {}
 
-                $scope.add = function(){
+                $scope.addfield = function(){
                     $scope.contacts.push({ 
 						doctor_id : record.doctor_id,
 						patient_id : record.patient_id,
@@ -710,16 +715,24 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
                 };
 
 	            $scope.submit = function () {
-	            //   var data = {
-	            //   };
-                //  console.log(data)
-				 $http.post(api + 'prescribe/',$scope.contacts, {
+	              var data = {
+					appointment_id : 1,
+					prescribed : $scope.contacts
+	              };
+
+                 console.log(data)
+				 $http.post(api + 'prescribe/',data, {
 					withCredentials: true
 				 })
 				 .then(function(response){
 					console.log(response)
 					$scope.press = response.data
 					console.log($scope.press)
+					Swal.fire({
+						icon: 'success',
+						title: response.statusText,
+						text: response.data.message
+						});
 				 })
 				 .catch(function(error){
 					console.log(error)
@@ -1041,7 +1054,7 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 		});
 });
 
-    app.controller('PrescriptionsController', function ($scope, $http, $window, $state) {
+    app.controller('PrescriptionsController', function ($scope, $http) {
         $scope.doctors = [];
 
 		$http.get(api + 'getprescription/', {
@@ -1050,6 +1063,7 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 		.then(function (response) {
 			console.log(response.data);
 			$scope.doctors = response.data
+			
 		})
 		.catch(function (error) {
 			console.log(error);
@@ -1059,24 +1073,34 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 				text: 'Something went wrong'
 				});
 		})
-	// 	$scope.prescription=[];
+		$scope.prescription=[];
 
-	// 	$http.get(api + 'getprescription/', {
-	// 		withCredentials: true
-	// 	})
-	// 	.then(function (response) {
-	// 		console.log(response);
-	// 		$scope.prescription = response.data
-	// 		console.log($scope.prescription)
-	// 		})
-	// 		.catch(function (error) {
-	// 		console.log(error);
-	// 		Swal.fire({
-	// 			icon: 'error',
-	// 			title: 'Error...',
-	// 			text: 'Something went wrong'
-	// 			});
-	// 		});
+		$scope.view = function(doctor) {
+			$scope.prescription = [];
+
+			var data = {
+				patient_id : doctor.patient,
+				prescription_date : '2023-09-27'
+			}
+			console.log(data);
+
+		$http.post(api + 'generateprescription/',data, {
+			withCredentials: true
+		})
+		.then(function (response) {
+			console.log(response);
+			$scope.prescription = response.data
+			console.log($scope.prescription)
+			})
+			.catch(function (error) {
+			console.log(error);
+			Swal.fire({
+				icon: 'error',
+				title: 'Error...',
+				text: 'Something went wrong'
+				});
+			});
+		}
 
 		$scope.download = function () {
 		
@@ -1123,3 +1147,61 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 			})
 	     }
     })
+
+	app.controller('PaymentController', function ($scope, $http, $sce, $window, $state) {
+		// $scope.pdf = [];
+		// var data = {appointment_id : 1}
+		// $http.get(api + 'generatepdf/' ,{ params : data, 
+		// 	withCredentials:true
+		// })
+		// .then(function (response) {
+		// 	console.log(response)
+		// 	$scope.pdf = response.data
+
+		// })
+		// .catch(function (error) {
+		// 	console.log(error);
+		// })
+
+
+		// $scope.pdfdownload = function(){
+		// 	const printContent = document.getElementById("pdfdown");
+        //     const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
+        //     WindowPrt.document.write(printContent.innerHTML);
+        //     WindowPrt.document.close();
+        //     WindowPrt.focus();
+        //     WindowPrt.print();
+        //     WindowPrt.close();
+		// 	}
+
+		$scope.pdf = [];
+var data = { appointment_id: 1 };
+
+$http.get(api + 'generatepdf/', {
+    params: data,
+	headers: {'Content-Type': undefined},
+    withCredentials: true
+})
+.then(function(response) {
+    console.log(response);
+    $scope.pdf = response.data;
+	$scope.show = function() {
+
+		$scope.htmlContent = $sce.trustAsHtml(response.data);
+			}
+})
+.catch(function(error) {
+    console.log(error);
+});
+    
+    $scope.download = function() {
+		const printContent = document.getElementById("pdfdownload");
+            const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
+            WindowPrt.document.write(printContent.innerHTML);
+            WindowPrt.document.close();
+            WindowPrt.focus();
+            WindowPrt.print();
+            WindowPrt.close();
+	}
+
+	})

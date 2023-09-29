@@ -23,116 +23,83 @@
 
                           <div class="card h-100" style="border-color: brown;">
                            <div class="card-body" >
+                            <div >
                             <h4>Checkup Date : {{doctor.checkup_date}}</h4>
                             <br>
                              <h5>Name : Dr. {{doctor.doctor__first_name + " " + doctor.doctor__last_name}}</h5>  
                              <br>
                              <h6>Department : {{doctor.doctor__department__departments}}</h6> 
                              <br>
-                             <button class="btn btn-outline-danger" ng-click="download()" style="margin-bottom: 1%;">Download</button>
+                            </div>
 
-                             <div id="pdfdownload" ng-show="false">
-                              <div class="card text-center">
-                              <div class="card-header" style="font-size: 25px;">
-                                Prescription
-                              </div>
-                              <div class="card-body">
-                                <img class="img" src="https://i.pinimg.com/736x/5c/1c/bb/5c1cbb117db80b6f52740f44bc54c5c3.jpg" alt="" width="250" height="200">
-                                <div class="text" style="margin-top: 3%;"> 
-                                <label ><h3>Doctor Name : {{}}</h3></label> <br><br>
-                                <label ><h5>Qualification : {{}}</h5></label> <br><br>
-                                <label ><h5>Contact No. : {{}}</h5></label>
-                                </div>
-                              </div>
-                              <hr>
-                            </div>
-                            <form style="margin-top: 3%;">  
-                              <div class="row row-cols-2 row-cols-lg-3">
-                                <table class="table caption-top">
-                                  <thead class="bg-dark">
-                                    <tr>
-                                      <th scope="col">Index</th>
-                                      <th scope="col">Doctor Preffered</th>
-                                      <th scope="col">Department</th>
-                                      <th scope="col">Day of visit</th>
-                                      <th scope="col">Status</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr ng-repeat="patient in prescription">
-                                      <th scope="row">{{$index + 1}}</th>
-                                      <td>{{patient.doctor__first_name + " " + patient.doctor__last_name}}</td>
-                                      <td>{{patient.department__departments}}</td>
-                                      <td>{{patient.appointmentDate}}</td>
-                                      <td>{{patient.checkup_status}}</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                               </div>
-                              </form>
-                            </div>
-                             
-                             <!-- <button type="button" style="float: right;" ng-click="download()" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#myModal">Download</button>  -->
-                             <!-- <div class="modal" id="myModal">
-                              <div class="modal-dialog modal-xl">
-                                <div class="modal-content">
+
+                             <button class="btn btn-outline-danger" ng-click="view(doctor)" style="margin-bottom: 1%;" data-bs-toggle="modal" data-bs-target="#myModal">View</button>
+
+                             <div class="modal" id="myModal">
+                              <div class="modal-dialog">
+                                <div class="modal-content modal-lg">
                             
-                                  <div class="modal-header">
+                                  <!-- <div class="modal-header">
                                     <h4 class="modal-title">Modal Heading</h4>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                  </div>
+                                  </div> -->
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
                             
                                   <div class="modal-body">
-                                    <button class="btn btn-outline-danger" ng-click="download()" style="margin-bottom: 1%;">Download</button>
-   <div id="pdfdownload">
-  <div class="card text-center">
-  <div class="card-header" style="font-size: 25px;">
-    Prescription
-  </div>
-  <div class="card-body">
-    <img class="img" src="https://i.pinimg.com/736x/5c/1c/bb/5c1cbb117db80b6f52740f44bc54c5c3.jpg" alt="" width="250" height="200">
-    <div class="text" style="margin-top: 3%;"> 
-    <label ><h3>Doctor Name : {{}}</h3></label> <br><br>
-    <label ><h5>Qualification : {{}}</h5></label> <br><br>
-    <label ><h5>Contact No. : {{}}</h5></label>
-    </div>
-  </div>
-  <hr>
-</div>
-<form style="margin-top: 3%;">  
-  <div class="row row-cols-2 row-cols-lg-3">
-    <table class="table caption-top">
-      <thead class="bg-dark">
-        <tr>
-          <th scope="col">Index</th>
-          <th scope="col">Doctor Preffered</th>
-          <th scope="col">Department</th>
-          <th scope="col">Day of visit</th>
-          <th scope="col">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="patient in prescription">
-          <th scope="row">{{$index + 1}}</th>
-          <td>{{patient.doctor__first_name + " " + patient.doctor__last_name}}</td>
-          <td>{{patient.department__departments}}</td>
-          <td>{{patient.appointmentDate}}</td>
-          <td>{{patient.checkup_status}}</td>
-        </tr>
-      </tbody>
-    </table>
-   </div>
-  </form>
-</div>
-
-
+                                   
+                                    <div id="pdfdownload">
+                                      <div class="card text-center">
+                                      <div class="card-header" style="font-size: 25px;">
+                                        Prescription
+                                      </div>
+                                      <div class="card-body">
+                                        <img class="img" src="https://i.pinimg.com/736x/5c/1c/bb/5c1cbb117db80b6f52740f44bc54c5c3.jpg" alt="" width="250" height="200">
+                                        <div class="text" style="margin-top: 3%;" ng-repeat="doctor in prescription"> 
+                                        <label ><h3>Doctor Name : {{doctor.doctor__first_name + " " + doctor.doctor__last_name }}</h3></label> <br><br>
+                                        <label ><h5>Qualification : {{}}</h5></label> <br><br>
+                                        <label ><h5>Contact No. : {{}}</h5></label>
+                                        </div>
+                                      </div>
+                                      <hr>
+                                    </div>
+                                    
+                                    <form style="margin-top: 3%;">  
+                                      <div class="row row-cols-2 row-cols-lg-3">
+                                        <table class="table caption-top">
+                                          <thead class="bg-dark">
+                                            <tr>
+                                              <th scope="col">Index</th>
+                                              <th scope="col">Medicine</th>
+                                              <th scope="col">Dosage</th>
+                                              <th scope="col">Quantity</th>
+                                              <th scope="col">Checkup Date</th>
+                                              <th scope="col">Timing</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr ng-repeat="patient in prescription">
+                                              <th scope="row">{{$index + 1}}</th>
+                                              <td>{{patient.medicine}}</td>
+                                              <td>{{patient.dosage}}</td>
+                                              <td>{{patient.quantity}}</td>
+                                              <td>{{patient.prescription_date}}</td>
+                                              <td>{{patient.timing}}</td>
+                                            </tr>
+                                          </tbody>
+                                        </table>
+                                       </div>
+                                      </form>
+                                      
+                                    </div>
+                                    <div>
+                                      <button type="button" class="btn btn-danger" ng-click="download()">Download</button>
+                                    </div> 
+                                    
                                   </div>
-                            
-                                 
-                            
                                 </div>
-                               </div>
-                              </div> -->
+                              </div>
+                            </div>                    
                             </div>
                           </div>
                        </div>
@@ -143,55 +110,5 @@
           </div>
         </div>
       </div>
-                    
-  
-  
-  
-  <!-- <style>
-   .img {
-    float: left;
-   }
-   
-  </style>
-  <button class="btn btn-outline-danger" ng-click="download()" style="margin-bottom: 1%;">Download</button>
-   <div id="pdfdownload">
-  <div class="card text-center">
-  <div class="card-header" style="font-size: 25px;">
-    Prescription
-  </div>
-  <div class="card-body">
-    <img class="img" src="https://i.pinimg.com/736x/5c/1c/bb/5c1cbb117db80b6f52740f44bc54c5c3.jpg" alt="" width="250" height="200">
-    <div class="text" style="margin-top: 3%;"> 
-    <label ><h3>Doctor Name : {{}}</h3></label> <br><br>
-    <label ><h5>Qualification : {{}}</h5></label> <br><br>
-    <label ><h5>Contact No. : {{}}</h5></label>
-    </div>
-  </div>
-  <hr>
-</div>
-<form style="margin-top: 3%;">  
-  <div class="row row-cols-2 row-cols-lg-3">
-    <table class="table caption-top">
-      <thead class="bg-dark">
-        <tr>
-          <th scope="col">Index</th>
-          <th scope="col">Doctor Preffered</th>
-          <th scope="col">Department</th>
-          <th scope="col">Day of visit</th>
-          <th scope="col">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="patient in prescription">
-          <th scope="row">{{$index + 1}}</th>
-          <td>{{patient.doctor__first_name + " " + patient.doctor__last_name}}</td>
-          <td>{{patient.department__departments}}</td>
-          <td>{{patient.appointmentDate}}</td>
-          <td>{{patient.checkup_status}}</td>
-        </tr>
-      </tbody>
-    </table>
-   </div>
-  </form>
-</div>
- -->
+      
+      
