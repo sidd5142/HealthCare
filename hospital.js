@@ -106,6 +106,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			templateUrl: 'DoctRecord.html',
 			controller: 'DoctRecordController'
 		})
+		.state('DoctorDashboard.CheckedPatient', {
+            url: '/doctcheckedpatient',
+			templateUrl: 'doctcheckedpat.html',
+			controller: 'DoctCheckedPatientController'
+		})
 		
 		$urlRouterProvider.otherwise('/home');
 		
@@ -191,8 +196,176 @@ app.controller('RegisterController',function($scope,$http,$window,$state){
 });
 
 app.controller('HomePageController',function($scope,$http,$window,$state){
+	$scope.total = []; 
+	 
+	$http.get(api + 'mapdata/', {
+		withCredentials:true
+	})
+	.then(function(response){
+		console.log(response.data)
+		var data = response.data;
+        // Extract data from the response
+        var totalDoctor = data.total_doctor;
+        var totalPatient = data.total_patient;
+        var totalDepartments = data.total_departments;
+        var totalAppointments = data.total_appointments;
+
+		const xValues = ["Doctor", "Patient", "Appointment", "Department"];
+		const yValues = [totalDoctor, totalPatient, totalAppointments, totalDepartments];
+		const barColors = ["red", "green","blue","orange"];
+
+		new Chart("myChart", {
+			type: "bar",
+			data: {
+			  labels: xValues,
+			  datasets: [{
+				backgroundColor: barColors,
+				data: yValues
+			  }]
+			},
+			options: {
+			  legend: {display: false},
+			  title: {
+				display: true,
+				text: "Hospital Data"
+			  }
+			}
+		  });
+
+      
+		  var options = {
+			series: yValues,
+			chart: {
+			width: 380,
+			type: 'donut',
+			dropShadow: {
+			  enabled: true,
+			  color: '#111',
+			  top: -1,
+			  left: 3,
+			  blur: 3,
+			  opacity: 0.2
+			}
+		  },
+		  stroke: {
+			width: 0,
+		  },
+		  plotOptions: {
+			pie: {
+			  donut: {
+				labels: {
+				  show: true,
+				  total: {
+					showAlways: true,
+					show: true
+				  }
+				}
+			  }
+			}
+		  },
+		  labels: xValues,
+		  dataLabels: {
+			dropShadow: {
+			  blur: 3,
+			  opacity: 0.8
+			}
+		  },
+		  fill: {
+		  type: 'pattern',
+			opacity: 1,
+			pattern: {
+			  enabled: true,
+			  style: ['verticalLines', 'squares', 'horizontalLines', 'circles','slantedLines'],
+			},
+		  },
+		  states: {
+			hover: {
+			  filter: 'none'
+			}
+		  },
+		  theme: {
+			palette: 'palette2'
+		  },
+		  title: {
+			text: "Hospital Data"
+		  },
+		  responsive: [{
+			breakpoint: 480,
+			options: {
+			  chart: {
+				width: 200
+			  },
+			  legend: {
+				position: 'bottom'
+			  }
+			}
+		  }]
+		  };
+
+		  var chart = new ApexCharts(document.querySelector("#chart"), options);
+		  chart.render();
+
+
+
+
+        // Create chart data
+        // $scope.chartData = {
+        //     "cols": [
+        //         { id: "t", label: "Category", type: "string" },
+        //         { id: "s", label: "Value", type: "number" }
+        //     ],
+        //     "rows": [
+        //         { c: [{ v: "Doctors" }, { v: totalDoctor }] },
+        //         { c: [{ v: "Patients" }, { v: totalPatient }] },
+        //         { c: [{ v: "Departments" }, { v: totalDepartments }] },
+        //         { c: [{ v: "Appointments" }, { v: totalAppointments }] }
+        //     ]
+        // };
+
+        // // Chart options
+        // $scope.chartOptions = {
+        //     'title': 'Chart Title',
+        //     'width': 400,
+        //     'height': 300
+        // };
+    })
+	.catch(function(error){
+		console.log(error)
+	})
+
+})
 	
-});
+
+
+// 	$http.get('/your-server-endpoint-url').then(function (response) {
+// 		var data = response.data;
+// 		// Extract data from the response
+// 		var totalDoctor = data.total_doctor;
+// 		var totalPatient = data.total_patient;
+// 		var totalDepartments = data.total_departments;
+// 		var totalAppointments = data.total_appointments;
+
+// 		// Create a chart data array
+// 		$scope.chartObject = {};
+// 		$scope.chartObject.type = 'BarChart'; // You can change the chart type
+// 		$scope.chartObject.data = {
+// 			cols: [
+// 				{ id: 'category', label: 'Category', type: 'string' },
+// 				{ id: 'value', label: 'Value', type: 'number' },
+// 			],
+// 			rows: [
+// 				{ c: [{ v: 'Doctors' }, { v: totalDoctor }] },
+// 				{ c: [{ v: 'Patients' }, { v: totalPatient }] },
+// 				{ c: [{ v: 'Departments' }, { v: totalDepartments }] },
+// 				{ c: [{ v: 'Appointments' }, { v: totalAppointments }] },
+// 			],
+// 		};
+// 		$scope.chartObject.options = {
+// 			title: 'Chart Title',
+// 		};
+// 	});
+// }); 
+
 
 app.controller('LogInController',function($scope,$http,$window,$state){
 	$scope.LoginForm = function(){
@@ -218,8 +391,8 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 		var msg = response.data.role
 		console.log(msg)
 
-		if(msg === 'receptionist'){
-			$state.go('RecepDashboard')
+		if(msg === 'Receptionist'){
+			$state.go('RecepDashboard.Doctor')
 		}
 		else if(msg === 'Doctor') 
         {
@@ -466,13 +639,27 @@ app.controller('DashboardController',function($scope,$http,$window,$state){
 	})
 
 	$scope.logout = function(){
-	
+		$http.get(api+'logout/',{
+			withCredentials: true
+		})
+		.then(function(response){
+			console.log(response);
+			Swal.fire({
+				icon: 'success',
+				title: response.statusText,
+				text: response.data.message
+			  })
+			$state.go('Login')
+		})
+		.catch(function(error){
+			console.log(error);
+		})
 	}
 
 	
 });
 
-app.controller('RecordsController',function($scope,$http,$window,$state){
+app.controller('RecordsController',function($scope,$http,$window,$state,$sce){
 		$scope.record = [];
 
 		$http.get(api+'getprappoint/' , {
@@ -482,6 +669,7 @@ app.controller('RecordsController',function($scope,$http,$window,$state){
 			console.log(response);
 			$scope.record = response.data
 			console.log($scope.record)
+			console.log(response.data.pk)
 		})
 		.catch(function(error){
 			console.log(error)
@@ -509,6 +697,39 @@ app.controller('RecordsController',function($scope,$http,$window,$state){
 			window.URL.revokeObjectURL(url);
 			document.body.removeChild(a);
 		};
+
+       $scope.view = function(patient){
+		$scope.pdf = [];
+          var data = { appointment_id: patient.pk };
+          console.log(data);
+          $http.get(api + 'generatepdf/', {
+              params: data,
+          	headers: {'Content-Type': undefined},
+              withCredentials: true
+          })
+          .then(function(response) {
+              console.log(response);
+              $scope.pdf = response.data;
+          	$scope.show = function() {
+          
+          		$scope.htmlContent = $sce.trustAsHtml($scope.pdf);
+        	}
+          })
+          .catch(function(error) {
+              console.log(error);
+          });
+    
+    $scope.download = function() {
+		const printContent = document.getElementById("pdfdownload");
+            const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
+            WindowPrt.document.write(printContent.innerHTML);
+            WindowPrt.document.close();
+            WindowPrt.focus();
+            WindowPrt.print();
+            WindowPrt.close();
+	}
+	// $state.reload('Dashboard.Records')
+  }
 });
 
 // app.controller('ReceptionistController',function($scope,$http,$window,$state){
@@ -523,6 +744,26 @@ app.controller('DoctorDashboardController',function($scope,$http,$window,$state)
 		console.log(response)
 		$scope.panel = response.data
 	})
+
+	$scope.logout = function(){
+		// var id = $scope.patient_id
+		$http.get(api+'logout/',{
+			withCredentials: true
+		})
+		.then(function(response){
+			console.log(response);
+			Swal.fire({
+				icon: 'success',
+				title: response.statusText,
+				text: response.data.message
+			  })
+			$state.go('Login')
+		})
+		.catch(function(error){
+			console.log(error);
+		})
+	}
+
 });
 
 app.controller('DoctPersonalController',function($scope,$http,$window,$state){
@@ -602,27 +843,28 @@ app.controller('DoctAppointController',function($scope,$http,$window,$state){
 		this.reasonInput = ""; // Initialize the shared variable
 	});
 
-	app.controller('ModalController', function ($scope, $http, $window, $state, SharedDataService) {
+	app.controller('ModalDeleteController', function ($scope, $http, $window, $state, SharedDataService) {
 		$scope.reasonInput = ""; 
 		$scope.reasonInput = SharedDataService.reasonInput;
 
-		$scope.submit = function (appoint) {
+		$scope.submit = function() {
 		  var data = {
 			appointment_id: dltid,
 			reason: $scope.reasonInput, 
 		  };
 	  console.log(data)
-		  $http.delete(api + 'confirmappointment/', {params : data ,
+		  $http.delete(api + 'confirmappointment/',{params : data ,
 			withCredentials : true
-		  })
+		  }) 
 			.then(function (response) {
 			  console.log(response);
 			  Swal.fire({
 				icon: 'success',
-				title: 'Deleted...',
-				text: 'Appointment Deleted'
+				title: response.data.statusText,
+				text: response.data.message
 			  });
 			  $scope.reasonInput = "";
+			  $state.reload('Dashboard.Appointment')
 			})
 			.catch(function (error) {
 			  console.log(error);
@@ -680,7 +922,7 @@ app.service('SharedData3Service', function () {
 app.controller('ModalRecordController', function ($scope) {    
 });
 
-var prescribeid = {};
+var appointid = {};
 
 app.controller('DoctRecordController',function($scope,$http,$window,$state,SharedData3Service){
 	$scope.doctrecord = [];
@@ -696,7 +938,8 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state,Share
 
 		$scope.prescribed  = function(record){
 
-			var ids = {id : record.patient}
+			appointid = record.pk
+			var ids = {id : record.patient_id}
             console.log(ids)
 
 				$http.get(api + 'getmedicalhistory/',{params : ids,
@@ -727,7 +970,7 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state,Share
 
                 $scope.addfield = function(){
                     $scope.contacts.push({
-					    test : $scope.reporttest, 
+					    // test : $scope.reporttest, 
 						doctor_id : record.doctor_id,
 						patient_id : record.patient_id,
 						medicine: $scope.medicine,
@@ -745,9 +988,9 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state,Share
                     $scope.contacts.splice(index, 1);
                 };
 
-	            $scope.submit = function () {
+	            $scope.submit = function() {
 	              var data = {
-					appointment_id : 1,
+					appointment_id : appointid,
 					prescribed : $scope.contacts
 	              };
 
@@ -781,7 +1024,7 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state,Share
 				Swal.fire({
 					icon: 'error',
 					title: 'cancel...',
-					text: response.data.message
+					text: 'Error'
 				  })
 				})
 		}
@@ -797,61 +1040,48 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state,Share
 		  })
 		})
 
-		// $scope.downpdf = function(){
-		// 		const pdf = new jsPDF();
-		// 		const resumeContent = document.getElementById('myModal2'); // Replace 'resume-content' with the ID of your resume content div.
-		// 		pdf.html(resumeContent, {
-		// 		  callback: function(pdf) {
-		// 			pdf.save('resume.pdf');
-		// 		  }
-		// 		});
-		// 	  };
-
-
-	// 	var app = angular.module("app", []);
-
-	//  app.controller("mainController", ["$scope",
-	// 	$scope.export = function(){
-	// 		html2canvas(document.getElementById('exportthis'), {
-	// 			onrendered: function (canvas) {
-	// 				var data = canvas.toDataURL();
-	// 				var docDefinition = {
-	// 					content: [{
-	// 						image: data,
-	// 						width: 500,
-	// 					}]
-	// 				};
-	// 				pdfMake.createPdf(docDefinition).download("test.pdf");
-	// 			}
-	// 		});
-	// 	}
-	//  ]);
-  
-
 		
 });		
 app.controller('Modal3Controller', function ($scope, $http, $window, $state) {    
 });
 
 app.controller('RecepDashboardController',function($scope,$http,$window,$state){
-	// $scope.recepts = [];
+	$scope.paneled = [];
 
-	// $http.get(api + 'recptionist/',{
-	// 	withCredentials:true
-	// })
-	// .then(function (response) {
-	// 	console.log(response);
-	// 	$scope.recepts = response.data
-	// 	console.log($scope.recepts)
-	//   })
-	//   .catch(function (error) {
-	// 	console.log(error);
-	// 	Swal.fire({
-	// 		icon: 'error',
-	// 		title: 'Wrong...',
-	// 		text: 'Something went wrong'
-	// 	  });
-	//   });
+	$http.get(api + 'getpanel/',{
+		withCredentials:true
+	})
+	.then(function (response) {
+		console.log(response);
+		$scope.paneled = response.data
+		console.log($scope.paneled)
+	  })
+	  .catch(function (error) {
+		console.log(error);
+		Swal.fire({
+			icon: 'error',
+			title: 'Wrong...',
+			text: 'Something went wrong'
+		  });
+	  });
+
+	  $scope.logout = function(){
+		$http.get(api+'logout/',{
+			withCredentials: true
+		})
+		.then(function(response){
+			console.log(response);
+			Swal.fire({
+				icon: 'success',
+				title: response.statusText,
+				text: response.data.message
+			  })
+			$state.go('Login')
+		})
+		.catch(function(error){
+			console.log(error);
+		})
+	}
 });	
 
 var doctorid = {};
@@ -1112,7 +1342,7 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 			var data = {
 				patient_id : doctor.patient,
 				doctor_id : doctor.doctor,
-				prescription_date : '2023-09-27'
+				prescription_date : doctor.checkup_date
 			}
 			console.log(data);
 
@@ -1181,30 +1411,6 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
     })
 
 	app.controller('PaymentController', function ($scope, $http, $sce, $window, $state) {
-		// $scope.pdf = [];
-		// var data = {appointment_id : 1}
-		// $http.get(api + 'generatepdf/' ,{ params : data, 
-		// 	withCredentials:true
-		// })
-		// .then(function (response) {
-		// 	console.log(response)
-		// 	$scope.pdf = response.data
-
-		// })
-		// .catch(function (error) {
-		// 	console.log(error);
-		// })
-
-
-		// $scope.pdfdownload = function(){
-		// 	const printContent = document.getElementById("pdfdown");
-        //     const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
-        //     WindowPrt.document.write(printContent.innerHTML);
-        //     WindowPrt.document.close();
-        //     WindowPrt.focus();
-        //     WindowPrt.print();
-        //     WindowPrt.close();
-		// 	}
 
 		$scope.pdf = [];
 var data = { appointment_id: 1 };

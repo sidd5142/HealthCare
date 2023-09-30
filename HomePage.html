@@ -4,10 +4,21 @@
     
     <title>Home Page</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"> -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-google-chart/1.0.0/ng-google-chart.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="node_modules/@uirouter/angularjs/release/angular-ui-router.js"></script>
     <script src="node_modules/angular/angular.js"></script>
     <script src="hospital.js"></script>
+
+    <style>
+      .column-container {
+    display: flex;
+    flex-direction: row;
+}
+    </style>
 
     
 </head>
@@ -20,45 +31,35 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            
-            
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item ml-3">
-                <a class="nav-link active" aria-current="page" href="#">Receptionist</a>
-              </li>
-              
-              
-            
-              <li class="nav-item ml-3">
-                <a class="nav-link active" aria-current="page" href="#">Doctor</a>
-              </li>
-              
-            
-              <li class="nav-item ml-">
-                <a class="nav-link active" aria-current="page" href="#">Patient</a>
-              </li>        
-
-               <li class="nav-item ml-3">
-                <a class="nav-link active" aria-current="page" href="#">Contact Us</a>
-              </li>
-            </ul>
           </div>
         </div>
       </nav>
 
 
 
-      <div class=" ml-4 mr-lg-4" style="font-size: 30px;margin-top: 2%;">
+      <div class=" ml-4 mr-lg-4" style="font-size: 30px;">
         <nav class="navbar navbar-light bg-light nav justify-content-center"><h3> HEALTH IS WEALTH!! </h3>
      </nav>
     </div>
 
 
+    <h1 class="text-center">Graph</h1>
+    <!-- <div google-chart chart="chartObject" style="height: 400px;">{{hii}}</div> -->
+    <div class="column-container">
+    <canvas id="myChart" style="width:80%;max-width:600px; margin-left: 13%;"></canvas>
+   
+    <div id="chart" style="margin-left: 20%;"></div>
+    </div>
 
-      <div class="row row-cols-1 row-cols-md-4 g-2 ml-6 mr-lg-5"  id="choco">
+
+    <br> <br>
+    <hr>
+
+
+      <div class="row row-cols-1 row-cols-md-4 g-2 ml-6 mr-lg-5" style="margin-top: 5%;" id="choco">
         <div class="col mr-lg-5 " style="margin-left: 10%;">
           <div class="card h-100">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRO7KsoOCL6RGPCvcEk-zDRlMRiKxlZoU0Ng&usqp=CAU" style="height: 300px; width: 300px; margin: 8%;" class="card-img-top" alt="...">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRO7KsoOCL6RGPCvcEk-zDRlMRiKxlZoU0Ng&usqp=CAU" style="height: 300px; width: 300px; margin: 16%;" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title justify-content-center" style="text-align: center ;">DOCTOR</h5>
             </div>
@@ -69,9 +70,9 @@
           
             </div>
           </div>
-            <div class="col mr-lg-5" style="margin-left: 32px;">
+            <div class="col mr-lg-5" style="margin-left: 6%;">
           <div class="card h-100">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzys8Q9ziBAMmdAvBMvYMoOP1UDKuoNoqULg&usqp=CAU" style="height: 300px; width: 300px; margin: 8%;" class="card-img-top" alt="...">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzys8Q9ziBAMmdAvBMvYMoOP1UDKuoNoqULg&usqp=CAU" style="height: 300px; width: 300px; margin: 16%;" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title justify-content-center" style="text-align: center ;">RECEPTIONIST</h5>
             </div>
@@ -80,9 +81,9 @@
             </div>
           </div>
         </div>
-        <div class="col mr-lg-5 ml-lg-5">
+        <div class="col mr-lg-5 ml-lg-5" style="margin-left: 6%;">
           <div class="card h-100">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShxzkK-lpbbfF45pHyROYDg0VdbjDkj1QnAA&usqp=CAU" style="height: 300px; width: 300px; margin: 8%;" class="card-img-top" alt="...">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShxzkK-lpbbfF45pHyROYDg0VdbjDkj1QnAA&usqp=CAU" style="height: 300px; width: 300px; margin: 16%;" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title justify-content-center" style="text-align: center ;">PATIENT</h5>
           </div>

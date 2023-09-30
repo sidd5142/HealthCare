@@ -6,9 +6,7 @@
                  <h3 style="font-size: 40px;">Patient  Records</h3>
              </div>
              <div class="col" >
-                 <!-- <button type="button" style="margin-left: 25%;" class="btn btn-primary btn-lg">New Patient</button> -->
-             <!-- </div>
-             <div class="col"> -->
+          
              </div>
          </div>
 
@@ -25,8 +23,7 @@
                 <th scope="col">Symptoms</th>
                 <th scope="col">Checked Status</th>
                 <th scope="col">Payment Slip</th>
-                <!-- <th scope="col">Payment</th> -->
-                <!-- <th scope="col">Prescription</th> -->
+ 
               </tr>
             </thead>
             <tbody>
@@ -37,27 +34,44 @@
                 <td>{{patient.appointmentDate}}</td>
                 <td>{{patient.symptoms}}</td>
                 <td>{{patient.checkup_status}}</td>
-                <td><button class="btn btn-outline-danger"><i class="fa fa-download"></i> Download</button></td>
-                <!-- <td>{{patient.payment_status}}</td> -->
-                <!-- <td><button type="button" class="btn btn-primary btn-sm">Download</button>
-                  <button type="button" class="btn btn-secondary btn-sm">Reject</button></td>
-                <td>{{patient.present}}</td> -->
-              </tr>
-              <!-- <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>pdf 2</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-                <td>pdf 3</td>
-              </tr> -->
+                <td>
+              
+                  <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#myModal" ng-click="view(patient)"><i class="fa fa-download"></i> Download</button>
 
+                  
+                  <!-- The Modal -->
+                  <div class="modal" id="myModal">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                  
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                          <h4 class="modal-title">Payment Slip</h4>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                  
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                          <div id="pdfdownload">
+                            <div ng-bind-html="htmlContent"></div>  
+                            </div>    
+                            <button class="btn btn-outline-success" ng-click="show()" >View</button>
+                    
+                            <button class="btn btn-outline-danger" ng-click="download()">Download</button>
+                        </div>
+                  
+                        <!-- <div class="modal-footer">
+                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" ng-click="download(  )">Download</button>
+                        </div> -->
+                  
+                      </div>
+                    </div>
+                  </div>
+                 
+                </td>
+              
+              </tr>
+           
             </table>
             <button class="btn btn-outline-primary" ng-click="exportToExcel()">Export to Excel</button>
 
@@ -65,24 +79,3 @@
  </div>
           
  
- <!-- $scope.exportToExcel = function () {
-    // Create a new Workbook and add a Worksheet
-    var wb = XLSX.utils.book_new();
-    var ws = XLSX.utils.aoa_to_sheet([["Index", "Checked By", "Department", "Day of visit", "Status"]]);
-
-    // Convert the table data to an array of arrays
-    var tableData = [];
-    angular.forEach($scope.record, function (patient) {
-      var rowData = [$scope.record.indexOf(patient) + 1, "Dr. " + patient.doctor_name, patient.department__departments, patient.appointmentDate, patient.checkup_status];
-      tableData.push(rowData);
-    });
-
-    // Add the table data to the worksheet
-    XLSX.utils.sheet_add_aoa(ws, tableData, { origin: "A2" });
-
-    // Add the worksheet to the workbook
-    XLSX.utils.book_append_sheet(wb, ws, "Records");
-
-    // Save the workbook as an Excel file
-    XLSX.writeFile(wb, "records.xlsx");
-  }; -->

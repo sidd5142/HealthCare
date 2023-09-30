@@ -41,30 +41,13 @@
                     </a>
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                        
-                        <li>
+                        <li ng-repeat="panels in paneled">
                             <a  class="nav-link px-0 align-middle"
-                                  ng-click="dash" ui-sref="RecepDashboard.Doctor">Doctors</a>
+                                  ng-click="dash" ui-sref="{{panels.state}}">{{panels.panel}}</a>
                         </li>
-                        <li>
-                            <a  class="nav-link px-0 align-middle"
-                                 ng-click="appoin" ui-sref="RecepDashboard.Appointment">Appointment</a>
-                        </li>
-                        
-                        
-                        <li>
-                            <a  class="nav-link px-0 align-middle">
-                                <span class="ms-1 d-none d-sm-inline" ui-sref="RecepDashboard.Record">Records</span> </a>
-                        </li>
-
-                        <li>
-                          <a  class="nav-link px-0 align-middle">
-                              <span class="ms-1 d-none d-sm-inline" ui-sref="RecepDashboard.Patient">Patient</span> </a>
-                      </li>
-
-                        <!-- <li>
-                          <a  class="nav-link px-0 align-middle">
-                              <span class="ms-1 d-none d-sm-inline" ui-sref="DoctorDashboard.Prescriptions">Prescriptions</span> </a>
-                      </li> -->
+                        <ul>
+                        <button class="btn btn-outline-primary" style="margin-top: 500px; height: 10%;" ng-click="logout()">LogOut</button>
+                        </ul> 
                     </ul>
                     <hr>
                 </div>

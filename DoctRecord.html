@@ -55,12 +55,12 @@
                         <div class="modal-body">
                           <h5 style="text-align: center;"><u>Medical History</u></h5>
                            
-                            <div class="row row-cols-2 row-cols-lg-5" ng-repeat="prescribed in press" >
+                            <div class="row row-cols-2 row-cols-lg-5" ng-repeat="prescribe in press" >
                                                     
                               <div style="margin-top: 3%; margin-left: 5%;">
                                   <h6>Height :-</h6>
                             <div class="col">
-                              <div id="name">{{prescribed.height}} cm</div>
+                              <div id="name">{{prescribe.height}} cm</div>
                             </div>
                               </div>
                       
@@ -68,21 +68,21 @@
                               <div style="margin-left: 12%; margin-top: 3%;">
                                   <h6>Weight :-</h6>
                             <div class="col">
-                              <div id="name">{{prescribed.weight}} kg</div>
+                              <div id="name">{{prescribe.weight}} kg</div>
                             </div>
                           </div>
                       
                           <div style="margin-left: 12%; margin-top: 3%;">
                               <h6>Blood Group :-</h6>
                             <div class="col">
-                              <div id="name">{{prescribed.blood_group}}</div>
+                              <div id="name">{{prescribe.blood_group}}</div>
                             </div>
                           </div>
 
                           <div style="margin-top: 3%; margin-left: 5%;">
                             <h6>Alcoholic :-</h6>
                       <div class="col">
-                        <div id="name">{{prescribed.alcoholic}}</div>
+                        <div id="name">{{prescribe.alcoholic}}</div>
                       </div>
                    </div>
                 
@@ -90,14 +90,14 @@
                         <div style="margin-left: 12%; margin-top: 3%;">
                             <h6>Smoker :-</h6>
                       <div class="col">
-                        <div id="name">{{prescribed.smoker}}</div>
+                        <div id="name">{{prescribe.smoker}}</div>
                       </div>
                     </div>
                 
                     <div style="margin-left: 12%; margin-top: 3%;">
                         <h6>Symptoms :-</h6>
                       <div class="col">
-                        <div id="name">{{prescribed.symptoms}}</div>
+                        <div id="name">{{prescribe.symptoms}}</div>
                       </div>
                     </div>
                      </div>
@@ -129,12 +129,13 @@
                          </div>
                         <br>
                       </div>
+                      <!-- <select class="form-select" ng-model="contact.reporttest" style="width: 100%;" aria-label="Default select example">
+                        <option value="" selected disabled hidden>Test to be done</option>                               
+                        <option value="{{reporttest.test}}" ng-repeat="reporttest in tests">{{reporttest.test}}</option>
+            </select> -->
                   </form>
                   
-                    <select class="form-select" ng-model="reporttest" style="width: 100%;" aria-label="Default select example">
-                                <option value="" selected disabled hidden>Test to be done</option>                               
-                                <option value="{{test.test}}" ng-repeat="test in tests" >{{test.test}}</option>
-                    </select>
+                    
                     
                     <div>
                     <button type="submit" class="btn btn-outline-danger" style="float: right;" ng-click="submit(record)">Submit</button>
