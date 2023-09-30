@@ -106,7 +106,7 @@
 
                      <h5 style="text-align: center;"><u>Prescription</u></h5>  
                      
-                     <form ng-app="contactsApp">  
+                     <form ng-app="contactsApp" ng-controller="ModalRecordController">  
                         <button type="button" class="btn btn-outline-success mb-3" ng-click="addfield(contact)">Medicines</button>
                         <div class="row row-cols-2 row-cols-lg-3" >
                           <p ng-repeat="contact in contacts">
@@ -126,18 +126,20 @@
                               </select> 
                               <button type="button" class="btn btn-close removeField" ng-click="removeContactField($index)"></button>
                           </p>
-                        </div>
-                          <br>
-                          <button type="submit" class="btn btn-outline-danger" style="float: right;" ng-click="submit(record)">Submit</button>
+                         </div>
+                        <br>
                       </div>
                   </form>
-                  <form style="margin: 3%;">
-                    <select class="form-select" ng-model="test" style="width: 100%;" aria-label="Default select example">
+                  
+                    <select class="form-select" ng-model="reporttest" style="width: 100%;" aria-label="Default select example">
                                 <option value="" selected disabled hidden>Test to be done</option>                               
-                                <option value="Before a meal">Before a meal</option>
-                                <option value="After a meal">After a meal</option>
+                                <option value="{{test.test}}" ng-repeat="test in tests" >{{test.test}}</option>
                     </select>
-                    </form>
+                    
+                    <div>
+                    <button type="submit" class="btn btn-outline-danger" style="float: right;" ng-click="submit(record)">Submit</button>
+                    </div>
+                    <br>
 
                   </div>
                        

@@ -112,7 +112,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 
 }]);
 
-var api = 'https://10.21.81.226:8000/healthcare/'
+var api = 'https://10.21.82.7:8000/healthcare/'
 
 app.controller('RegisterController',function($scope,$http,$window,$state){
 
@@ -162,11 +162,11 @@ app.controller('RegisterController',function($scope,$http,$window,$state){
           .then(function(response){
             
             console.log(response.data)
-			Swal.fire(
-				'Congratulations!',
-				'You are logged in!',
-				'success'
-			  )
+			Swal.fire({
+				icon: 'success',
+				title: 'COmpleted...',
+				text: response.data.message
+			 } )
 			$state.go('Login');
 		  })
 		  .catch(function(error){
@@ -226,7 +226,7 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 		    $state.go('DoctorDashboard');
 		}
 		else {
-			$state.go('Dashboard')
+			$state.go('Dashboard.Personal')
 		}
 
 	  })
@@ -465,6 +465,10 @@ app.controller('DashboardController',function($scope,$http,$window,$state){
 		  })
 	})
 
+	$scope.logout = function(){
+	
+	}
+
 	
 });
 
@@ -511,6 +515,14 @@ app.controller('RecordsController',function($scope,$http,$window,$state){
 // });
 
 app.controller('DoctorDashboardController',function($scope,$http,$window,$state){
+	$scope.panel=[];
+	$http.get(api + 'getpanel/', {
+		withCredentials:true
+	})
+	.then(function(response){
+		console.log(response)
+		$scope.panel = response.data
+	})
 });
 
 app.controller('DoctPersonalController',function($scope,$http,$window,$state){
@@ -661,9 +673,16 @@ app.controller('DoctAppointController',function($scope,$http,$window,$state){
 	};
 });
 
+app.service('SharedData3Service', function () {
+	this.testes = " "; // Initialize the shared variable
+});
+
+app.controller('ModalRecordController', function ($scope) {    
+});
+
 var prescribeid = {};
 
-app.controller('DoctRecordController',function($scope,$http,$window,$state){
+app.controller('DoctRecordController',function($scope,$http,$window,$state,SharedData3Service){
 	$scope.doctrecord = [];
 	$scope.press = [];
 
@@ -682,11 +701,22 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
 
 				$http.get(api + 'getmedicalhistory/',{params : ids,
 				withCredentials:true
-			})
-			.then(function(response){
-				console.log(response)
-				$scope.press = response.data
-				console.log($scope.press)
+			    })
+			    .then(function(response){
+			    	console.log(response)
+				   $scope.press = response.data
+				   console.log($scope.press)
+
+
+				$http.get(api + 'tests/',{
+					withCredentials:true
+				})
+				.then(function(response){
+					console.log(response.data)
+					$scope.tests = response.data
+				})
+
+                $scope.testrep = SharedData3Service.testes;
 
 				$scope.contacts = [];
                 $scope.medicine = "";
@@ -696,7 +726,8 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state){
 				$scope.prescribed = {}
 
                 $scope.addfield = function(){
-                    $scope.contacts.push({ 
+                    $scope.contacts.push({
+					    test : $scope.reporttest, 
 						doctor_id : record.doctor_id,
 						patient_id : record.patient_id,
 						medicine: $scope.medicine,
@@ -1080,6 +1111,7 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 
 			var data = {
 				patient_id : doctor.patient,
+				doctor_id : doctor.doctor,
 				prescription_date : '2023-09-27'
 			}
 			console.log(data);

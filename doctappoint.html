@@ -42,24 +42,21 @@
                <td>{{appoint.time}}</td>
                <td><button type="button" ng-click="accept(appoint,index)" class="btn btn-outline-primary btn-sm">Accept</button>
                 <button type="button" ng-click="reject(appoint, index)" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#myModal" >Reject</button>
-                <!-- The Modal -->
-              <div ng-app="myApp" ng-controller="ModalController">  
+           
+                <div ng-app="myApp" ng-controller="ModalController">  
               <div class="modal fade" id="myModal">
                 <div class="modal-dialog">
                   <div class="modal-content" >
               
-                    <!-- Modal Header -->
-                    <div class="modal-header">
+]                    <div class="modal-header">
                       <h4 class="modal-title">Reson for Rejecting the Appointment</h4>
                       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
               
-                    <!-- Modal body -->
                     <div class="modal-body">
                       <input type="text" class="form-control" ng-model="reasonInput">
                     </div>
               
-                     <!-- Modal footer -->
                     <div class="modal-footer">
                       <button type="submit" class="btn btn-danger" ng-click="submit(appoint, index)" data-bs-dismiss="modal">Submit</button>
                     </div>
@@ -75,25 +72,22 @@
                     <div class="modal-dialog">
                       <div class="modal-content" >
                   
-                        <!-- Modal Header -->
                         <div class="modal-header">
                           <h4 class="modal-title">Edit Date and Time</h4>
                           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                   
-                        <!-- Modal body -->
                         <div class="modal-body">
                           <select class="p-2 form-select " ng-model="time" style="width: 100%; margin-bottom: 10px;" aria-label="Default select example">
                             <option selected>Choose a time</option>
-                            <option value="9 to 12" >9am to 12 noon</option>
-                            <option value="5 to 8" >5pm to 8 pm</option>
+                            <option value="9 to 12">9am to 12 noon</option>
+                            <option value="5 to 8">5pm to 8 pm</option>
                           </select> 
                           <input type="text" class="p-2 form-control" style="margin-bottom: 10px;" ng-model="date">
                           <input type="text" class="form-control" ng-model="reason" placeholder="Reason">
 
                         </div>
                   
-                         <!-- Modal footer -->
                         <div class="modal-footer">
                           <button type="submit" class="btn btn-danger" ng-click="submit(appoint, index)" data-bs-dismiss="modal">Submit</button>
                         </div>
