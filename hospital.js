@@ -117,26 +117,24 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 
 }]);
 
-var api = 'https://10.21.82.7:8000/healthcare/'
+var api = 'https://10.21.80.209:8000/healthcare/'
 
 app.controller('RegisterController',function($scope,$http,$window,$state){
-
-	$scope.Registrationfrom = function(){
-        console.log('FirstName :', $scope.firstname)
-		console.log('LstName :', $scope.lastname)
-		console.log('Username : ', $scope.username)
-		console.log('Email:', $scope.email)
-		console.log('Pass :', $scope.password)
-		console.log('ConfPass :', $scope.confpassword)
-		console.log('Contact :', $scope.contact)
-		console.log('Age :', $scope.age)
-		console.log('Address :', $scope.address)
-		console.log('Gender :', $scope.gender)
-	}
 
 	$scope.validatePassword = function(){
 		$scope.passwordMismatch = $scope.password !== $scope.confpassword;
 	  }
+
+	  $scope.validateEmail = function () {
+		// Regular expression for email validation
+		var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+		if (emailPattern.test($scope.email)) {
+			$scope.emailIsValid = true;
+		} else {
+			$scope.emailIsValid = false;
+		}
+	};
 
 
 	 $scope.register = function(){
@@ -154,7 +152,6 @@ app.controller('RegisterController',function($scope,$http,$window,$state){
 			gender : $scope.gender,
 			contact : $scope.contact,
 			address : $scope.address,
-			// blood_group : $scope.blood
 		};
 		console.log(regdata);
 
@@ -178,9 +175,8 @@ app.controller('RegisterController',function($scope,$http,$window,$state){
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: 'Inputs are wrong!'
+				text: error.data.message
 			  })
-			// $window.alert(error);
 		  })
 		}
 		else{
@@ -204,7 +200,6 @@ app.controller('HomePageController',function($scope,$http,$window,$state){
 	.then(function(response){
 		console.log(response.data)
 		var data = response.data;
-        // Extract data from the response
         var totalDoctor = data.total_doctor;
         var totalPatient = data.total_patient;
         var totalDepartments = data.total_departments;
@@ -232,7 +227,8 @@ app.controller('HomePageController',function($scope,$http,$window,$state){
 			}
 		  });
 
-      
+    //   PIE CHART
+
 		  var options = {
 			series: yValues,
 			chart: {
@@ -307,27 +303,6 @@ app.controller('HomePageController',function($scope,$http,$window,$state){
 
 
 
-
-        // Create chart data
-        // $scope.chartData = {
-        //     "cols": [
-        //         { id: "t", label: "Category", type: "string" },
-        //         { id: "s", label: "Value", type: "number" }
-        //     ],
-        //     "rows": [
-        //         { c: [{ v: "Doctors" }, { v: totalDoctor }] },
-        //         { c: [{ v: "Patients" }, { v: totalPatient }] },
-        //         { c: [{ v: "Departments" }, { v: totalDepartments }] },
-        //         { c: [{ v: "Appointments" }, { v: totalAppointments }] }
-        //     ]
-        // };
-
-        // // Chart options
-        // $scope.chartOptions = {
-        //     'title': 'Chart Title',
-        //     'width': 400,
-        //     'height': 300
-        // };
     })
 	.catch(function(error){
 		console.log(error)
@@ -335,38 +310,6 @@ app.controller('HomePageController',function($scope,$http,$window,$state){
 
 })
 	
-
-
-// 	$http.get('/your-server-endpoint-url').then(function (response) {
-// 		var data = response.data;
-// 		// Extract data from the response
-// 		var totalDoctor = data.total_doctor;
-// 		var totalPatient = data.total_patient;
-// 		var totalDepartments = data.total_departments;
-// 		var totalAppointments = data.total_appointments;
-
-// 		// Create a chart data array
-// 		$scope.chartObject = {};
-// 		$scope.chartObject.type = 'BarChart'; // You can change the chart type
-// 		$scope.chartObject.data = {
-// 			cols: [
-// 				{ id: 'category', label: 'Category', type: 'string' },
-// 				{ id: 'value', label: 'Value', type: 'number' },
-// 			],
-// 			rows: [
-// 				{ c: [{ v: 'Doctors' }, { v: totalDoctor }] },
-// 				{ c: [{ v: 'Patients' }, { v: totalPatient }] },
-// 				{ c: [{ v: 'Departments' }, { v: totalDepartments }] },
-// 				{ c: [{ v: 'Appointments' }, { v: totalAppointments }] },
-// 			],
-// 		};
-// 		$scope.chartObject.options = {
-// 			title: 'Chart Title',
-// 		};
-// 	});
-// }); 
-
-
 app.controller('LogInController',function($scope,$http,$window,$state){
 	$scope.LoginForm = function(){
         
@@ -381,7 +324,6 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 	if($scope.password && $scope.username)
 	{
 	$http.post(api+'login/', data, {
-			// headers: {'Content-Type': undefined},
 		    withCredentials: true
      })
 	 .then(function(response){
@@ -396,7 +338,7 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 		}
 		else if(msg === 'Doctor') 
         {
-		    $state.go('DoctorDashboard');
+		    $state.go('DoctorDashboard.DoctPersonal');
 		}
 		else {
 			$state.go('Dashboard.Personal')
@@ -408,7 +350,7 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 		Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: 'Something went wrong..'
+				text: error.data.message
 			  })
 	  })
 	}
@@ -435,25 +377,21 @@ app.controller('DocLogInController',function($scope,$http,$window,$state){
 		.catch(function(error){
 			console.log(error)
 		})
-	$scope.DocRegistrationfrom = function(){
-        console.log('FirstName :', $scope.firstname)
-		console.log('LstName :', $scope.lastname)
-		console.log('Username : ', $scope.username)
-		console.log('Email:', $scope.email)
-		console.log('Pass :', $scope.password)
-		console.log('ConfPass :', $scope.confpassword)
-		console.log('Contact :', $scope.contact)
-		console.log('Age :', $scope.age)
-		console.log('Address :', $scope.address)
-		console.log('Gender :', $scope.gender)
-		console.log('Department :', $scope.department)
-		console.log('Qualification :', $scope.qualification)
-		console.log('Fees :', $scope.fees)
-	}
 
 	$scope.validatePassword = function(){
 		$scope.passwordMismatch = $scope.password !== $scope.confpassword;
 	  }
+
+	  $scope.validateEmail = function () {
+		// Regular expression for email validation
+		var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+		if (emailPattern.test($scope.email)) {
+			$scope.emailIsValid = true;
+		} else {
+			$scope.emailIsValid = false;
+		}
+	};
 
 
 	 $scope.Docregister = function(){
@@ -496,7 +434,7 @@ app.controller('DocLogInController',function($scope,$http,$window,$state){
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: 'Incorrect username or password!!'
+				text: error.data.message
 			  })
 		})
 		}
@@ -513,9 +451,24 @@ app.controller('DocLogInController',function($scope,$http,$window,$state){
 	 } 
 });
 
+                            //*****  PATIENT  ****//
+
 app.controller('AppointmentController',function($scope,$http,$window,$state){
 
 	$scope.depart = [];
+
+	$scope.updateDate = function () {
+        var selectedDate = $scope.date;
+        if (selectedDate) {
+            var year = selectedDate.getFullYear();
+            var month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
+            var day = selectedDate.getDate().toString().padStart(2, '0');
+            $scope.date = year + '-' + month + '-' + day;
+        } else {
+            $scope.date = null;
+        }
+    };
+	  
 
 	$http.get(api+'departdrop/', {
 		withCredentials : true
@@ -586,7 +539,7 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: 'Someting Missing!!'
+				text: error.data.message
 			  })
 		})
 	}
@@ -634,7 +587,7 @@ app.controller('DashboardController',function($scope,$http,$window,$state){
 		Swal.fire({
 			icon: 'error',
 			title: 'Oops...',
-			text: 'Something went wrong..'
+			text: error.data.message
 		  })
 	})
 
@@ -681,13 +634,10 @@ app.controller('RecordsController',function($scope,$http,$window,$state,$sce){
 			const doc = document.createElement('table');
 			doc.innerHTML = table.outerHTML;
 
-			// Convert the HTML document to a blob
 			const blob = new Blob(['\ufeff', doc.outerHTML], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-			// Create a URL for the blob
 			const url = window.URL.createObjectURL(blob);
 
-			// Create a download link and trigger the click event
 			const a = document.createElement('a');
 			a.href = url;
 			a.download = 'Records.xlsx';
@@ -728,12 +678,10 @@ app.controller('RecordsController',function($scope,$http,$window,$state,$sce){
             WindowPrt.print();
             WindowPrt.close();
 	}
-	// $state.reload('Dashboard.Records')
   }
 });
 
-// app.controller('ReceptionistController',function($scope,$http,$window,$state){
-// });
+                              //*****  DOCTOR  ****//
 
 app.controller('DoctorDashboardController',function($scope,$http,$window,$state){
 	$scope.panel=[];
@@ -790,6 +738,7 @@ app.controller('DoctPersonalController',function($scope,$http,$window,$state){
 
 var dltid = {};
 var edtid = {};
+var doctid = {};
 
 app.controller('DoctAppointController',function($scope,$http,$window,$state){
 	$scope.doctappoint = [];
@@ -812,6 +761,7 @@ app.controller('DoctAppointController',function($scope,$http,$window,$state){
 
 	$scope.accept = function(appoint){
 
+		doctid = appoint.doctor;
 		var success = {appointment_id : appoint.pk}
 
 		$http.post(api + 'confirmappointment/', success, {
@@ -836,6 +786,15 @@ app.controller('DoctAppointController',function($scope,$http,$window,$state){
 
 	$scope.edit = function(appoint){
 		edtid = appoint.pk
+		var id = {doctor_id : appoint.doctor}
+		console.log(id)
+		$http.get(api + 'slots/' , {params : id,
+		withCredentials: true
+	   })
+	   .then(function (response) {
+		console.log(response);
+		$scope.slot = response.data;	
+	})
 	}
 });
 
@@ -877,23 +836,34 @@ app.controller('DoctAppointController',function($scope,$http,$window,$state){
   app.service('SharedData2Service', function () {
 	this.date = "";
 	this.time = "";
-	this.reason = ""; // Initialize the shared variable
+	this.reason = ""; 
 });
 
   app.controller('Modal2Controller', function ($scope, $http, $window, $state, SharedData2Service) {
 	$scope.reason = ""; 
 	$scope.reason = SharedData2Service.reason;
-	// $scope.date = SharedData2Service.reason
-	// $scope.time = SharedData2Service.reason
+	
+	$scope.updateDate = function () {
+		var selectedDate = $scope.date;
+		if (selectedDate) {
+			var year = selectedDate.getFullYear();
+			var month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
+			var day = selectedDate.getDate().toString().padStart(2, '0');
+			$scope.date = year + '-' + month + '-' + day;
+		} else {
+			$scope.date = null;
+		}
+	};
 
-	$scope.submit = function (appoint) {
+	$scope.submit = function () {
+
 	  var data = {
 		appointment_id: edtid,
 		new_appointmentDate: $scope.date, 
 		new_time : $scope.time,
 		reason : $scope.reason
 	  };
-  console.log(data)
+      console.log(data)
 	  $http.put(api + 'confirmappointment/', data, {
 		withCredentials : true
 	  })
@@ -1013,7 +983,7 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state,Share
 					Swal.fire({
 						icon: 'error',
 						title: 'cancel...',
-						text: 'Something went wrong'
+						text: error.data.message
 					  })
 					})
 	            }
@@ -1036,7 +1006,7 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state,Share
 		Swal.fire({
 			icon: 'error',
 			title: 'cancel...',
-			text: 'Missing any key'
+			text: error.data.message
 		  })
 		})
 
@@ -1044,6 +1014,23 @@ app.controller('DoctRecordController',function($scope,$http,$window,$state,Share
 });		
 app.controller('Modal3Controller', function ($scope, $http, $window, $state) {    
 });
+
+app.controller('DoctCheckedPatientController',function($scope,$http,$window,$state){
+	$scope.records = [];
+
+	$http.get(api + 'checkedpatient/', {
+		withCredentials: true
+	})
+	.then(function(response){
+		console.log(response.data)
+		$scope.records = response.data
+	})
+	.catch(function(error){
+		console.log(error)
+	})
+});
+
+                            //*****  RECEPTIONIST   ******//
 
 app.controller('RecepDashboardController',function($scope,$http,$window,$state){
 	$scope.paneled = [];
@@ -1254,7 +1241,7 @@ this.reason = "";
 app.controller('RecepRecordController', function ($scope, $http, $window, $state) {
    $scope.records = [];
 
-   $http.get(api + 'checkedpatient/', {
+   $http.get(api + 'checked/', {
 	withCredentials : true
    })
    .then(function (response) {
@@ -1270,6 +1257,25 @@ app.controller('RecepRecordController', function ($scope, $http, $window, $state
 		text: 'Something went wrong'
 		});
     });
+	$scope.exportToExcel = function () {
+		const table = document.getElementById('RecordTable');
+
+			const doc = document.createElement('table');
+			doc.innerHTML = table.outerHTML;
+
+			const blob = new Blob(['\ufeff', doc.outerHTML], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+			const url = window.URL.createObjectURL(blob);
+
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = 'Records.xlsx';
+			document.body.appendChild(a);
+			a.click();
+
+			window.URL.revokeObjectURL(url);
+			document.body.removeChild(a);
+	   }
 })
 
 app.controller('RecepPatientController', function ($scope, $http, $window, $state) {
@@ -1315,6 +1321,8 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 		});
 });
 
+                           //*********  PRESCRIPTION  *****//
+
     app.controller('PrescriptionsController', function ($scope, $http) {
         $scope.doctors = [];
 
@@ -1331,7 +1339,7 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 			Swal.fire({
 				icon: 'error',
 				title: 'Error...',
-				text: 'Something went wrong'
+				text: error.data.message
 				});
 		})
 		$scope.prescription=[];
@@ -1359,7 +1367,7 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 			Swal.fire({
 				icon: 'error',
 				title: 'Error...',
-				text: 'Something went wrong'
+				text: error.data.message
 				});
 			});
 		}
@@ -1404,33 +1412,35 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 				Swal.fire({
 					icon: 'error',
 					title: 'Error...',
-					text: 'Something went wrong'
+					text: error.data.message
 					});
 			})
 	     }
     })
 
+                    //****  PAYMENT   *****//
+
 	app.controller('PaymentController', function ($scope, $http, $sce, $window, $state) {
 
 		$scope.pdf = [];
-var data = { appointment_id: 1 };
+       var data = { appointment_id: 1 };
 
-$http.get(api + 'generatepdf/', {
-    params: data,
-	headers: {'Content-Type': undefined},
-    withCredentials: true
-})
-.then(function(response) {
-    console.log(response);
-    $scope.pdf = response.data;
-	$scope.show = function() {
-
-		$scope.htmlContent = $sce.trustAsHtml(response.data);
-			}
-})
-.catch(function(error) {
-    console.log(error);
-});
+        $http.get(api + 'generatepdf/', {
+            params: data,
+        	headers: {'Content-Type': undefined},
+            withCredentials: true
+        })
+        .then(function(response) {
+        console.log(response);
+        $scope.pdf = response.data;
+	    $scope.show = function() {
+    
+	    	$scope.htmlContent = $sce.trustAsHtml(response.data);
+	    		}
+        })
+        .catch(function(error) {
+        console.log(error);
+        });
     
     $scope.download = function() {
 		const printContent = document.getElementById("pdfdownload");
@@ -1441,5 +1451,4 @@ $http.get(api + 'generatepdf/', {
             WindowPrt.print();
             WindowPrt.close();
 	}
-
 	})

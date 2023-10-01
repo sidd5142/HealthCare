@@ -11,7 +11,8 @@
                 <h5> Date</h5>
           <div class="col">
             <div class="input-group flex-nowrap">
-              <input type="text" class="p-3 form-control border" ng-model="date"  aria-label="date" aria-describedby="addon-wrapping">
+              <input type="date" class="p-3 form-control border" id="dateInput" ng-model="date" ng-change="updateDate()" aria-label="date" aria-describedby="addon-wrapping">
+
             </div>
             </div>
             </div>

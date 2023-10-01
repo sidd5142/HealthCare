@@ -27,7 +27,7 @@
                    <th scope="col">Age</th>
                    <th scope="col">Gender</th>
                    <th scope="col">Appointment Date</th>
-                   <th scope="col">Checkup Date</th>
+                   <th scope="col">Symptoms</th>
                    <th scope="col">Prescription</th>
                    <!-- <th scope="col">Visits</th> -->
                  </tr>
@@ -39,7 +39,7 @@
                    <td>{{record.patient__age}}</td>
                    <td>{{record.patient__gender}}</td>
                    <td>{{record.appointmentDate}}</td>
-                   <td>{{record.checkup_date}}</td>
+                   <td>{{record.symptoms}}</td>
 
               <td><button class="btn btn-outline-info" ng-click="prescribed(record)" type="submit" data-bs-toggle="modal" data-bs-target="#myModal2">Prescription</button>
                 <div ng-app="myApp" ng-controller="Modal3Controller">  
@@ -93,13 +93,7 @@
                         <div id="name">{{prescribe.smoker}}</div>
                       </div>
                     </div>
-                
-                    <div style="margin-left: 12%; margin-top: 3%;">
-                        <h6>Symptoms :-</h6>
-                      <div class="col">
-                        <div id="name">{{prescribe.symptoms}}</div>
-                      </div>
-                    </div>
+                    
                      </div>
 
                      <hr>
@@ -129,10 +123,7 @@
                          </div>
                         <br>
                       </div>
-                      <!-- <select class="form-select" ng-model="contact.reporttest" style="width: 100%;" aria-label="Default select example">
-                        <option value="" selected disabled hidden>Test to be done</option>                               
-                        <option value="{{reporttest.test}}" ng-repeat="reporttest in tests">{{reporttest.test}}</option>
-            </select> -->
+                    
                   </form>
                   
                     

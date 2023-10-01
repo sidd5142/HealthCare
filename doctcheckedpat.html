@@ -1,0 +1,47 @@
+<div ng-app="myApp" ng-controller="DoctRecordController">
+    <div class="col mt-lg-3">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h3 style="font-size: 40px;">Records</h3>
+                </div>
+                <div class="col">
+                <form class="d-flex" style="position: relative; left: 20%;margin-top: 2%;">
+                    <input class="form-control me-2"  type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                  </form>
+                </div>
+            </div>
+    
+            <hr>
+    
+            <table class="table caption-top ">
+               <thead class="bg-dark table-dark">
+                 <tr>
+                    <th scope="col">Index</th>
+                   <th scope="col">Name</th>
+                   <th scope="col">Age</th>
+                   <th scope="col">Gender</th>
+                   <th scope="col">Checked By</th>
+                   <th scope="col">Department</th>
+                   <th scope="col">Appointment Date</th>
+                   <th scope="col">Checkup Date</th>
+                   <!-- <th scope="col">Visits</th> -->
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr ng-repeat="record in records">
+                    <th scope="row">{{$index + 1}}</th>
+                   <td>{{record.patient__first_name + " " + record.patient__last_name}}</td>
+                   <td>{{record.patient__age}}</td>
+                   <td>{{record.patient__gender}}</td>
+                   <td>Dr. {{record.doctor__first_name + " " + record.doctor__last_name}}</td>
+                   <td>{{record.department__departments}}</td>
+                   <td>{{record.appointmentDate}}</td>
+                   <td>{{record.checkup_date}}</td>
+                 </tr>
+               </tbody>
+             </table>
+        </div>
+    </div>
+              

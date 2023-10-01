@@ -79,11 +79,11 @@
                   
                         <div class="modal-body">
                           <select class="p-2 form-select " ng-model="time" style="width: 100%; margin-bottom: 10px;" aria-label="Default select example">
-                            <option selected>Choose a time</option>
-                            <option value="9 to 12">9am to 12 noon</option>
-                            <option value="5 to 8">5pm to 8 pm</option>
+                            <option value="" selected disabled hidden>Choose a time</option>                               
+                            <option value="{{slots.slots}}" ng-repeat="slots in slot">{{slots.slots}}</option>
                           </select> 
-                          <input type="text" class="p-2 form-control" style="margin-bottom: 10px;" ng-model="date">
+                          <input type="date" class="p-2 form-control" style="margin-bottom: 10px;" ng-model="date" id="dateInput" ng-change="updateDate()">
+
                           <input type="text" class="form-control" ng-model="reason" placeholder="Reason">
 
                         </div>

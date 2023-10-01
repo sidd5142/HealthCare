@@ -67,7 +67,6 @@
               <div class="col">
   
                   <h1 style="text-align: center;margin: 3%;"><u>Personal Information</u></h1>
-
               <div class="container" >
                   <div class="container-1">
                       <!-- <img src="./images/Businesswoman_at_computer.png" alt=""> -->
@@ -75,11 +74,11 @@
                   </div>
                   <div class="container-2" >
                       <form action="" ng-repeat="patients in patient" style="margin-left: 6%;">
-                          <label for="name">Name :{{patients.first_name}} {{patients.last_name}}</label><br><br> 
+                          <label for="name">Name :{{patients.first_name}} {{patients.last_name}}</label><br><hr> 
               
-                          <label for="phone">Age : {{patients.age}}</label><br><br>
-                          <label for="phone">Gender : {{patients.gender}}</label><br><br>
-                          <label for="phone">Phone : {{patients.contact}}</label><br><br>
+                          <label for="phone">Age : {{patients.age}}</label><br><hr>
+                          <label for="phone">Gender : {{patients.gender}}</label><br><hr>
+                          <label for="phone">Phone : {{patients.contact}}</label><br><hr>
 
                           <label for="age">Address : {{patients.address}}</label> <br> 
                       </form>

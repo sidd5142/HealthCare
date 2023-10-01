@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
   <script src="node_modules/jquery/dist/jquery.min.js"></script>
   <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <script src="node_modules/angular/angular.js"></script>
   <script src="node_modules/@uirouter/angularjs/release/angular-ui-router.js"></script>
   <script src="hospital.js"></script>
@@ -20,16 +21,7 @@
           </button>
           
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page">Home</a>
-              </li>
-              
-            </ul>
-            <!-- <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form> -->
+            
           </div>
         </div>
       </nav>
@@ -45,10 +37,10 @@
                        
                         <li ng-repeat="panels in panel">
                             <a  class="nav-link px-0 align-middle"
-                                 ng-click="dash" ui-sref="{{panels.state}}">{{panels.panel}}</a>
+                                 ng-click="dash" ui-sref="{{panels.state}}"><i class="{{panels.icons}}"></i> {{panels.panel}}</a>
                         </li>
                         <ul>
-                          <button class="btn btn-outline-primary" style="margin-top: 550px; height: 10%;" ng-click="logout()">LogOut</button>
+                          <button class="btn btn-outline-primary" style="margin-top: 500px; height: 10%;" ng-click="logout()">LogOut</button>
                           </ul>
                     </ul>
                     <hr>
