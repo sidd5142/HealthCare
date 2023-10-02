@@ -61,6 +61,11 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			templateUrl: 'payment.html',
 			controller: 'PaymentController'
 		})
+		.state('Dashboard.Rejection', {
+			url: '/rejection',
+			templateUrl: 'rejection.html',
+			controller: 'RejectionController'
+		})
 		.state('RecepDashboard', {
             url: '/recepdashboard',
 			templateUrl: 'receptionistdash.html',
@@ -140,6 +145,7 @@ app.controller('RegisterController',function($scope,$http,$window,$state){
 	 $scope.register = function(){
 		var pass = $scope.password;
 		var confpass = $scope.confpassword;
+		var validemail = $scope.emailIsValid
 
 		var regdata = {
             first_name: $scope.firstname,
@@ -155,7 +161,7 @@ app.controller('RegisterController',function($scope,$http,$window,$state){
 		};
 		console.log(regdata);
 
-		if(pass == confpass){
+		if(pass == confpass && validemail){
 			
 			$http.post(api+'registeruser/', regdata, {
 			headers: {'Content-Type': undefined},
@@ -166,7 +172,7 @@ app.controller('RegisterController',function($scope,$http,$window,$state){
             console.log(response.data)
 			Swal.fire({
 				icon: 'success',
-				title: 'COmpleted...',
+				title: 'Completed...',
 				text: response.data.message
 			 } )
 			$state.go('Login');
@@ -174,7 +180,7 @@ app.controller('RegisterController',function($scope,$http,$window,$state){
 		  .catch(function(error){
 			Swal.fire({
 				icon: 'error',
-				title: 'Oops...',
+				title: 'Error...',
 				text: error.data.message
 			  })
 		  })
@@ -183,7 +189,7 @@ app.controller('RegisterController',function($scope,$http,$window,$state){
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: 'Incorrect password'
+				text: 'Incorrect password or invalid email'
 			  })
 			LoadingService.stopLoading();
 		}
@@ -346,7 +352,6 @@ app.controller('LogInController',function($scope,$http,$window,$state){
 
 	  })
 	  .catch(function(error){
-		$window.alert(error);
 		Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
@@ -386,7 +391,7 @@ app.controller('DocLogInController',function($scope,$http,$window,$state){
 		// Regular expression for email validation
 		var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-		if (emailPattern.test($scope.email)) {
+		if(emailPattern.test($scope.email)) {
 			$scope.emailIsValid = true;
 		} else {
 			$scope.emailIsValid = false;
@@ -397,6 +402,8 @@ app.controller('DocLogInController',function($scope,$http,$window,$state){
 	 $scope.Docregister = function(){
 		var pass = $scope.password;
 		var confpass = $scope.confpassword;
+		var validemail = $scope.emailIsValid
+
 
 		var regdata = {
             first_name: $scope.firstname,
@@ -414,7 +421,7 @@ app.controller('DocLogInController',function($scope,$http,$window,$state){
 		};
 		console.log(regdata);
 
-		if(pass == confpass){
+		if(pass == confpass && validemail){
 			
 			$http.post(api+'registerdoctor/', regdata, {
 			headers: {'Content-Type': undefined},
@@ -443,9 +450,8 @@ app.controller('DocLogInController',function($scope,$http,$window,$state){
 			Swal.fire({
 				icon: 'error',
 				title: 'Oops...',
-				text: 'Incorrect password!!'
+				text: 'Incorrect password or Email'
 			  })
-			LoadingService.stopLoading();
 		}
 
 	 } 
@@ -546,7 +552,6 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 	
 	})
 
-	
 app.controller('PersonalController',function($scope,$http,$window,$state){
 });
 
@@ -671,14 +676,36 @@ app.controller('RecordsController',function($scope,$http,$window,$state,$sce){
     
     $scope.download = function() {
 		const printContent = document.getElementById("pdfdownload");
-            const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
-            WindowPrt.document.write(printContent.innerHTML);
-            WindowPrt.document.close();
-            WindowPrt.focus();
-            WindowPrt.print();
-            WindowPrt.close();
+    //         const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0','_blank');
+    //         WindowPrt.document.write(printContent.innerHTML);
+    //         WindowPrt.document.close();
+    //         WindowPrt.focus();
+    //         WindowPrt.print();
+    //         WindowPrt.close();
+	const blob = new Blob([printContent.innerHTML], { type: "text/html" });
+
+			  const url = URL.createObjectURL(blob);
+		  
+			  const newTab = window.open(url, "_blank");
+		  
+			  newTab.focus();
+			  newTab.print();
 	}
   }
+});
+
+app.controller('RejectionController',function($scope,$http,$window,$state){
+	$scope.reject = [];
+	$http.get(api + 'rejectedappoint/', {
+		withCredentials:true
+	})
+	.then(function(response){
+		console.log(response.data)
+		$scope.reject = response.data
+	})
+	.catch(function(error){
+		console.log(error)
+	})
 });
 
                               //*****  DOCTOR  ****//
@@ -1024,11 +1051,55 @@ app.controller('DoctCheckedPatientController',function($scope,$http,$window,$sta
 	.then(function(response){
 		console.log(response.data)
 		$scope.records = response.data
-	})
-	.catch(function(error){
-		console.log(error)
-	})
-});
+
+		$scope.view = function(record) {
+			$scope.prescription = [];
+
+			var data = {
+				patient_id : record.patient,
+				// doctor_id : record.doctor,
+				prescription_date : record.checkup_date
+			}
+			console.log(data);
+
+		$http.post(api + 'viewprescription/',data, {
+			withCredentials: true
+		})
+		.then(function (response) {
+			console.log(response);
+			$scope.prescription = response.data
+			console.log($scope.prescription)
+			})
+			.catch(function (error) {
+			console.log(error);
+			Swal.fire({
+				icon: 'error',
+				title: 'Error...',
+				text: error.data.message
+				});
+			});
+		}
+
+		$scope.downloadpresc = function () {
+		
+			const printContent = document.getElementById("pdfdownload");
+            // const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
+            // WindowPrt.document.write(printContent.innerHTML);
+            // WindowPrt.document.close();
+            // WindowPrt.focus();
+            // WindowPrt.print();
+            // WindowPrt.close();
+			const blob = new Blob([printContent.innerHTML], { type: "text/html" });
+
+			const url = URL.createObjectURL(blob);
+		
+			const newTab = window.open(url, "_blank");
+		
+			newTab.focus();
+			newTab.print();
+		  };
+		});							
+  })
 
                             //*****  RECEPTIONIST   ******//
 
@@ -1372,15 +1443,23 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
 			});
 		}
 
-		$scope.download = function () {
+		$scope.downloadpresc = function () {
 		
 			const printContent = document.getElementById("pdfdownload");
-            const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
-            WindowPrt.document.write(printContent.innerHTML);
-            WindowPrt.document.close();
-            WindowPrt.focus();
-            WindowPrt.print();
-            WindowPrt.close();
+            // const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
+            // WindowPrt.document.write(printContent.innerHTML);
+            // WindowPrt.document.close();
+            // WindowPrt.focus();
+            // WindowPrt.print();
+            // WindowPrt.close();
+			const blob = new Blob([printContent.innerHTML], { type: "text/html" });
+
+			const url = URL.createObjectURL(blob);
+		
+			const newTab = window.open(url, "_blank");
+		
+			newTab.focus();
+			newTab.print();
 		  };
 		});
 
@@ -1441,14 +1520,4 @@ app.controller('RecepPatientController', function ($scope, $http, $window, $stat
         .catch(function(error) {
         console.log(error);
         });
-    
-    $scope.download = function() {
-		const printContent = document.getElementById("pdfdownload");
-            const WindowPrt = window.open('', '', 'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0');
-            WindowPrt.document.write(printContent.innerHTML);
-            WindowPrt.document.close();
-            WindowPrt.focus();
-            WindowPrt.print();
-            WindowPrt.close();
-	}
 	})
