@@ -122,7 +122,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 
 }]);
 
-var api = 'https://10.21.80.209:8000/healthcare/'
+var api = 'https://192.168.43.151:8000/healthcare/'
 
 app.controller('RegisterController',function($scope,$http,$window,$state){
 
@@ -201,7 +201,7 @@ app.controller('HomePageController',function($scope,$http,$window,$state){
 	$scope.total = []; 
 	 
 	$http.get(api + 'mapdata/', {
-		withCredentials:true
+		// withCredentials:true
 	})
 	.then(function(response){
 		console.log(response.data)
@@ -518,6 +518,8 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 	})
 
 	$scope.appoint = function(){
+
+		$scope.loader = true;
         console.log($scope.selectdepartment)
 		console.log($scope.selectcategory)
 		var appointdata = {
@@ -533,6 +535,7 @@ app.controller('AppointmentController',function($scope,$http,$window,$state){
 			withCredentials : true
 		})
 		.then(function(response){
+			$scope.loader = false;
           console.log(response)
 		  Swal.fire({
 			icon: 'success',
